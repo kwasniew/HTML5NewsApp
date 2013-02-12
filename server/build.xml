@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="HTML5Tablet" default="build">
+
+    <property name="build.number" value="dev.build"/>
+    <property name="build" value="${basedir}/build"/>
+    <property name="artifacts" value="${build}/artifacts"/>
+    <property name="reports" value="${artifacts}/reports"/>
+    <property name="src" value="${basedir}/src"/>
+    <property name="test" value="${basedir}/test"/>
+    <property name="scripts" value="${build}/release/scripts"/>
+    <property name="release.version" value="${build.number}"/>
+    <property name="release.name" value="${ant.project.name}-${release.version}"/>
+    <property name="release.jar" value="${release.name}.jar"/>
+    <property name="release.pom" value="${release.name}.pom"/>
+    <property name="release.src" value="${release.name}-sources.jar"/>
+    <property name="release.jar.path" value="${artifacts}/${release.jar}"/>
+    <property name="release.tar" value="html5-tablet-${build.number}.tar.gz"/>
+    <property name="scripts.tar" value="release-scripts.tar.gz"/>
+    <property name="test.jar.path" value="${artifacts}/${release.name}.test.jar"/>
+    <property name="build.dependencies.dir" value="lib/build"/>
+    <property name="runtime.dependencies.dir" value="lib/runtime"/>
+    <property name="main.class" value="com.example.Main"/>
+    <property name="build.properties" value="build/environments/build.properties"/>
+    <loadproperties srcfile="${build.properties}"/>
+
+    <import file="${build}/commit/macros.xml"/>
+    <import file="${build}/deploy/macros.xml"/>
+    <import file="${build}/dependencies/shavenmaven.xml"/>
+
+    <requires java.version="1\.[67]"/>
+
+    <path id="all.dependancies">
+        <fileset dir="${build.dependencies.dir}" includes="**/*.jar"/>
+        <fileset dir="${runtime.dependencies.dir}" includes="*.jar"/>
+    </path>
+
+    <path id="all.jars">
+        <path refid="all.dependancies"/>
+        <path path="${release.jar.path}"/>
+        <path path="${test.jar.path}"/>
+    </path>
+
+    <target name="update" description="updates library dependencies">
+        <parallel>
+            <update dependencies="${build}/dependencies/build.dependencies"
+                    directory="${build.dependencies.dir}"/>
+            <update dependencies="${build}/dependencies/runtime.dependencies"
+                    directory="${runtime.dependencies.dir}"/>
+        </parallel>
+    </target>
+
+    <target name="clean" description="cleanup all">
+        <delete dir="${artifacts}"/>
+    </target>
+
+    <target name="compile">
+        <compile.and.jar src="${src}" jar="${release.jar.path}" classpathref="all.dependancies"
+                         version="${release.version}" main.class="com.googlecode.barongreenback.WebApplication"/>
+        <compile.and.jar src="${test}" jar="${test.jar.path}" classpathref="all.jars" version="${release.version}"/>
+    </target>
+
+    <target name="test">
+        <test jar="${test.jar.path}" classpathref="all.jars" reports="${reports}"/>
+    </target>
+
+    <target name="generate-artifacts">
+        <mkdir dir="${artifacts}"/>
+
+        <zip destfile="${artifacts}/${release.src}" basedir="src"/>
+
+        <exec executable="git" output="${artifacts}/git.properties">
+            <arg line="log -n 1"/>
+        </exec>
+        <property file="${artifacts}/git.properties" prefix="git"/>
+
+        <propertyfile file="${artifacts}/release.properties">
+            <entry key="release.version" value="${release.version}"/>
+            <entry key="project.name" value="${ant.project.name}"/>
+            <entry key="release.name" value="${release.name}"/>
+            <entry key="release.path" value="com/googlecode/${ant.project.name}/${ant.project.name}/${release.version}/"/>
+            <entry key="release.files" value="${release.jar},${release.pom},${release.src}"/>
+            <entry key="${release.jar}.description" value="${git.summary} build:${build.number} "/>
+            <entry key="${release.jar}.labels" value="Jar"/>
+            <entry key="${release.pom}.description" value="Maven POM file build:${build.number}"/>
+            <entry key="${release.pom}.labels" value="POM"/>
+            <entry key="${release.src}.description" value="Source file build:${build.number}"/>
+            <entry key="${release.src}.labels" value="Source"/>
+        </propertyfile>
+
+        <generate.pom artifact.uri="mvn:com.googlecode.${ant.project.name}:${ant.project.name}:jar:${release.version}"
+                             dependencies="build/dependencies/runtime.dependencies"
+                             directory="${artifacts}"/>
+
+    </target>
+
+    <target name="build" description="build this app (update, clean, compile, test and generate artifacts)">
+        <parallel>
+            <antcall target="update"/>
+            <antcall target="clean"/>
+        </parallel>
+        <antcall target="compile"/>
+        <parallel>
+            <antcall target="test"/>
+            <antcall target="generate-artifacts"/>
+        </parallel>
+    </target>
+
+    <target name="run" depends="build" description="runs application on localhost">
+        <java fork="true" classname="com.example.Main" classpathref="all.jars"/>
+    </target>
+
+
+    <macrodef name="ssh-command-with-credentials">
+        <attribute name="command" />
+        <sequential>
+            <ssh-command command="@{command}" hostname="${ssh.hostname}" username="${ssh.username}" key="${ssh.key}" passphrase="${ssh.passphrase}"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="ssh-copy-to-file-with-credentials">
+        <attribute name="file" />
+        <attribute name="toDir" />
+        <attribute name="toFilename" />
+        <sequential>
+            <ssh-copy-to-file file="@{file}" toDir="@{toDir}" toFilename="@{toFilename}" hostname="${ssh.hostname}" username="${ssh.username}" key="${ssh.key}" passphrase="${ssh.passphrase}"/>
+        </sequential>
+    </macrodef>
+
+    <!-- APP -->
+    <target name="package" depends="build" description="creates tarball with the application jar and all dependencies jars">
+        <tar destfile="${artifacts}/html5-tablet-${build.number}.tar">
+            <tarfileset dir="${runtime.dependencies.dir}" />
+            <tarfileset dir="${artifacts}">
+                <include name="${release.jar}"/>
+            </tarfileset>
+        </tar>
+        <gzip destfile="${artifacts}/${release.tar}"
+              src="${artifacts}/html5-tablet-${build.number}.tar"/>
+    </target>
+
+    <target name="deploy-app" description="deploys app tarball">
+        <ssh-copy-to-file-with-credentials file="${artifacts}/${release.tar}" toDir="${ssh.toDir}" toFilename="${release.tar}"  />
+    </target>
+
+    <target name="extract-app"  description="extracts app tarball">
+        <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; mkdir -p ${build.number} &amp;&amp; cd ${build.number} &amp;&amp; tar xvf ../${release.tar}"/>
+    </target>
+
+    <!-- SCRIPTS -->
+    <target name="package-scripts" description="creates a tarball package with release scripts">
+        <copy todir="${artifacts}/release-scripts" overwrite="true">
+            <fileset dir="${scripts}" />
+        </copy>
+        <replace dir="${artifacts}/release-scripts" token="MAIN_APP_CLASS" value="${main.class}" />
+        <tar destfile="${artifacts}/release-scripts.tar">
+            <tarfileset dir="${artifacts}/release-scripts" />
+        </tar>
+        <gzip destfile="${artifacts}/release-scripts.tar.gz"
+              src="${artifacts}/release-scripts.tar"/>
+    </target>
+
+    <target name="deploy-scripts" depends="package-scripts" description="deploys release scripts tarball">
+        <ssh-copy-to-file-with-credentials file="${artifacts}/${scripts.tar}" toDir="${ssh.toDir}" toFilename="${scripts.tar}" />
+    </target>
+
+    <target name="extract-scripts"  description="extracts release scripts tarball">
+        <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; rm *.sh; tar xvf ${scripts.tar}; chmod +x *.sh;"/>
+    </target>
+
+
+    <target name="deploy" description="deploys app tarball and release scripts">
+        <antcall target="deploy-app"/>
+        <antcall target="deploy-scripts"/>
+    </target>
+
+    <target name="extract" description="extracts app tarball and scripts tarball">
+        <antcall target="extract-app"/>
+        <antcall target="extract-scripts"/>
+    </target>
+
+    <target name="release" description="releases deployed app">
+        <antcall target="extract"/>
+        <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; ./stop.sh; rm previous; ln -s $(readlink current) previous; rm current; ln -s ${build.number} current &amp;&amp; ./start.sh -v current -p ${ssh.port} &gt; log.out 2&gt; log.err &lt; /dev/null &amp;"/>
+    </target>
+
+    <target name="rollback" description="rollbacks deployed app">
+        <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; ./rollback.sh -p ${ssh.port} &gt; log.out 2&gt; log.err &lt; /dev/null &amp;"/>
+    </target>
+
+    <target name="click" description="one click deployment">
+        <antcall target="package" />
+        <antcall target="deploy" />
+        <antcall target="release" />
+    </target>
+
+</project>
+

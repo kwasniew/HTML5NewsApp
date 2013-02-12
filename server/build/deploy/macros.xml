@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <property file="deploy.properties"/>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="lib/ant-contrib.jar"/>
+
+    <macrodef name="ssh-command" description="Perform remote command with useful error message">
+        <attribute name="command" description="The command"/>
+        <attribute name="hostname" description="The remote host"/>
+        <attribute name="username" description="The remote username"/>
+        <attribute name="key" description="The local private key file"/>
+        <attribute name="passphrase" description="The passphrase to unlock the local private key file" default=""/>
+        <attribute name="property" default="" description="Property in which to store return value"/>
+        <attribute name="failOnError" default="true" description="Fail on error, true by default"/>
+        <sequential>
+            <sshexec host="@{hostname}" username="@{username}" keyfile="@{key}" passphrase="@{passphrase}" command="@{command}" trust="true" failOnError="@{failOnError}" outputProperty="@{property}"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="ssh-copy-to-file" description="Copy local file to remote file">
+        <attribute name="file" description="The local file"/>
+        <attribute name="toDir" description="The remote directory"/>
+        <attribute name="toFilename" description="The remote filename" default="@{file}"/>
+        <attribute name="hostname" description="The remote host"/>
+        <attribute name="username" description="The remote username"/>
+        <attribute name="key" description="The local private key file"/>
+        <attribute name="passphrase" description="The passphrase to unlock the local private key file" default=""/>
+        <sequential>
+            <ssh-command command="mkdir -p @{toDir}" hostname="@{hostname}" username="@{username}" key="@{key}" passphrase="@{passphrase}"/>
+            <property name="@{hostname}.@{toDir}.@{toFilename}" value="@{hostname}:@{toDir}/@{toFilename}"/>
+            <scp localFile="@{file}" remoteToFile="@{username}@${@{hostname}.@{toDir}.@{toFilename}}" keyfile="@{key}" passphrase="@{passphrase}" trust="true"/>
+        </sequential>
+    </macrodef>
+</project>

@@ -1,0 +1,20 @@
+*.class
+
+# Output Files #
+build/artifacts
+target
+out
+
+# Intellij Files #
+*.iws
+.idea/workspace.xml
+.DS_Store
+
+# Lib Files #
+lib/build
+lib/runtime
+lib/optional
+
+# Log Files #
+*.log
+*.log.*
