@@ -187,6 +187,10 @@
         <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; ./rollback.sh -p ${ssh.port} &gt; log.out 2&gt; log.err &lt; /dev/null &amp;"/>
     </target>
 
+    <target name="restart" description="restart deployed app">
+        <ssh-command-with-credentials command="cd ${ssh.toDir} &amp;&amp; ./restart.sh -p ${ssh.port} &gt; log.out 2&gt; log.err &lt; /dev/null &amp;"/>
+    </target>
+
     <target name="click" description="one click deployment">
         <antcall target="package" />
         <antcall target="deploy" />
