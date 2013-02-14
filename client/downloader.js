@@ -16,10 +16,6 @@
         //TODO when cors is fixed move it inside sections
         var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
 
-
-
-        //this.getArticle(this.betahostUrl + articleUrl);
-
         var rootPromise = this.getRootUrl(this.rootUrl);
         rootPromise.then(function(url){
             console.log('root url resolved', url);
