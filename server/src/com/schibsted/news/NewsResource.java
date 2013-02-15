@@ -12,4 +12,10 @@ public class NewsResource {
     public String mainPage() {
         return Files.readFileContent(this.getClass(), "../index.html");
     }
+
+    @GET
+    @Path("/text")
+    public String text() {
+        return "plain text works";
+    }
 }
