@@ -12,6 +12,7 @@ public class NewsResource {
     @Path("/")
     public String mainPage() {
         return Files.loadTextFileContent("com/schibsted/index.html");
+        //
     }
 
     @GET
