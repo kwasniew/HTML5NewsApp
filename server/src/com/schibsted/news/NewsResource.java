@@ -10,7 +10,7 @@ public class NewsResource {
     @GET
     @Path("/")
     public String mainPage() {
-        return Files.readFileContent(this.getClass(), "../index.html");
+        return Files.loadTextFileContent("com/schibsted/index.html");
     }
 
     @GET
