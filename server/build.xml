@@ -69,10 +69,9 @@
 
         <zip destfile="${artifacts}/${release.src}" basedir="src"/>
 
-        <exec executable="git" output="${artifacts}/git.properties">
+        <exec executable="git" output="${src}/git.properties">
             <arg line="log -n 1"/>
         </exec>
-        <property file="${src}/git.properties" prefix="git"/>
 
         <propertyfile file="${artifacts}/release.properties">
             <entry key="release.version" value="${release.version}"/>
