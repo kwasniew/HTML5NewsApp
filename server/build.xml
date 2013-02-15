@@ -64,14 +64,16 @@
         <test jar="${test.jar.path}" classpathref="all.jars" reports="${reports}"/>
     </target>
 
+    <target name="generate-git-status-file">
+        <exec executable="git" output="${src}/git.properties">
+            <arg line="log -n 1"/>
+        </exec>
+    </target>
+
     <target name="generate-artifacts">
         <mkdir dir="${artifacts}"/>
 
         <zip destfile="${artifacts}/${release.src}" basedir="src"/>
-
-        <exec executable="git" output="${src}/git.properties">
-            <arg line="log -n 1"/>
-        </exec>
 
         <propertyfile file="${artifacts}/release.properties">
             <entry key="release.version" value="${release.version}"/>
@@ -98,6 +100,7 @@
             <antcall target="update"/>
             <antcall target="clean"/>
         </parallel>
+        <antcall target="generate-git-status-file" />
         <antcall target="compile"/>
         <parallel>
             <antcall target="test"/>
