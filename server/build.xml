@@ -19,7 +19,7 @@
     <property name="test.jar.path" value="${artifacts}/${release.name}.test.jar"/>
     <property name="build.dependencies.dir" value="lib/build"/>
     <property name="runtime.dependencies.dir" value="lib/runtime"/>
-    <property name="main.class" value="com.example.Main"/>
+    <property name="main.class" value="com.schibsted.Main"/>
     <property name="build.properties" value="build/environments/build.properties"/>
     <loadproperties srcfile="${build.properties}"/>
 
@@ -106,7 +106,7 @@
     </target>
 
     <target name="run" depends="build" description="runs application on localhost">
-        <java fork="true" classname="com.example.Main" classpathref="all.jars"/>
+        <java fork="true" classname="${main.class}" classpathref="all.jars"/>
     </target>
 
 
