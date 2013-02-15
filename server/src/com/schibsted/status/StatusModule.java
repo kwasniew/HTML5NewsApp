@@ -17,7 +17,8 @@ public class StatusModule implements ResourcesModule, ApplicationScopedModule {
 
     @Override
     public Container addPerApplicationObjects(Container container) throws Exception {
-        container.addInstance(GitStatus.class, new GitStatus(Files.loadTextFileContent("git.properties")));
+        container.addInstance(LastCommit.class, new LastCommit(Files.loadTextFileContent("git.properties")));
+        container.addInstance(BuildVersion.class, new BuildVersion(System.getProperty("build.number")));
         return container;
     }
 }
