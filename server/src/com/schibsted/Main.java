@@ -19,7 +19,7 @@ public class Main extends RestApplication {
     public Main(BasePath basePath) {
         super(basePath);
         add(new NewsModule());
-        add(staticFilesModule(Main.class, "static"));
+        add(staticFilesModule(Main.class, "/static"));
     }
 
     private Module staticFilesModule(Class classpathRelativeTo, String urlPath) {
@@ -29,7 +29,7 @@ public class Main extends RestApplication {
     public static void main(String[] args) throws Exception {
         int port = readPort(args);
 
-        new RestServer(new Main(BasePath.basePath("")),
+        new RestServer(new Main(BasePath.basePath("/")),
                        ServerConfiguration.defaultConfiguration().port(port));
     }
 
