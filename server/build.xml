@@ -20,7 +20,7 @@
     <property name="build.dependencies.dir" value="lib/build"/>
     <property name="runtime.dependencies.dir" value="lib/runtime"/>
     <property name="main.class" value="com.schibsted.Main"/>
-    <property name="stopAppPattern" value="Main"/>
+    <property name="stopAppPattern" value="com.schibsted.Main"/>
     <property name="build.properties" value="build/environments/build.properties"/>
     <loadproperties srcfile="${build.properties}"/>
 
@@ -56,7 +56,7 @@
 
     <target name="compile">
         <compile.and.jar src="${src}" jar="${release.jar.path}" classpathref="all.dependancies"
-                         version="${release.version}" main.class="com.googlecode.barongreenback.WebApplication"/>
+                         version="${release.version}" main.class="${main.class}"/>
         <compile.and.jar src="${test}" jar="${test.jar.path}" classpathref="all.jars" version="${release.version}"/>
     </target>
 
@@ -72,7 +72,7 @@
         <exec executable="git" output="${artifacts}/git.properties">
             <arg line="log -n 1"/>
         </exec>
-        <property file="${artifacts}/git.properties" prefix="git"/>
+        <property file="${src}/git.properties" prefix="git"/>
 
         <propertyfile file="${artifacts}/release.properties">
             <entry key="release.version" value="${release.version}"/>

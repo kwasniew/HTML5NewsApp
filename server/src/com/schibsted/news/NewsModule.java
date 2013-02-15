@@ -1,7 +1,6 @@
 package com.schibsted.news;
 
 import com.googlecode.utterlyidle.Resources;
-import com.googlecode.utterlyidle.modules.Module;
 import com.googlecode.utterlyidle.modules.ResourcesModule;
 
 import static com.googlecode.utterlyidle.annotations.AnnotatedBindings.annotatedClass;

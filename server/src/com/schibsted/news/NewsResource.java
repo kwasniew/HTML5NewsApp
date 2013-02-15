@@ -1,9 +1,7 @@
 package com.schibsted.news;
 
-import com.googlecode.utterlyidle.MediaType;
 import com.googlecode.utterlyidle.Response;
 import com.googlecode.utterlyidle.ResponseBuilder;
-import com.googlecode.utterlyidle.Status;
 import com.googlecode.utterlyidle.annotations.GET;
 import com.googlecode.utterlyidle.annotations.Path;
 

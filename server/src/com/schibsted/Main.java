@@ -6,6 +6,7 @@ import com.googlecode.utterlyidle.ServerConfiguration;
 import com.googlecode.utterlyidle.httpserver.RestServer;
 import com.googlecode.utterlyidle.modules.Module;
 import com.schibsted.news.NewsModule;
+import com.schibsted.status.StatusModule;
 
 import static com.googlecode.totallylazy.URLs.packageUrl;
 import static com.googlecode.utterlyidle.dsl.DslBindings.bindings;
@@ -19,6 +20,7 @@ public class Main extends RestApplication {
     public Main(BasePath basePath) {
         super(basePath);
         add(new NewsModule());
+        add(new StatusModule());
         add(staticFilesModule(Main.class, "/static"));
     }
 
