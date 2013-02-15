@@ -1,4 +1,4 @@
-/*global console:true, $:true, RSVP:true */
+/*global console:true, $:true, RSVP:true, PubSub:true  */
 ;(function (window, undefined) {
     "use strict";
 
@@ -48,8 +48,12 @@
 
             var entries = articles.querySelectorAll('entry');
             var len = entries.length;
-            var articleUrl, entry, articleImage, img, elId, elImg;
-            var div, h2;
+            var articleUrl, entry, articleImage, elId, elImg;
+            var title;
+
+            var articlesList = [];
+
+
             for (var i = len - 1; i >= 0; i--) {
                 entry = entries[i];
 
@@ -57,24 +61,32 @@
                 articleUrl = self.betahostUrlLong+'/news/publication/common/searchContents/instance?id=24517&contentType=article';
                 articleUrl = elId ? elId.textContent : false;
 
+                //one article just return 404 for no reason, ommit it
+                if(articleUrl.indexOf('24486') > -1) {
+                    console.log('ommit this article', articleUrl.indexOf('24486'));
+                    continue;
+                }
+
                 elImg = entry.querySelector('link[type^="image"]');
                 articleImage = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
                 articleImage = elImg ? elImg.getAttribute('href') : articleImage;
 
-                articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w580cFree');
+                articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
 
-                img = new Image();
-                img.onload = load;
-                img.src = articleImage;
-                div = document.createElement('div');
-                h2 = document.createElement('h2');
-                h2.innerHTML = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
-                div.appendChild(h2);
-                div.appendChild(img);
+                title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
 
-                document.body.appendChild(div);
+                articlesList.push({url: articleUrl, img: articleImage, title: title});
 
-                promises.push(self.getArticle(articleUrl));
+            }
+
+            self.articlesList = articlesList;
+
+            PubSub.publish( 'downloaded:articles-list', {list: articlesList });
+
+            len = articlesList.length;
+            for (i = len - 1; i >= 0; i--) {
+
+                promises.push(self.getArticle(entry.url));
 
             }
 
@@ -82,7 +94,9 @@
 
         }).then(function(allArticles){
 
-            console.log('end', allArticles);
+            console.log('end', arguments);
+
+            PubSub.publish( "downloaded:articles", allArticles );
 
         }, errorFun);
 
@@ -95,11 +109,13 @@
         var promise = new RSVP.Promise();
         var self = this;
 
+
         console.log('getArticle', url);
 
         var ajax = this.makeRequest(url);
         ajax.then(function(data){
             console.log("getArticle ok");
+            self.articles.push(data);
             promise.resolve(data);
         }, function(err){
             console.log("getArticle error", arguments);
