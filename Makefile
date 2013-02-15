@@ -1,1 +1,2 @@
-ant run server
+build:
+	ant run server
