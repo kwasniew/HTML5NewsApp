@@ -2,6 +2,9 @@
 ;(function (window, undefined) {
     "use strict";
 
+    var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
+    var imageUrl = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
+
     function errorFun(){
         console.error('promise root error', arguments);
     }
@@ -21,7 +24,7 @@
         console.log("Download Start!");
 
         //TODO when cors is fixed move it inside sections
-        var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
+
 
         var rootPromise = this.getRootUrl(this.rootUrl);
 
@@ -44,8 +47,6 @@
             console.log('get aticles-articles', articles);
             function load(){ console.log('loaded image'); }
 
-
-
             var entries = articles.querySelectorAll('entry');
             var len = entries.length;
             var articleUrl, entry, articleImage, elId, elImg;
@@ -58,7 +59,7 @@
                 entry = entries[i];
 
                 elId = entry.querySelector('id');
-                articleUrl = self.betahostUrlLong+'/news/publication/common/searchContents/instance?id=24517&contentType=article';
+                articleUrl = self.betahostUrlLong+articleUrl;
                 articleUrl = elId ? elId.textContent : false;
 
                 //one article just return 404 for no reason, ommit it
@@ -68,35 +69,39 @@
                 }
 
                 elImg = entry.querySelector('link[type^="image"]');
-                articleImage = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
+                articleImage = imageUrl;
                 articleImage = elImg ? elImg.getAttribute('href') : articleImage;
 
                 articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
 
                 title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
 
-                articlesList.push({url: articleUrl, img: articleImage, title: title});
+                self.articles.push({url: articleUrl, img: articleImage, title: title});
+
+                promises.push(self.getArticle(articleUrl));
 
             }
 
-            self.articlesList = articlesList;
-
-            PubSub.publish( 'downloaded:articles-list', {list: articlesList });
-
-            len = articlesList.length;
-            for (i = len - 1; i >= 0; i--) {
-
-                promises.push(self.getArticle(entry.url));
-
-            }
+            PubSub.publish( 'downloaded:articles-list', {list: self.articles });
 
             return RSVP.all(promises);
 
         }).then(function(allArticles){
 
-            console.log('end', arguments);
+            console.log('end', allArticles);
+            console.log('end', self.articles);
 
-            PubSub.publish( "downloaded:articles", allArticles );
+            for (var i = allArticles.length - 1; i >= 0; i--) {
+                var docu = allArticles[i];
+                var item = self.articles[i];
+
+                item.bodytext = docu.querySelector('[name="bodytext"] div');
+                item.docu = docu;
+                //bodytext
+                //debugger;
+            }
+
+            PubSub.publish( "downloaded:articles", self.articles );
 
         }, errorFun);
 
@@ -115,7 +120,7 @@
         var ajax = this.makeRequest(url);
         ajax.then(function(data){
             console.log("getArticle ok");
-            self.articles.push(data);
+            //self.articles[i].data = data;
             promise.resolve(data);
         }, function(err){
             console.log("getArticle error", arguments);
@@ -152,8 +157,6 @@
         /** UUU tralalala local hacking */
         url = url.replace(this.betahostUrlLong, this.localhostUrl);
         url = url.replace(this.betahostUrl, this.localhostUrl);
-
-
 
         $.ajax({
             url: url,
