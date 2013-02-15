@@ -9,6 +9,6 @@ public class GitStatus {
 
     @Override
     public String toString() {
-        return status.toString();
+        return status.toString().isEmpty() ? "no git status available" : status.toString();
     }
 }
