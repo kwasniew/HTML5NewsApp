@@ -1,9 +1,10 @@
 package com.schibsted.news;
 
-import com.googlecode.utterlyidle.annotations.GET;
-import com.googlecode.utterlyidle.annotations.Path;
-import com.schibsted.Main;
+import com.googlecode.utterlyidle.annotations.*;
+import com.schibsted.news.NewsFeed;
 import com.schibsted.shared.Files;
+import static com.googlecode.totallylazy.Uri.uri;
+import static com.googlecode.utterlyidle.RequestBuilder.get;
 
 public class NewsResource {
 
@@ -18,4 +19,12 @@ public class NewsResource {
     public String text() {
         return "plain text works";
     }
+
+    @GET
+    @Path("/latest")
+    @Produces("application/xml")
+    public String latestNews(@QueryParam("sectionId") @DefaultValue("1") Integer sectionId, @QueryParam("limit") @DefaultValue("10") Integer limit){
+        return NewsFeed.getLastestNews(sectionId, limit);
+    }
+
 }
