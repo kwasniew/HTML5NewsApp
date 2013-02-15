@@ -19,7 +19,7 @@ public class Main extends RestApplication {
     public Main(BasePath basePath) {
         super(basePath);
         add(new NewsModule());
-        add(staticFilesModule(Main.class, ""));
+        add(staticFilesModule(Main.class, "static"));
     }
 
     private Module staticFilesModule(Class classpathRelativeTo, String urlPath) {
