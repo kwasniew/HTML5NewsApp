@@ -3,7 +3,14 @@ package com.schibsted;
 import com.googlecode.utterlyidle.BasePath;
 import com.googlecode.utterlyidle.RestApplication;
 import com.googlecode.utterlyidle.ServerConfiguration;
-import com.googlecode.utterlyidle.httpserver.RestServer;import com.schibsted.news.NewsModule;
+import com.googlecode.utterlyidle.httpserver.RestServer;
+import com.googlecode.utterlyidle.modules.Module;
+import com.schibsted.news.NewsModule;
+
+import static com.googlecode.totallylazy.URLs.packageUrl;
+import static com.googlecode.utterlyidle.dsl.DslBindings.bindings;
+import static com.googlecode.utterlyidle.dsl.StaticBindingBuilder.in;
+import static com.googlecode.utterlyidle.modules.Modules.bindingsModule;
 
 public class Main extends RestApplication {
 
@@ -12,6 +19,11 @@ public class Main extends RestApplication {
     public Main(BasePath basePath) {
         super(basePath);
         add(new NewsModule());
+        add(staticFilesModule(Main.class, "static"));
+    }
+
+    private Module staticFilesModule(Class classpathRelativeTo, String urlPath) {
+        return bindingsModule(bindings(in(packageUrl(classpathRelativeTo)).path(urlPath)));
     }
 
     public static void main(String[] args) throws Exception {
