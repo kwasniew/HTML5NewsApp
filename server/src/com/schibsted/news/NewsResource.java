@@ -7,7 +7,7 @@ public class NewsResource {
 
     @GET
     @Path("/")
-    public String mainPage() {
+    public String index() {
         return Files.loadTextFileContent("com/schibsted/index.html");
     }
 
