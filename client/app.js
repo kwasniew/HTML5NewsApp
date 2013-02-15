@@ -14,8 +14,15 @@
         this.downloader = new Downloader();
         this.downloader.start();
 
-        PubSub.subscribe( "downloaded:articles", function(){
+        PubSub.subscribe( "downloaded:articles", function(name, articles){
             console.log('downloaded:articles', arguments);
+
+            for (var i = articles.length - 1; i >= 0; i--) {
+                document.body.appendChild(articles[i].bodytext);
+            }
+
+
+
         } );
 
         PubSub.subscribe( "downloaded:articles-list", function(name, articles){

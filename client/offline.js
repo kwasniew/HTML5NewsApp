@@ -3,7 +3,12 @@
     "use strict";
 
     function Offline(){
+        PubSub.subscribe( "downloaded:articles-list", function(name, articles){
+            console.log('downloaded:articles-list and store offline', arguments);
 
+            var articlesList = articles.list;
+
+        });
     }
 
     var db;
