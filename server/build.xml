@@ -20,6 +20,7 @@
     <property name="build.dependencies.dir" value="lib/build"/>
     <property name="runtime.dependencies.dir" value="lib/runtime"/>
     <property name="main.class" value="com.schibsted.Main"/>
+    <property name="stopAppPattern" value="Main"/>
     <property name="build.properties" value="build/environments/build.properties"/>
     <loadproperties srcfile="${build.properties}"/>
 
@@ -152,6 +153,7 @@
             <fileset dir="${scripts}" />
         </copy>
         <replace dir="${artifacts}/release-scripts" token="MAIN_APP_CLASS" value="${main.class}" />
+        <replace dir="${artifacts}/release-scripts" token="STOP_APP_PATTERN" value="${stopAppPattern}" />
         <tar destfile="${artifacts}/release-scripts.tar">
             <tarfileset dir="${artifacts}/release-scripts" />
         </tar>
