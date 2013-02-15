@@ -31,7 +31,7 @@ public class StatusResource {
     public Response buildVersion() {
         return ResponseBuilder.response(Status.OK).
                                contentType(MediaType.TEXT_PLAIN).
-                               entity("10").
+                               entity(buildVersion.toString()).
                                build();
     }
 }

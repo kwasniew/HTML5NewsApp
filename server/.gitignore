@@ -20,4 +20,5 @@ lib/optional
 *.log.*
 
 # Auto-Generated Files #
-git.properties
+git.commit
+build.number

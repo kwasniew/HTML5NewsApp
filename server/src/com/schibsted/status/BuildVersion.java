@@ -6,4 +6,9 @@ public class BuildVersion {
     public BuildVersion(String version) {
         this.version = version;
     }
+
+    @Override
+    public String toString() {
+        return version;
+    }
 }
