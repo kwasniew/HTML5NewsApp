@@ -24,6 +24,10 @@
     <property name="build.properties" value="build/environments/build.properties"/>
     <loadproperties srcfile="${build.properties}"/>
 
+    <condition property="64bits">
+        <os arch="amd64"/>
+    </condition>
+
     <import file="${build}/commit/macros.xml"/>
     <import file="${build}/deploy/macros.xml"/>
     <import file="${build}/dependencies/shavenmaven.xml"/>
@@ -62,6 +66,28 @@
 
     <target name="test">
         <test jar="${test.jar.path}" classpathref="all.jars" reports="${reports}"/>
+    </target>
+
+    <target name="testjs32" unless="64bits">
+        <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_32"/>
+    </target>
+
+    <target name="testjs64" if="64bits">
+        <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_64"/>
+    </target>
+
+    <target name="testjs" depends="testjs32, testjs64">
+        <taskdef name="jstest" classname="com.philmander.jstest.ant.JsTestRunnerTask"
+                 classpath="${build.dependencies.dir}/ant-jstestrunner-spmiller-deps-0.2.jar"/>
+        <property name="phantomosx" value="${build.dependencies.dir}/phantomjs-osx"/>
+        <chmod file="${phantomlinux}" perm="u+x"/>
+        <chmod file="${phantomosx}" perm="u+x"/>
+        <jstest dir="${basedir}/test" includes="**/*.html"
+                phantomlinux="${phantomlinux}"
+                phantomWin="${build.dependencies.dir}/phantomjs-windows.exe"
+                phantommac="${phantomosx}">
+            <report type="plain" destFile="${reports}/qunit-results.txt"/>
+        </jstest>
     </target>
 
     <target name="generate-git-commit-file">
