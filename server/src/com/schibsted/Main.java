@@ -21,7 +21,7 @@ public class Main extends RestApplication {
         super(basePath);
         add(new NewsModule());
         add(new StatusModule());
-        add(staticFilesModule(Main.class, "/static"));
+        add(staticFilesModule(Main.class, ""));
     }
 
     private Module staticFilesModule(Class classpathRelativeTo, String urlPath) {
