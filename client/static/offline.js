@@ -1,4 +1,4 @@
-/*global console:true, $:true, RSVP:true, PubSub:true */
+/*global console:true */
 ;(function (window, undefined) {
     "use strict";
 
