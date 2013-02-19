@@ -1,4 +1,22 @@
 <project name="HTML5NewsAppClient" default="build">
+    <property name="build" value="${basedir}/build"/>
+    <property name="build.dependencies.dir" value="lib/build"/>
+    <property name="artifacts" value="${build}/artifacts"/>
+    <property name="reports" value="${artifacts}/reports"/>
+
+    <condition property="64bits">
+        <os arch="amd64"/>
+    </condition>
+
+    <import file="${build}/dependencies/shavenmaven.xml"/>
+
+    <target name="update" description="updates library dependencies">
+        <parallel>
+            <update dependencies="${build}/dependencies/build.dependencies"
+                    directory="${build.dependencies.dir}"/>
+        </parallel>
+    </target>
+
     <target name="validate">
         <apply executable="java" failonerror="true" parallel="true">
             <fileset dir="${basedir}/FileAPI" includes="**/*.js"/>
@@ -10,6 +28,30 @@
         </apply>
     </target>
 
-    <target name="build" depends="validate"/>
+    <target name="testjs32" unless="64bits">
+        <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_32"/>
+    </target>
+
+    <target name="testjs64" if="64bits">
+        <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_64"/>
+    </target>
+
+    <target name="testjs" depends="testjs32, testjs64">
+        <taskdef name="jstest" classname="com.philmander.jstest.ant.JsTestRunnerTask"
+                 classpath="${build.dependencies.dir}/ant-jstestrunner-spmiller-deps-0.2.jar"/>
+        <property name="phantomosx" value="${build.dependencies.dir}/phantomjs-osx"/>
+        <chmod file="${phantomlinux}" perm="u+x"/>
+        <chmod file="${phantomosx}" perm="u+x"/>
+        <jstest dir="${basedir}/test" includes="**/*.html"
+                phantomlinux="${phantomlinux}"
+                phantomWin="${build.dependencies.dir}/phantomjs-windows.exe"
+                phantommac="${phantomosx}">
+            <report type="plain" destFile="${reports}/qunit-results.txt"/>
+        </jstest>
+    </target>
+
+    <target name="build" depends="update, validate, testjs"/>
 
 </project>
+
+
