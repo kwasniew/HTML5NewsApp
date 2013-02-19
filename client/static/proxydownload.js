@@ -11,14 +11,14 @@
 
     function Downloader(){
         var self = this;
+        this.localhostUrl = 'http://localhost:8001';
+        this.betahostUrlLong = 'http://apitestbeta3.medianorge.no:80';
 
         this.betahostUrl = 'http://apitestbeta3.medianorge.no';
         this.rootUrl = this.betahostUrl+'/news/';
         this.sectionName = 'sport_bt';
         //this.sectionName = 'frontpage';
         this.articles = [];
-
-
 
 
     }
@@ -121,6 +121,10 @@
         var self = this;
 
         console.log('makeRequest to url: ', url);
+        /** UUU tralalala local hacking */
+        url = url.replace(this.betahostUrlLong, this.localhostUrl);
+        url = url.replace(this.betahostUrl, this.localhostUrl);
+
 
         $.ajax({
             url: url,

@@ -1,15 +1,12 @@
-/*global console:true PubSub:true */
+/*global console:true */
 ;(function(window, undefined){
     "use strict";
 
     function Show(){
         console.log("Start!");
-
-        PubSub.subscribe( "downloaded:articles", showArticles );
-        PubSub.subscribe( "show:articles", showArticles );
     }
 
-    function showArticles(name, articles){
+    Show.prototype.showArticles = function(name, articles){
         console.log('downloaded:articles', arguments);
         var entry, img, h2, div, text;
         var articlesList = articles;
@@ -37,7 +34,7 @@
 
         }
 
-    }
+    };
 
     window.Show = Show;
 

@@ -1,39 +1,20 @@
-/*global console:true, $:true, RSVP:true, PubSub:true */
+/*global console:true */
 ;(function (window, undefined) {
     "use strict";
 
     function Offline(){
-        PubSub.subscribe( "downloaded:articles", function(name, articles){
-
-            console.log('downloaded:articles and store offline', arguments);
-
-            articles.map(addArticle);
-
-        });
-
-        PubSub.subscribe( "get:articles", function(name){
-            //todo check articles
-            getArticles(function(articles){
-                if(articles.length){
-                    PubSub.publish( 'show:articles', articles);
-                }else{
-                    PubSub.publish( 'no:articles', articles);
-                }
-            });
-            //else download articles
-        });
+        var self = this;
+        this.db = undefined;
 
 
-        start(function(){
+        this.start(function(){
             console.log("offline started");
         },function(){
             console.log("offline error");
         });
 
-        //clearDB();
+        //this.clearDB();
     }
-
-    var db;
 
     function dbError(){
         console.log('offline db error', arguments);
@@ -41,12 +22,14 @@
 
     /* websql ft: b=e?window.openDatabase('fthtml5app','','FT HTML5 App Content',41943040) */
     // 41943040 == 40 * 1024 * 1024   ~ 40MB
-    function start(successCallback, errorCallback){
+    Offline.prototype.start = function(successCallback, errorCallback){
 
+        var db;
 
         console.log('offline start');
          try{
-                db = openDatabase('articles3', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles3', '', 'aftenposten database', (40 * 1024 * 1024) );
+                db = this.db;
          }catch(e){
              console.log('catched e', e);
              console.error(e);
@@ -61,7 +44,7 @@
 
         }
 
-        console.log('create callback', db);
+        console.log('create callback', db, this.db);
 
         if(db.version === ""){
             db.changeVersion('', '1', function (t) {
@@ -71,10 +54,15 @@
             successCallback();
         }
 
-    }
+    };
 
-    function addArticle(article){
+    Offline.prototype.addArticles = function(articles){
+        var self = this;
+        articles.map(self.addArticle.bind(self));
+    };
 
+    Offline.prototype.addArticle = function(article){
+        var db = this.db;
         //TODO this should be done after success of changeVersion....
         // console.log('before adding', db);
 
@@ -92,17 +80,17 @@
                 });
         });
 
-    }
+    };
 
-    function clearDB () {
-
+    Offline.prototype.clearDB = function() {
+        var db = this.db;
         db.transaction(function (tx) {
             console.log('delete data', db, tx);
             tx.executeSql('DELETE FROM Articles');
             tx.executeSql('DELETE FROM ArticleImages');
         });
 
-    }
+    };
 
     function toArray(data){
         var output = [];
@@ -113,7 +101,8 @@
         return output;
     }
 
-    function getArticles(successCallback){
+    Offline.prototype.getArticles = function(successCallback){
+        var db = this.db;
         db.readTransaction(function(tx){
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
             tx.executeSql('SELECT * FROM Articles LIMIT 80', [], function (tx, results) {
@@ -128,7 +117,7 @@
             });
         });
 
-    }
+    };
 
     window.Offline = Offline;
 
