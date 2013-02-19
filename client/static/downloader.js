@@ -10,18 +10,15 @@
     }
 
     function Downloader(){
+        var self = this;
+
         this.betahostUrl = 'http://apitestbeta3.medianorge.no';
         this.betahostUrlLong = 'http://apitestbeta3.medianorge.no:80';
         this.localhostUrl = 'http://localhost:8001';
-
         this.rootUrl = this.betahostUrl+'/news/';
-
         this.sectionName = 'sport_bt';
         //this.sectionName = 'frontpage';
-
         this.articles = [];
-
-        var self = this;
 
         PubSub.subscribe( "no:articles", function(name, articles){
 
@@ -34,65 +31,41 @@
 
     Downloader.prototype.start = function () {
         var self = this;
-        //console.log("Download Start!");
+        var rootPromise = this.makeRequest(this.rootUrl);
 
-        //TODO when cors is fixed move it inside sections
-
-
-        var rootPromise = this.getRootUrl(this.rootUrl);
-
-        rootPromise.then(function(url){
+        rootPromise.then(function(data){
             //console.log('root url resolved', url);
-            return url;
+            return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
+
         }).then(function(url){
             //console.log('sections url', url);
-            return self.getSections(url);
-        }).then(function(deskedUrl){
+            return self.makeRequest(url);
+        }).then(function(data){
+            var link = self.getDeskedLink(data);
 
-            //console.log('desked-articles', deskedUrl);
-
-            return self.getArticlesList(deskedUrl);
+            return self.makeRequest(link);
 
         }).then(function(articles){
 
             var promises = [];
-
-            //console.log('get aticles-articles', articles);
-            function load(){ //console.log('loaded image');
-             }
-
             var entries = articles.querySelectorAll('entry');
             var len = entries.length;
-            var articleUrl, entry, articleImage, elId, elImg;
-            var title;
-
+            var entry, article;
             var articlesList = [];
 
 
             for (var i = len - 1; i >= 0; i--) {
                 entry = entries[i];
-
-                elId = entry.querySelector('id');
-                articleUrl = self.betahostUrlLong+articleUrl;
-                articleUrl = elId ? elId.textContent : false;
-
+                article = parseArticle(entry);
                 //one article just return 404 for no reason, ommit it
-                if(articleUrl.indexOf('24486') > -1) {
+                if(article.url.indexOf('24486') > -1) {
                     //console.log('ommit this article', articleUrl.indexOf('24486'));
                     continue;
                 }
 
-                elImg = entry.querySelector('link[type^="image"]');
-                articleImage = imageUrl;
-                articleImage = elImg ? elImg.getAttribute('href') : articleImage;
+                self.articles.push(article);
 
-                articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
-
-                title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
-
-                self.articles.push({url: articleUrl, img: articleImage, title: title});
-
-                promises.push(self.getArticle(articleUrl));
+                promises.push(self.makeRequest(article.url));
 
             }
 
@@ -109,6 +82,12 @@
                 var docu = allArticles[i];
                 var item = self.articles[i];
 
+                if(docu.documentURI.substr(-40, 40) == item.url.substr(-40, 40)){
+                    console.log('urls are the same', docu.documentURI.substr(-40, 40), i);
+                }else{
+                    console.error('urls are different!!!', docu.documentURI.substr(-40, 40), item.url.substr(-40, 40), i);
+                }
+
                 item.bodytext = docu.querySelector('[name="bodytext"] div').innerHTML;
                 item.lastModified = docu.lastModified;
                 item.docu = docu;
@@ -120,48 +99,39 @@
 
         }, errorFun);
 
-
-
-
     };
 
-    Downloader.prototype.getArticle = function(url){
-        var promise = new RSVP.Promise();
-        var self = this;
+    Downloader.prototype.getDeskedLink = function (data) {
 
+        var identity = data.querySelector('identityLabel[uniqueName="'+this.sectionName+'"]');
 
-        //console.log('getArticle', url);
+        var entry = identity.parentElement.parentElement;
+        var desked = entry.querySelector('link[rel="http://www.snd.no/types/relation/desked"]');
 
-        var ajax = this.makeRequest(url);
-        ajax.then(function(data){
-            //console.log("getArticle ok");
-            //self.articles[i].data = data;
-            promise.resolve(data);
-        }, function(err){
-            //console.log("getArticle error", arguments);
-            promise.reject(err);
-        });
+        var link = desked.getAttribute('href').replace('{areaLimit}&', '');
+        link = link.replace('{offset?}', 0);
+        link = link.replace('{limit?}', 100);
 
-        return promise;
+        return link;
     };
 
-    Downloader.prototype.getArticlesList = function(url){
-        var promise = new RSVP.Promise();
-        var self = this;
+    function parseArticle(entry){
+        var articleImage, elId, elImg, articleUrl, title;
 
-        //console.log('getArticles', url);
+        elId = entry.querySelector('id');
+        //articleUrl = self.betahostUrlLong+articleUrl;
+        articleUrl = elId ? elId.textContent : false;
 
-        var ajax = this.makeRequest(url);
-        ajax.then(function(data){
-            //console.log("getArticles ok");
-            promise.resolve(data);
-        }, function(err){
-            //console.log("getArticles error", arguments);
-            promise.reject(err);
-        });
+        elImg = entry.querySelector('link[type^="image"]');
+        articleImage = imageUrl;
+        articleImage = elImg ? elImg.getAttribute('href') : articleImage;
 
-        return promise;
-    };
+        articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
+
+        title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
+
+        return {url: articleUrl, img: articleImage, title: title};
+    }
 
     Downloader.prototype.makeRequest = function(url){
         var promise = new RSVP.Promise();
@@ -188,55 +158,6 @@
                 console.error('makeRequest root error');
                 promise.reject(new Error( arguments ) );
             }
-        });
-
-        return promise;
-    };
-
-    Downloader.prototype.getRootUrl = function(url){
-        var promise = new RSVP.Promise();
-        var self = this;
-
-        var ajax = this.makeRequest(url);
-        ajax.then(function(data){
-            //console.log('getRootUrl ok');
-            //console.log('resolve with',  data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href'));
-            promise.resolve( data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href') );
-        }, function(err){
-            promise.reject(err);
-        });
-
-        return promise;
-    };
-
-    Downloader.prototype.getSections = function(url){
-        var self = this;
-        var promise = new RSVP.Promise();
-
-        //console.log('getSections', url);
-
-        var ajax = this.makeRequest(url);
-        ajax.then(function(data){
-            //console.log('getSections ok');
-            self.root = data;
-
-            var identity = data.querySelector('identityLabel[uniqueName="'+self.sectionName+'"]');
-            //console.log(data, identity);
-            self.identity = identity;
-
-            self.entry = identity.parentElement.parentElement;
-            self.desked = self.entry.querySelector('link[rel="http://www.snd.no/types/relation/desked"]');
-
-            var link = self.desked.getAttribute('href').replace('{areaLimit}&', '');
-            link = link.replace('{offset?}', 0);
-            link = link.replace('{limit?}', 100);
-
-            //console.log("getSections resolve with link", link);
-
-            promise.resolve( link );
-        }, function(err){
-            console.error('getSections root error');
-            promise.reject( new Error( arguments ) );
         });
 
         return promise;
