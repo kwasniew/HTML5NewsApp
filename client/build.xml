@@ -1,0 +1,15 @@
+<project name="HTML5NewsAppClient" default="build">
+    <target name="validate">
+        <apply executable="java" failonerror="true" parallel="true">
+            <fileset dir="${basedir}/FileAPI" includes="**/*.js"/>
+            <arg line="-jar"/>
+            <arg path="lib/js.jar"/>
+            <arg path="lib/jshint.js"/>
+            <arg path="curly=true,forin=true,latedef=true,noempty=true"/>
+            <srcfile/>
+        </apply>
+    </target>
+
+    <target name="build" depends="validate"/>
+
+</project>
