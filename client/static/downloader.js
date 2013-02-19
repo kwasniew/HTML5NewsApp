@@ -1,4 +1,4 @@
-/*global console:true, $:true, RSVP:true, PubSub:true  */
+/*global console:true, $:true, RSVP:true  */
 ;(function (window, undefined) {
     "use strict";
 
@@ -13,45 +13,33 @@
         var self = this;
 
         this.betahostUrl = 'http://apitestbeta3.medianorge.no';
-        this.betahostUrlLong = 'http://apitestbeta3.medianorge.no:80';
         this.rootUrl = this.betahostUrl+'/news/';
         this.sectionName = 'sport_bt';
         //this.sectionName = 'frontpage';
         this.articles = [];
 
-        PubSub.subscribe( "no:articles", function(name, articles){
 
-            console.log('no:articles', arguments);
 
-            self.start();
 
-        });
     }
 
-    Downloader.prototype.start = function () {
+    Downloader.prototype.start = function (downloadCallback) {
         var self = this;
+
         var rootPromise = this.makeRequest(this.rootUrl);
 
         rootPromise.then(function(data){
-            //console.log('root url resolved', url);
             return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
-
         }).then(function(url){
-            //console.log('sections url', url);
             return self.makeRequest(url);
         }).then(function(data){
-            var link = self.getDeskedLink(data);
-
-            return self.makeRequest(link);
-
+            return self.makeRequest(self.getDeskedLink(data));
         }).then(function(articles){
-
             var promises = [];
             var entries = articles.querySelectorAll('entry');
             var len = entries.length;
             var entry, article;
             var articlesList = [];
-
 
             for (var i = len - 1; i >= 0; i--) {
                 entry = entries[i];
@@ -68,8 +56,6 @@
 
             }
 
-            PubSub.publish( 'downloaded:articles-list', self.articles );
-
             return RSVP.all(promises);
 
         }).then(function(allArticles){
@@ -81,20 +67,18 @@
                 var docu = allArticles[i];
                 var item = self.articles[i];
 
-                if(docu.documentURI.substr(-40, 40) == item.url.substr(-40, 40)){
-                    console.log('urls are the same', docu.documentURI.substr(-40, 40), i);
+                if(docu.documentURI == item.url){
+                    console.log('urls are the same', docu.documentURI, i);
                 }else{
-                    console.error('urls are different!!!', docu.documentURI.substr(-40, 40), item.url.substr(-40, 40), i);
+                    console.error('urls are different!!!', docu.documentURI, item.url, i);
                 }
 
                 item.bodytext = docu.querySelector('[name="bodytext"] div').innerHTML;
                 item.lastModified = docu.lastModified;
                 item.docu = docu;
-                //bodytext
-                //debugger;
             }
 
-            PubSub.publish( "downloaded:articles", self.articles );
+            if(downloadCallback) downloadCallback(self);
 
         }, errorFun);
 
@@ -141,7 +125,6 @@
         $.ajax({
             url: url,
             dataType: "xml",
-            //dataType: "application/atom+xml",
             headers: {
                 'accept':"application/atom+xml"
             },
