@@ -13,7 +13,7 @@
             console.log("offline error");
         });
 
-        this.clearDB();
+        //this.clearDB();
     }
 
     function dbError(){
