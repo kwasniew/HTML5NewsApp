@@ -13,15 +13,15 @@
 	</div>
 	<script type="text/javascript">
 		var schibsted = {
-			FileAPI: function FileAPI() {
+			FileAPI: function FileAPI(config) {
 				"use strict";
 
 				if (!(this instanceof FileAPI)) {
 			        return new FileAPI();
 			    }
 				
-				this.type = window.PERSISTENT;
-				this.quota = 5 * 1024 * 1024; // 5MB	
+				this.type = config && (config.persistence || window.TEMPORARY); // possible values: PERSISTENT, TEMPORARY
+				this.quota = config && (config.quota || 5 * 1024 * 1024); // 5MB by default	
 
 				window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;		    
 			}
@@ -142,7 +142,7 @@
 		}
 
 
-		var fileAPI = new schibsted.FileAPI(this);
+		var fileAPI = new schibsted.FileAPI({persistence: window.PERSISTENT, quota: 5 * 1024 * 1024});
 		
 		fileAPI.writeFile({
 			name: "test.txt",
