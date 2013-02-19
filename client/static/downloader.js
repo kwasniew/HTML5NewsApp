@@ -14,7 +14,6 @@
 
         this.betahostUrl = 'http://apitestbeta3.medianorge.no';
         this.betahostUrlLong = 'http://apitestbeta3.medianorge.no:80';
-        this.localhostUrl = 'http://localhost:8001';
         this.rootUrl = this.betahostUrl+'/news/';
         this.sectionName = 'sport_bt';
         //this.sectionName = 'frontpage';
@@ -139,15 +138,11 @@
 
         console.log('makeRequest to url: ', url);
 
-        /** UUU tralalala local hacking */
-        url = url.replace(this.betahostUrlLong, this.localhostUrl);
-        url = url.replace(this.betahostUrl, this.localhostUrl);
-
         $.ajax({
             url: url,
             dataType: "xml",
             //dataType: "application/atom+xml",
-            hdeaders: {
+            headers: {
                 'accept':"application/atom+xml"
             },
             success: function(data){
