@@ -24,6 +24,9 @@
         PubSub.subscribe( "downloaded:articles", function(name, articles){
             self.offline.addArticles(articles);
         });
+        PubSub.subscribe( "clear:db", function(name, articles){
+            self.offline.clearDB();
+        });
         PubSub.subscribe( "get:articles", function(name){
             //todo check articles
             self.offline.getArticles(function(articles){
