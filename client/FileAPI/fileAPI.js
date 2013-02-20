@@ -13,7 +13,7 @@ var schibsted = {
 
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
-        if (!window.LocalFileSystem) {
+        if (!window.requestFileSystem) {
             throw new Error("File API is not supported");
         }
     }
