@@ -18,9 +18,6 @@
         //this.sectionName = 'frontpage';
         this.articles = [];
 
-
-
-
     }
 
     Downloader.prototype.start = function (downloadCallback) {
