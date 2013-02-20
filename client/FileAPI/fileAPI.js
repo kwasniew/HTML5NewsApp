@@ -45,7 +45,6 @@ schibsted.FileAPI.prototype.errorHandler = function (e) {
             break;
     }
 
-
     console.log('Error: ' + msg);
 
     return msg;
@@ -75,8 +74,6 @@ schibsted.FileAPI.prototype.readFile = function (config) {
                 var reader = new FileReader();
 
                 reader.onloadend = function (e) {
-                    console.log('Read file content: ' + this.result);
-//                    config.onSuccess(this.result, e);
                     deferred.resolve(this.result, e);
                 };
 
@@ -90,8 +87,10 @@ schibsted.FileAPI.prototype.readFile = function (config) {
 
 schibsted.FileAPI.prototype.writeFile = function (config) {
     console.log('writing file using config ' + JSON.stringify(config));
+
     var self = this;
     var deferred = Q.defer();
+    var overwrite = (typeof config.overwrite === 'undefined') ? true : config.overwrite;
 
     function error(e) {
         var msg = self.errorHandler(e);
@@ -118,8 +117,9 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
                     type:config.type
                 });
 
-//                fileWriter.seek(fileWriter.length);
-//                fileWriter.seek(0);
+                if(!overwrite) {
+                    fileWriter.seek(fileWriter.length);
+                }
                 fileWriter.write(blob);
 
             }, error);
@@ -128,38 +128,4 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
     });
 
     return deferred.promise;
-
 };
-
-function fileWriteSuccess(e) {
-    console.log('published file write success event to pubsub ' + e);
-}
-
-function fileWriteError(e) {
-    console.log('published file write error event to pubsub ' + e);
-}
-
-function fileReadSuccess(e) {
-    console.log('published file read success event to pubsub ' + e);
-}
-
-function fileReadError(e) {
-    console.log('published file read error event to pubsub ' + e);
-}
-
-
-//var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
-//
-//fileAPI.writeFile({
-//    name:"test.txt",
-//    content:'This line was generated on ' + new Date() + '\n',
-//    type:'text/plain',
-//    onSuccess:fileWriteSuccess,
-//    onError:fileWriteError
-//});
-//
-//fileAPI.readFile({
-//    name:"test.txt",
-//    onSuccess:fileReadSuccess,
-//    onError:fileReadError
-//});

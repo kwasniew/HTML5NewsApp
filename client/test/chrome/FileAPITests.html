@@ -30,7 +30,7 @@
                 name:config.name,
                 content:config.content,
                 type:'text/plain',
-                overwrite:config.overwrite || false
+                overwrite:config.overwrite
             });
         }
     }
@@ -65,6 +65,22 @@
         write({name:fileName, content:"a"})().
                 then(write({name:fileName, content:"b", overwrite:true}), error('first write failed')).
                 then(assertContent(fileName, "b"), error('second write failed')).
+                then(start, start);
+    });
+
+    asyncTest("Should overwrite file content by default", 1, function () {
+        var fileName = randomFileName();
+        write({name:fileName, content:"a"})().
+                then(write({name:fileName, content:"b"}), error('first write failed')).
+                then(assertContent(fileName, "b"), error('second write failed')).
+                then(start, start);
+    });
+
+    asyncTest("Should append file content", 1, function () {
+        var fileName = randomFileName();
+        write({name:fileName, content:"a"})().
+                then(write({name:fileName, content:"b", overwrite:false}), error('first write failed')).
+                then(assertContent(fileName, "ab"), error('second write failed')).
                 then(start, start);
     });
 
