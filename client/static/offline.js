@@ -1,5 +1,6 @@
 /*global console:true */
-;(function (window, undefined) {
+
+(function (window, undefined) {
     "use strict";
 
     function Offline(){
