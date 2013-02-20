@@ -7,6 +7,8 @@ import com.googlecode.utterlyidle.httpserver.RestServer;
 import com.googlecode.utterlyidle.modules.Module;
 import com.schibsted.news.NewsModule;
 import com.schibsted.status.StatusModule;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import static com.googlecode.totallylazy.URLs.packageUrl;
 import static com.googlecode.utterlyidle.dsl.DslBindings.bindings;
@@ -21,11 +23,25 @@ public class Main extends RestApplication {
         super(basePath);
         add(new NewsModule());
         add(new StatusModule());
-        add(staticFilesModule(Main.class, ""));
+        add(staticFilesModule(Main.class, "client/", ""));
     }
 
-    private Module staticFilesModule(Class classpathRelativeTo, String urlPath) {
-        return bindingsModule(bindings(in(packageUrl(classpathRelativeTo)).path(urlPath)));
+    private Module staticFilesModule(Class classpathRelativeTo, String localDir, String urlPath) {
+        String name = classpathRelativeTo.getSimpleName() + ".class";
+        String urlString = classpathRelativeTo.getResource(name).toString().replace(name, "") + localDir;
+        System.out.println(urlString);
+        URL url;
+        try {
+            url = new URL(urlString);
+            System.out.println("return url!!!!" + urlString);
+            System.out.println("return for path" + urlPath);
+            return bindingsModule(bindings(in(url).path(urlPath)));
+        } catch (MalformedURLException e) {
+            //;
+            System.out.println("malformed URL" + urlString);
+        }
+        System.out.println("return null" + urlString);
+        return null;
     }
 
     public static void main(String[] args) throws Exception {

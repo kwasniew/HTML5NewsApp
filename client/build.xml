@@ -39,7 +39,7 @@
 
      <target name="copy">
         <copy todir="${basedir}/../server/src/com/schibsted/client" overwrite="true">
-            <fileset dir="${basedir}"/>
+            <fileset dir="${basedir}" excludes="node_modules/**,build/**,lib/**"/>
         </copy>
     </target>
 
