@@ -27,32 +27,21 @@
 
         rootPromise.then(function(data){
             return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
-        }).then(function(url){
-            return self.makeRequest(url);
+        }).then(function(sectionUrl){
+            return self.makeRequest(sectionUrl);
         }).then(function(data){
             return self.makeRequest(self.getDeskedLink(data));
+        })
+        .then(parseArticlesXML)
+        .then(function (articles){
+            self.articles = articles;
+            return articles;
+
         }).then(function(articles){
             var promises = [];
-            var entries = articles.querySelectorAll('entry');
-            var len = entries.length;
-            var entry, article;
-            var articlesList = [];
-
-            for (var i = len - 1; i >= 0; i--) {
-                entry = entries[i];
-                article = parseArticle(entry);
-                //one article just return 404 for no reason, ommit it
-                if(article.url.indexOf('24486') > -1) {
-                    //console.log('ommit this article', articleUrl.indexOf('24486'));
-                    continue;
-                }
-
-                self.articles.push(article);
-
-                promises.push(self.makeRequest(article.url));
-
+            for (var i = articles.length - 1; i >= 0; i--) {
+                promises.push(self.getArticle(articles[i].url));
             }
-
             return RSVP.all(promises);
 
         }).then(function(allArticles){
@@ -62,6 +51,11 @@
 
             for (var i = allArticles.length - 1; i >= 0; i--) {
                 var docu = allArticles[i];
+                if(!docu){
+                    //ommit broken articles
+                    self.articles[i] = false;
+                    continue;
+                }
                 var item = self.articles[i];
 
                 if(docu.documentURI == item.url){
@@ -74,6 +68,14 @@
                 item.lastModified = docu.lastModified;
                 item.docu = docu;
             }
+
+            return self;
+
+        }).then(function(self){
+
+            self.articles = self.articles.filter(function(element){
+                return !!element;
+            });
 
             if(downloadCallback) downloadCallback(self);
 
@@ -94,6 +96,27 @@
 
         return link;
     };
+
+    function parseArticlesXML(articles){
+
+            var entries = articles.querySelectorAll('entry');
+            var entry, article;
+            var articlesList = [];
+
+            for (var i = entries.length - 1; i >= 0; i--) {
+                entry = entries[i];
+                article = parseArticle(entry);
+                //one article just return 404 for no reason, ommit it
+                if(article.url.indexOf('24486') > -1) {
+                    //console.log('ommit this article', articleUrl.indexOf('24486'));
+                    continue;
+                }
+                articlesList.push(article);
+            }
+
+            return articlesList;
+
+        }
 
     function parseArticle(entry){
         var articleImage, elId, elImg, articleUrl, title;
@@ -133,6 +156,24 @@
                 console.error('makeRequest root error');
                 promise.reject(new Error( arguments ) );
             }
+        });
+
+        return promise;
+    };
+
+    Downloader.prototype.getArticle = function(url){
+        var promise = new RSVP.Promise();
+        var self = this;
+
+        console.log('makeRequest to url: ', url);
+
+        var req = this.makeRequest(url);
+
+        req.then(function(data){
+            promise.resolve(data);
+        }, function (error){
+            //ignore article errors
+            promise.resolve(false);
         });
 
         return promise;

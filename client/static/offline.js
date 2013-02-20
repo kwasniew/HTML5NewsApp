@@ -72,7 +72,7 @@
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
             tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img) VALUES (?, ?, ?, ?, ?)',
-                [article.url, article.lastModified, article.title, article.bodytext.innerHTML, article.img],
+                [article.url, article.lastModified, article.title, article.bodytext, article.img],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
                 },function(){
