@@ -43,7 +43,8 @@
         <property name="phantomosx" value="${build.dependencies.dir}/phantomjs-osx"/>
         <chmod file="${phantomlinux}" perm="u+x"/>
         <chmod file="${phantomosx}" perm="u+x"/>
-        <jstest dir="${basedir}/test/phantomjs" includes="**/*.html"
+        <jstest dir="${basedir}/test" includes="**/*.html"
+                excludes="chrome/**.html"
                 phantomlinux="${phantomlinux}"
                 phantomWin="${build.dependencies.dir}/phantomjs-windows.exe"
                 phantommac="${phantomosx}">
