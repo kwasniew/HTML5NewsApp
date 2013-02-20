@@ -1,5 +1,5 @@
 /*global console:true */
-;(function( window, basket ) {
+(function( window, basket ) {
     'use strict';
 
     function load(list, itemCallback){

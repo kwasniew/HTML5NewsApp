@@ -1,6 +1,6 @@
 <project name="HTML5NewsAppClient" default="build">
     <property name="build" value="${basedir}/build"/>
-    <property name="build.dependencies.dir" value="lib/build"/>
+    <property name="build.dependencies.dir" value="${basedir}/lib/build"/>
     <property name="artifacts" value="${build}/artifacts"/>
     <property name="reports" value="${artifacts}/reports"/>
 
@@ -20,7 +20,7 @@
     <target name="validate">
         <apply executable="java" failonerror="true" parallel="true">
             <fileset dir="${basedir}/FileAPI" includes="**/*.js"/>
-            <fileset dir="${basedir}/static" includes="*.js"/>
+            <fileset dir="${basedir}/static" includes="**/*.js" excludes="lib/*.js"/>
             <arg line="-jar"/>
             <arg path="lib/js.jar"/>
             <arg path="lib/jshint.js"/>
@@ -43,7 +43,7 @@
         <property name="phantomosx" value="${build.dependencies.dir}/phantomjs-osx"/>
         <chmod file="${phantomlinux}" perm="u+x"/>
         <chmod file="${phantomosx}" perm="u+x"/>
-        <jstest dir="${basedir}/test/phantomjs" includes="**/*.html"
+        <jstest dir="${basedir}/test" includes="**/*.html"
                 phantomlinux="${phantomlinux}"
                 phantomWin="${build.dependencies.dir}/phantomjs-windows.exe"
                 phantommac="${phantomosx}">
