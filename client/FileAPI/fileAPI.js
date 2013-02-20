@@ -8,8 +8,10 @@ var schibsted = {
             return new FileAPI();
         }
 
-        this.type = config && (config.persistence || window.TEMPORARY); // possible values: PERSISTENT, TEMPORARY
-        this.quota = config && (config.quota || 5 * 1024 * 1024); // 5MB by default
+        // possible values: window.PERSISTENT, window.TEMPORARY
+        this.type = config && (config.persistence || window.TEMPORARY);
+        // 5MB by default
+        this.quota = config && (config.quota || 5 * 1024 * 1024);
 
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
@@ -131,18 +133,18 @@ function fileReadError(e) {
 }
 
 
-var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
-
-fileAPI.writeFile({
-    name:"test.txt",
-    content:'This line was generated on ' + new Date() + '\n',
-    type:'text/plain',
-    onSuccess:fileWriteSuccess,
-    onError:fileWriteError
-});
-
-fileAPI.readFile({
-    name:"test.txt",
-    onSuccess:fileReadSuccess,
-    onError:fileReadError
-});
+//var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
+//
+//fileAPI.writeFile({
+//    name:"test.txt",
+//    content:'This line was generated on ' + new Date() + '\n',
+//    type:'text/plain',
+//    onSuccess:fileWriteSuccess,
+//    onError:fileWriteError
+//});
+//
+//fileAPI.readFile({
+//    name:"test.txt",
+//    onSuccess:fileReadSuccess,
+//    onError:fileReadError
+//});

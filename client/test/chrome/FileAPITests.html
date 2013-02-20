@@ -16,8 +16,53 @@ To overcome this you can run the tests with the http protocol.</div>
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
 <script src="../../FileAPI/FileAPI.js"></script>
 <script>
-    test( "FileAPI can store files on disk", function() {
-        ok( 1 == "1", "Passed!" );
+    function testReadAndWrite(persistence) {
+        var fileAPI = new schibsted.FileAPI({persistence:persistence, quota:5 * 1024 * 1024});
+
+        function fileRead(file) {
+            equal(file.name, "test.txt", 'Retrieved file name is correct');
+        }
+
+        function fileWriteSuccess() {
+            fileAPI.readFile({
+                name:"test.txt",
+                onSuccess:fileReadSuccess,
+                onError:fileReadError
+            });
+        }
+
+        function fileWriteFailure() {
+            ok(false, "File write failure");
+            start();
+        }
+
+        function fileReadSuccess() {
+            ok(true, 'File read success');
+            start();
+        }
+
+        function fileReadError() {
+            ok(false, 'File read error');
+            start();
+        }
+
+        fileAPI.writeFile({
+            name:"test.txt",
+            content:'file content',
+            type:'text/plain',
+            onSuccess:fileWriteSuccess,
+            onError: fileWriteFailure
+        });
+
+
+    }
+
+    asyncTest( "FileAPI can store and retrieve files in temporary mode", 1, function() {
+        testReadAndWrite(window.TEMPORARY);
+    });
+
+    asyncTest( "FileAPI can store and retrieve files in persistent mode", 1, function() {
+        testReadAndWrite(window.PERSISTENT);
     });
 </script>
 </body>
