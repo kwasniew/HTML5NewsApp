@@ -37,13 +37,20 @@
         <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_64"/>
     </target>
 
+     <target name="copy">
+        <copy todir="${basedir}/../server/src/com/schibsted/client" overwrite="true">
+            <fileset dir="${basedir}" excludes="node_modules/**,build/**,lib/**"/>
+        </copy>
+    </target>
+
     <target name="testjs" depends="testjs32, testjs64">
         <taskdef name="jstest" classname="com.philmander.jstest.ant.JsTestRunnerTask"
                  classpath="${build.dependencies.dir}/ant-jstestrunner-spmiller-deps-0.2.jar"/>
         <property name="phantomosx" value="${build.dependencies.dir}/phantomjs-osx"/>
         <chmod file="${phantomlinux}" perm="u+x"/>
         <chmod file="${phantomosx}" perm="u+x"/>
-        <jstest dir="${basedir}/test/phantomjs" includes="**/*.html"
+        <jstest dir="${basedir}/test" includes="**/*.html"
+                excludes="chrome/**.html"
                 phantomlinux="${phantomlinux}"
                 phantomWin="${build.dependencies.dir}/phantomjs-windows.exe"
                 phantommac="${phantomosx}">
@@ -51,7 +58,7 @@
         </jstest>
     </target>
 
-    <target name="build" depends="update, validate, testjs"/>
+    <target name="build" depends="update, validate, testjs, copy"/>
 
 </project>
 
