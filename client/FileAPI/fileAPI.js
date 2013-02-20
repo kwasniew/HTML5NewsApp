@@ -47,6 +47,8 @@ schibsted.FileAPI.prototype.errorHandler = function (e) {
 
 
     console.log('Error: ' + msg);
+
+    return msg;
 };
 
 schibsted.FileAPI.prototype.usingFilesystem = function (onInitFs) {
@@ -65,6 +67,7 @@ schibsted.FileAPI.prototype.usingFilesystem = function (onInitFs) {
 
 schibsted.FileAPI.prototype.readFile = function (config) {
     var self = this;
+    var deferred = Q.defer();
 
     self.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {}, function (fileEntry) {
@@ -73,18 +76,27 @@ schibsted.FileAPI.prototype.readFile = function (config) {
 
                 reader.onloadend = function (e) {
                     console.log('Read file content: ' + this.result);
-                    config.onSuccess(this.result, e);
+//                    config.onSuccess(this.result, e);
+                    deferred.resolve(this.result, e);
                 };
 
                 reader.readAsText(file);
             }, self.errorHandler);
         }, self.errorHandler);
     });
+
+    return deferred.promise;
 };
 
 schibsted.FileAPI.prototype.writeFile = function (config) {
     console.log('writing file using config ' + JSON.stringify(config));
     var self = this;
+    var deferred = Q.defer();
+
+    function error(e) {
+        var msg = self.errorHandler(e);
+        deferred.reject(new Error(msg));
+    }
 
     this.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {
@@ -95,11 +107,11 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
             fileEntry.createWriter(function (fileWriter) {
 
                 fileWriter.onwriteend = function (e) {
-                    config.onSuccess(e);
+                    deferred.resolve(e);
                 };
 
                 fileWriter.onerror = function (e) {
-                    config.onError(e);
+                    deferred.reject(e);
                 };
 
                 var blob = new Blob([config.content], {
@@ -110,10 +122,12 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
 //                fileWriter.seek(0);
                 fileWriter.write(blob);
 
-            }, self.errorHandler);
+            }, error);
 
-        }, self.errorHandler);
+        }, error);
     });
+
+    return deferred.promise;
 
 };
 

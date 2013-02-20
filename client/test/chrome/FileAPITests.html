@@ -7,83 +7,65 @@
 </head>
 <body>
 <div>Usage: run http-server in a client dir and go to http://localhost:8080/test/chrome/FileAPITests.html.
-File API in Chrome doesn't work with a file protocol by default (you need to start chrome with a special flag).
-To overcome this you can run the tests with the http protocol.</div>
+    File API in Chrome doesn't work with a file protocol by default (you need to start chrome with a special flag).
+    To overcome this you can run the tests with the http protocol.
+</div>
 <div id="qunit"></div>
 <div id="qunit-fixture">
 
 </div>
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script src="https://raw.github.com/kriskowal/q/master/q.min.js"></script>
 <script src="../../FileAPI/FileAPI.js"></script>
 <script>
-    /**
-     * Sample config:
-     *
-     * config = {
-     *     persistence: window.PERSISTENT,
-     *     overwrite: true,
-     *     name: someFile.txt,
-     * }
-     *
-     */
-    function testReadAndWrite(config) {
-        var fileAPI = new schibsted.FileAPI({persistence:config.persistence, quota:5 * 1024 * 1024});
-
-        function fileRead(file) {
-            equal(file.name, config.name, 'Retrieved file name is correct');
-        }
-
-        function fileWriteSuccess() {
-            fileAPI.readFile({
-                name:config.name,
-                onSuccess:fileReadSuccess,
-                onError:fileReadError
-            });
-        }
-
-        function fileWriteFailure() {
-            ok(false, "File write failure");
-            start();
-        }
-
-        function fileReadSuccess(fileContent) {
-            equal(fileContent, 'file content', 'File read success');
-            start();
-        }
-
-        function fileReadError() {
-            ok(false, 'File read error');
-            start();
-        }
-
-        fileAPI.writeFile({
-            name:config.name,
-            content:'file content',
-            type:'text/plain',
-            overwrite: config.overwrite || false,
-            onSuccess:fileWriteSuccess,
-            onError: fileWriteFailure
-        });
-
-
-    }
 
     function randomFileName() {
-        return "File"+Math.random();
+        return "File" + Math.random();
     }
 
-    asyncTest("Can store and retrieve files in temporary mode", 1, function() {
-        testReadAndWrite({name: randomFileName(), persistence: window.TEMPORARY});
-    });
+    function write(config) {
+        return function() {
+            var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
+            return fileAPI.writeFile({
+                name:config.name,
+                content:config.content,
+                type:'text/plain',
+                overwrite:config.overwrite || false
+            });
+        }
+    }
 
-    asyncTest("Can store and retrieve files in persistent mode", 1, function() {
-        testReadAndWrite({name: randomFileName(), persistence: window.PERSISTENT});
-    });
+    function assertContent(name, content) {
+        return function() {
+            var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
+            return fileAPI.readFile({
+                name:name
+            }).then(function (fileContent) {
+                        equal(fileContent, content, 'File read success');
+                    });
+        };
+    }
 
-    asyncTest("Should overwrite file content", 2, function() {
+    function error(msg) {
+        return function(e) {
+            ok(false, msg + ": " + e);
+        }
+    }
+
+    asyncTest("Should write file content", 1, function () {
         var fileName = randomFileName();
-        testReadAndWrite({name: fileName, persistence: window.PERSISTENT, overwrite: true});
-        testReadAndWrite({name: fileName, persistence: window.PERSISTENT, overwrite: true});
+        write({name:fileName, content:"a"})().
+                then(assertContent(fileName, "a"), error('write failed')).
+                then(start, start);
+    });
+
+
+    asyncTest("Should overwrite file content", 1, function () {
+        var fileName = randomFileName();
+        write({name:fileName, content:"a"})().
+                then(write({name:fileName, content:"b", overwrite:true}), error('first write failed')).
+                then(assertContent(fileName, "b"), error('second write failed')).
+                then(start, start);
     });
 
 </script>
