@@ -12,6 +12,10 @@ var schibsted = {
         this.quota = config && (config.quota || 5 * 1024 * 1024); // 5MB by default
 
         window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+        if (!window.LocalFileSystem) {
+            throw new Error("File API is not supported");
+        }
     }
 };
 
@@ -86,17 +90,13 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
             exclusive:false
         }, function (fileEntry) {
 
-            console.log("created file " + fileEntry.fullPath);
-
             fileEntry.createWriter(function (fileWriter) {
 
                 fileWriter.onwriteend = function (e) {
-                    console.log('Write completed');
                     config.onSuccess(e);
                 };
 
                 fileWriter.onerror = function (e) {
-                    console.log('Write failed: ' + e.toString());
                     config.onError(e);
                 };
 
