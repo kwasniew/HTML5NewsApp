@@ -23,10 +23,13 @@
         return "File" + Math.random();
     }
 
+    function fileAPI() {
+        return new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
+    }
+
     function write(config) {
         return function() {
-            var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
-            return fileAPI.writeFile({
+            return fileAPI().writeFile({
                 name:config.name,
                 content:config.content,
                 type:'text/plain',
@@ -37,8 +40,7 @@
 
     function assertContent(name, content) {
         return function() {
-            var fileAPI = new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
-            return fileAPI.readFile({
+            return fileAPI().readFile({
                 name:name
             }).then(function (fileContent) {
                         equal(fileContent, content, 'File read success');
