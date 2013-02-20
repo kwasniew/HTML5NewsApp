@@ -24,6 +24,7 @@ public class Main extends RestApplication {
         add(new StatusModule());
 
         add(staticFilesModule(Main.class, "client/", ""));
+        add(staticFilesModule(Main.class, "static/", "admin"));
     }
 
     private Module staticFilesModule(Class classpathRelativeTo, String localDir, String urlPath) {

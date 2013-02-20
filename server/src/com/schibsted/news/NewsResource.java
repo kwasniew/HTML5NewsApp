@@ -8,7 +8,7 @@ public class NewsResource {
     @GET
     @Path("/")
     public String index() {
-        return Files.loadTextFileContent("com/schibsted/index.html");
+        return Files.loadTextFileContent("com/schibsted/client/index.html");
     }
 
     @GET
