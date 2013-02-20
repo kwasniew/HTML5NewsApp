@@ -1,6 +1,6 @@
 <project name="HTML5NewsAppClient" default="build">
     <property name="build" value="${basedir}/build"/>
-    <property name="build.dependencies.dir" value="lib/build"/>
+    <property name="build.dependencies.dir" value="${basedir}/lib/build"/>
     <property name="artifacts" value="${build}/artifacts"/>
     <property name="reports" value="${artifacts}/reports"/>
 
