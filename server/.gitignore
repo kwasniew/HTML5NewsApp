@@ -22,3 +22,6 @@ lib/optional
 # Auto-Generated Files #
 git.commit
 build.number
+
+# client
+src/com/schibsted/client/
