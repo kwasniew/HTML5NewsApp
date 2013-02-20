@@ -11,7 +11,7 @@
 
 </div>
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
-<script src="../../client/static/proxydownload.js"></script>
+<script src="../../client/static/api-download/proxydownload.js"></script>
 <script>
     test( "hello test", function() {
         ok( 1 == "1", "Passed!" );
@@ -22,12 +22,12 @@
         load.getArticles(function(articles){
             ok(articles.length > 0, 'passed');
         });
-        load.getArticlesHeadlines(function(articles){
-            ok(articles.length > 0, 'passed');
-        });
-        load.getSections(function(articles){
-            ok(articles.length > 0, 'passed');
-        });
+        // load.getArticlesHeadlines(function(articles){
+        //     ok(articles.length > 0, 'passed');
+        // });
+        // load.getSections(function(articles){
+        //     ok(articles.length > 0, 'passed');
+        // });
     })
 </script>
 </body>
