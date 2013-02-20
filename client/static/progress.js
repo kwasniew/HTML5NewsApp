@@ -1,5 +1,6 @@
 /*global console:true */
-;(function(){
+
+(function(){
     "use strict";
 
     function Progress(callback){

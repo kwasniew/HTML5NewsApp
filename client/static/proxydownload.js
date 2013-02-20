@@ -1,5 +1,6 @@
 /*global console:true, $:true  */
-;(function (window, undefined) {
+
+(function (window, undefined) {
     "use strict";
 
     function Downloader(){
@@ -12,8 +13,9 @@
 
     Downloader.prototype.makeRequest = function(config){
         var self = this;
-        console.log('makeRequest to url: ', url);
         var url = config.url;
+        console.log('makeRequest to url: ', url);
+
 
         $.ajax({
             url: url,

@@ -1,6 +1,8 @@
 /*global console:true, $:true, RSVP:true  */
-;(function (window, undefined) {
+
+(function (window, undefined) {
     "use strict";
+
 
     var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
     var imageUrl = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
@@ -19,6 +21,51 @@
         this.articles = [];
 
     }
+
+
+    /** jshint/lint is too stupid to understand hoisting
+    http://stackoverflow.com/questions/8040844/jshint-function-not-defined-issue-order-of-function-declarations-matters
+    */
+    function parseArticle(entry){
+        var articleImage, elId, elImg, articleUrl, title;
+
+        elId = entry.querySelector('id');
+        //articleUrl = self.betahostUrlLong+articleUrl;
+        articleUrl = elId ? elId.textContent : false;
+
+        elImg = entry.querySelector('link[type^="image"]');
+        articleImage = imageUrl;
+        articleImage = elImg ? elImg.getAttribute('href') : articleImage;
+
+        articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
+
+        title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
+
+        return {url: articleUrl, img: articleImage, title: title};
+    }
+
+    function parseArticlesXML(articles){
+
+            var entries = articles.querySelectorAll('entry');
+            var entry, article;
+            var articlesList = [];
+
+            for (var i = entries.length - 1; i >= 0; i--) {
+                entry = entries[i];
+                article = parseArticle(entry);
+                //one article just return 404 for no reason, ommit it
+                if(article.url.indexOf('24486') > -1) {
+                    //console.log('ommit this article', articleUrl.indexOf('24486'));
+                    continue;
+                }
+                articlesList.push(article);
+            }
+
+            return articlesList;
+
+        }
+
+
 
     Downloader.prototype.start = function (downloadCallback) {
         var self = this;
@@ -95,23 +142,7 @@
         return link;
     };
 
-    function parseArticle(entry){
-        var articleImage, elId, elImg, articleUrl, title;
 
-        elId = entry.querySelector('id');
-        //articleUrl = self.betahostUrlLong+articleUrl;
-        articleUrl = elId ? elId.textContent : false;
-
-        elImg = entry.querySelector('link[type^="image"]');
-        articleImage = imageUrl;
-        articleImage = elImg ? elImg.getAttribute('href') : articleImage;
-
-        articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
-
-        title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
-
-        return {url: articleUrl, img: articleImage, title: title};
-    }
 
     Downloader.prototype.makeRequest = function(url){
         var promise = new RSVP.Promise();
