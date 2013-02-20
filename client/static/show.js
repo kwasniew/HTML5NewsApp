@@ -39,4 +39,4 @@
 
     window.Show = Show;
 
-})( window );
+})(window);
