@@ -73,7 +73,7 @@ schibsted.FileAPI.prototype.readFile = function (config) {
 
                 reader.onloadend = function (e) {
                     console.log('Read file content: ' + this.result);
-                    config.onSuccess(e);
+                    config.onSuccess(this.result, e);
                 };
 
                 reader.readAsText(file);
@@ -106,7 +106,8 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
                     type:config.type
                 });
 
-                fileWriter.seek(fileWriter.length);
+//                fileWriter.seek(fileWriter.length);
+//                fileWriter.seek(0);
                 fileWriter.write(blob);
 
             }, self.errorHandler);

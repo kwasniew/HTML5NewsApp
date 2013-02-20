@@ -16,16 +16,26 @@ To overcome this you can run the tests with the http protocol.</div>
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
 <script src="../../FileAPI/FileAPI.js"></script>
 <script>
-    function testReadAndWrite(persistence) {
-        var fileAPI = new schibsted.FileAPI({persistence:persistence, quota:5 * 1024 * 1024});
+    /**
+     * Sample config:
+     *
+     * config = {
+     *     persistence: window.PERSISTENT,
+     *     overwrite: true,
+     *     name: someFile.txt,
+     * }
+     *
+     */
+    function testReadAndWrite(config) {
+        var fileAPI = new schibsted.FileAPI({persistence:config.persistence, quota:5 * 1024 * 1024});
 
         function fileRead(file) {
-            equal(file.name, "test.txt", 'Retrieved file name is correct');
+            equal(file.name, config.name, 'Retrieved file name is correct');
         }
 
         function fileWriteSuccess() {
             fileAPI.readFile({
-                name:"test.txt",
+                name:config.name,
                 onSuccess:fileReadSuccess,
                 onError:fileReadError
             });
@@ -36,8 +46,8 @@ To overcome this you can run the tests with the http protocol.</div>
             start();
         }
 
-        function fileReadSuccess() {
-            ok(true, 'File read success');
+        function fileReadSuccess(fileContent) {
+            equal(fileContent, 'file content', 'File read success');
             start();
         }
 
@@ -47,9 +57,10 @@ To overcome this you can run the tests with the http protocol.</div>
         }
 
         fileAPI.writeFile({
-            name:"test.txt",
+            name:config.name,
             content:'file content',
             type:'text/plain',
+            overwrite: config.overwrite || false,
             onSuccess:fileWriteSuccess,
             onError: fileWriteFailure
         });
@@ -57,13 +68,24 @@ To overcome this you can run the tests with the http protocol.</div>
 
     }
 
-    asyncTest( "FileAPI can store and retrieve files in temporary mode", 1, function() {
-        testReadAndWrite(window.TEMPORARY);
+    function randomFileName() {
+        return "File"+Math.random();
+    }
+
+    asyncTest("Can store and retrieve files in temporary mode", 1, function() {
+        testReadAndWrite({name: randomFileName(), persistence: window.TEMPORARY});
     });
 
-    asyncTest( "FileAPI can store and retrieve files in persistent mode", 1, function() {
-        testReadAndWrite(window.PERSISTENT);
+    asyncTest("Can store and retrieve files in persistent mode", 1, function() {
+        testReadAndWrite({name: randomFileName(), persistence: window.PERSISTENT});
     });
+
+    asyncTest("Should overwrite file content", 2, function() {
+        var fileName = randomFileName();
+        testReadAndWrite({name: fileName, persistence: window.PERSISTENT, overwrite: true});
+        testReadAndWrite({name: fileName, persistence: window.PERSISTENT, overwrite: true});
+    });
+
 </script>
 </body>
 </html>
