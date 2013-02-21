@@ -9,10 +9,8 @@
         this.model = new Model();
         this.show = new Show();
 
-        this.model.getArticles();
-        this.show.showArticles();
+        this.model.getArticles().then(this.show.thenShowArticles);
 
-        window.downloader = this.downloader;
     }
 
 

@@ -10,7 +10,7 @@
         console.error('promise root error', arguments);
     }
 
-    function Downloader(){
+    function Download(){
         var self = this;
 
         this.betahostUrl = 'http://apitestbeta3.medianorge.no';
@@ -61,8 +61,18 @@
 
         }
 
+    Download.prototype.getArticles = function(){
+        var promise = new RSVP.Promise();
 
-    Downloader.prototype.start = function (downloadCallback) {
+        this.start(function(data){
+            promise.resolve(data.articles);
+        });
+
+        return promise;
+
+    };
+
+    Download.prototype.start = function (downloadCallback) {
         var self = this;
 
         var rootPromise = this.makeRequest(this.rootUrl);
@@ -125,7 +135,7 @@
 
     };
 
-    Downloader.prototype.getDeskedLink = function (data) {
+    Download.prototype.getDeskedLink = function (data) {
 
         var identity = data.querySelector('identityLabel[uniqueName="'+this.sectionName+'"]');
 
@@ -141,7 +151,7 @@
 
 
 
-    Downloader.prototype.makeRequest = function(url){
+    Download.prototype.makeRequest = function(url){
         var promise = new RSVP.Promise();
         var self = this;
 
@@ -166,7 +176,7 @@
         return promise;
     };
 
-    Downloader.prototype.getArticle = function(url){
+    Download.prototype.getArticle = function(url){
         var promise = new RSVP.Promise();
         var self = this;
 
@@ -184,6 +194,6 @@
         return promise;
     };
 
-    window.Downloader = Downloader;
+    window.Download = Download;
 
 })( window );
