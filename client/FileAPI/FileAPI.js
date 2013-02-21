@@ -1,25 +1,26 @@
 /*global window: false */
 
-var schibsted = {
-    FileAPI:function FileAPI(config) {
-        "use strict";
+window.schibsted = window.schibsted || {};
 
-        if (!(this instanceof FileAPI)) {
-            return new FileAPI();
-        }
+window.schibsted.FileAPI = function FileAPI(config) {
+    "use strict";
 
-        // possible values: window.PERSISTENT, window.TEMPORARY
-        this.type = config && (config.persistence || window.TEMPORARY);
-        // 5MB by default
-        this.quota = config && (config.quota || 5 * 1024 * 1024);
-
-        window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-
-        if (!window.requestFileSystem) {
-            throw new Error("File API is not supported");
-        }
+    if (!(this instanceof FileAPI)) {
+        return new FileAPI();
     }
-};
+
+    // possible values: window.PERSISTENT, window.TEMPORARY
+    this.type = config && (config.persistence || window.TEMPORARY);
+    // 5MB by default
+    this.quota = config && (config.quota || 5 * 1024 * 1024);
+
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+    if (!window.requestFileSystem) {
+        throw new Error("File API is not supported");
+    }
+}
+
 
 schibsted.FileAPI.prototype.errorHandler = function (e) {
     var msg = '';
@@ -64,7 +65,7 @@ schibsted.FileAPI.prototype.usingFilesystem = function (onInitFs) {
     }
 };
 
-schibsted.FileAPI.prototype.readFile = function (config) {
+schibsted.FileAPI.prototype.read = function (config, fnName) {
     var self = this;
     var deferred = Q.defer();
 
@@ -77,6 +78,10 @@ schibsted.FileAPI.prototype.readFile = function (config) {
                     deferred.resolve(this.result, e);
                 };
 
+                reader.onerror = function (e) {
+                    deferred.reject(e);
+                };
+
                 reader.readAsText(file);
             }, self.errorHandler);
         }, self.errorHandler);
@@ -84,6 +89,57 @@ schibsted.FileAPI.prototype.readFile = function (config) {
 
     return deferred.promise;
 };
+
+schibsted.FileAPI.prototype.readFileText = function (config) {
+    var self = this;
+    var deferred = Q.defer();
+
+    self.usingFilesystem(function (fs) {
+        fs.root.getFile(config.name, {}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                    deferred.resolve(this.result, e);
+                };
+
+                reader.onerror = function (e) {
+                    deferred.reject(e);
+                };
+
+                reader.readAsText(file);
+            }, self.errorHandler);
+        }, self.errorHandler);
+    });
+
+    return deferred.promise;
+};
+
+schibsted.FileAPI.prototype.readFileDataURL = function (config) {
+    var self = this;
+    var deferred = Q.defer();
+
+    self.usingFilesystem(function (fs) {
+        fs.root.getFile(config.name, {}, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                    deferred.resolve(this.result, e);
+                };
+
+                reader.onerror = function (e) {
+                    deferred.reject(e);
+                };
+
+                reader.readAsDataURL(file);
+            }, self.errorHandler);
+        }, self.errorHandler);
+    });
+
+    return deferred.promise;
+};
+
 
 schibsted.FileAPI.prototype.writeFile = function (config) {
     console.log('writing file using config ' + JSON.stringify(config));
@@ -117,7 +173,7 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
                     type:config.type
                 });
 
-                if(!overwrite) {
+                if (!overwrite) {
                     fileWriter.seek(fileWriter.length);
                 }
                 fileWriter.write(blob);

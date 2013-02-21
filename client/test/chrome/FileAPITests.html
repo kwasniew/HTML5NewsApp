@@ -17,6 +17,8 @@
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
 <script src="https://raw.github.com/kriskowal/q/master/q.min.js"></script>
 <script src="../../FileAPI/FileAPI.js"></script>
+<script src="../../static/lib/zepto.js"></script>
+<script src="../../static/js/download.js"></script>
 <script>
 
     function randomFileName() {
@@ -27,48 +29,64 @@
         return new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
     }
 
+    function download(config) {
+        return schibsted.download.makeRequest(config);
+    }
+
     function write(config) {
-        return function() {
+        return function (xhr) {
             return fileAPI().writeFile({
                 name:config.name,
-                content:config.content,
+                content: config.content || (xhr && xhr.response),
                 type:'text/plain',
                 overwrite:config.overwrite
             });
         }
     }
 
-    function assertContent(name, content) {
-        return function() {
-            return fileAPI().readFile({
-                name:name
-            }).then(function (fileContent) {
-                        equal(fileContent, content, 'File read success');
-                    });
-        };
+    function readText(fileName) {
+        return function () {
+            return fileAPI().readFileText({
+                name:fileName
+            });
+        }
     }
 
-    function assertContentLength(name, contentLength) {
-        return function() {
-            return fileAPI().readFile({
-                name:name
-            }).then(function (fileContent) {
-                        equal(fileContent.length, contentLength, 'File read success');
-                    });
-        };
+    function readDataURI(fileName) {
+        return function () {
+            return fileAPI().readFileDataURL({
+                name:fileName
+            });
+        }
+    }
+
+    function assertTextContent(content) {
+        return function (fileContent) {
+            equal(fileContent, content, 'File read success');
+            start();
+        }
+    }
+
+    function assertDatURLContentContains(text) {
+        return function (fileContent) {
+            ok(fileContent.indexOf(text) != -1, 'File read success');
+            console.log(fileContent);
+            start();
+        }
     }
 
     function error(msg) {
-        return function(e) {
+        return function (e) {
             ok(false, msg + ": " + e);
+            start();
         }
     }
 
     asyncTest("Should write file content", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
-                then(assertContent(fileName, "a"), error('write failed')).
-                then(start, start);
+                then(readText(fileName), error('write failed')).
+                then(assertTextContent("a"), error('read failed'));
     });
 
 
@@ -76,45 +94,34 @@
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
                 then(write({name:fileName, content:"b", overwrite:true}), error('first write failed')).
-                then(assertContent(fileName, "b"), error('second write failed')).
-                then(start, start);
+                then(readText(fileName, "b"), error('second write failed')).
+                then(assertTextContent("b"), error('read failed'));
     });
 
     asyncTest("Should overwrite file content by default", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
                 then(write({name:fileName, content:"b"}), error('first write failed')).
-                then(assertContent(fileName, "b"), error('second write failed')).
-                then(start, start);
+                then(readText(fileName), error('second write failed')).
+                then(assertTextContent("b"), error('read failed'));
     });
 
     asyncTest("Should append file content", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
                 then(write({name:fileName, content:"b", overwrite:false}), error('first write failed')).
-                then(assertContent(fileName, "ab"), error('second write failed')).
-                then(start, start);
+                then(readText(fileName), error('second write failed')).
+                then(assertTextContent("ab"), error('read failed'));
     });
 
 
-//    asyncTest("Should save image", 1, function () {
-//        var xhr = new XMLHttpRequest();
-//        xhr.open('GET', 'image.png', true);
-//        xhr.responseType = 'blob';
-//
-//        xhr.onload = function(e) {
-//            if (this.status == 200) {
-//                var fileName = randomFileName();
-//                var responseSize = this.response.size;
-//                write({name:fileName, content: this.response, type: 'image/png'})().
-//                        then(assertContentLength(fileName, responseSize), error('write failed')).
-//                        then(start, start);
-//            }
-//        };
-//
-//        xhr.send();
-//
-//    });
+    asyncTest("Should save image", 1, function () {
+        var fileName = randomFileName();
+        download({url:'image.png', dataType:'blob'}).
+                then(write({name:fileName, type:'image/png'}), error('download failed')).
+                then(readDataURI(fileName), error('write failed')).
+                then(assertDatURLContentContains("base64"), error('read failed'));
+    });
 
 
     // TODO : save image, save video, quota exceeded, file not found, security error, invalid modification,
