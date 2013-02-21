@@ -110,9 +110,9 @@
     </target>
 
     <target name="build" description="build this app (update, clean, compile, test and generate artifacts)">
+        <antcall target="updateClient"/>
         <parallel>
             <antcall target="update"/>
-            <antcall target="updateClient"/>
             <antcall target="clean"/>
         </parallel>
         <parallel>
