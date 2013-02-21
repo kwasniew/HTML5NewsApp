@@ -9,11 +9,14 @@
         this.model = new Model();
         this.show = new Show();
 
-        this.model.getArticles()
-        .then(
+        try{
+        this.model.getArticles().then(
             this.show.thenShowArticles,
             this.show.thenShowError
-            );
+        ).fail(this.show.thenShowError);
+    }catch(e){
+        console.error(e);
+    }
 
     }
 

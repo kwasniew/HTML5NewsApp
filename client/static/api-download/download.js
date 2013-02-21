@@ -1,4 +1,4 @@
-/*global console:true, $:true, RSVP:true  */
+/*global console:true, $:true, Q:true  */
 
 (function (window, undefined) {
     "use strict";
@@ -8,7 +8,8 @@
 
 
     function makeRequest(url){
-        var promise = new RSVP.Promise();
+        //var promise = new RSVP.Promise();
+        var deferred = Q.defer();
 
         console.log('makeRequest to url: ', url);
 
@@ -20,15 +21,15 @@
             },
             success: function(data){
                 //console.log('makeRequest ok', data);
-                promise.resolve( data );
+                deferred.resolve( data );
             },
             error: function(xhr, type){
                 console.error('makeRequest root error');
-                promise.reject(new Error( arguments ) );
+                deferred.reject(new Error( arguments ) );
             }
         });
 
-        return promise;
+        return deferred.promise;
     }
 
     function getRoot() {
@@ -36,20 +37,21 @@
     }
 
     function getArticle(url){
-        var promise = new RSVP.Promise();
+        //var promise = new RSVP.Promise();
+        var deferred = Q.defer();
 
         console.log('makeRequest to url: ', url);
 
         var req = makeRequest(url);
 
         req.then(function(data){
-            promise.resolve(data);
+            deferred.resolve(data);
         }, function (error){
             //ignore article errors
-            promise.resolve(false);
+            deferred.resolve(false);
         });
 
-        return promise;
+        return deferred.promise;
     }
 
     function getArticles(articles){
@@ -57,7 +59,7 @@
         for (var i = articles.length - 1; i >= 0; i--) {
             promises.push(getArticle(articles[i].url));
         }
-        return RSVP.all(promises);
+        return Q.all(promises);
 
     }
 

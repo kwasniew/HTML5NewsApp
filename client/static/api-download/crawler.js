@@ -1,4 +1,4 @@
-/*global console:true, download:true RSVP:true */
+/*global console:true, download:true Q:true */
 
 (function (window, undefined) {
     "use strict";
@@ -13,15 +13,18 @@
     }
 
     Crawler.prototype.getArticles = function() {
-        var promise = new RSVP.Promise();
+        //var promise = new RSVP.Promise();
+        var deferred = Q.defer();
 
         this.god(function(data){
-            promise.resolve(data.articles);
+            console.log('god ok', data);
+            deferred.resolve(data.articles);
         }, function (err) {
-            promise.reject(err);
+            console.log('god failed');
+            deferred.reject(err);
         });
 
-        return promise;
+        return deferred.promise;
     };
 
     function filterArticles(data){
@@ -86,13 +89,16 @@
             errorFun.apply(null, arguments);
         }
 
-        download.getRoot()
-        .then(parseRoot)
-        .then(download.getSection)
-        .then(this.getDeskedLink.bind3(this))
-        .then(download.getArticlesRoot)
-        .then(parseArticlesXML)
-        .then(this.saveArticlesList.bind(this))
+        var root = download.getRoot()
+        .then(parseRoot);
+
+        var section = root.then(download.getSection, err)
+        .then(this.getDeskedLink.bind(this), err);
+
+        var articles = section.then(download.getArticlesRoot)
+        .then(parseArticlesXML, err);
+
+        var list = articles.then(this.saveArticlesList.bind(this))
         .then(download.getArticles)
         .then(this.mapArticles.bind(this))
         .then(filterArticles)
