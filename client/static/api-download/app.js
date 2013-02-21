@@ -9,7 +9,11 @@
         this.model = new Model();
         this.show = new Show();
 
-        this.model.getArticles().then(this.show.thenShowArticles);
+        this.model.getArticles()
+        .then(
+            this.show.thenShowArticles,
+            this.show.thenShowError
+            );
 
     }
 

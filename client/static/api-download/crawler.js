@@ -24,78 +24,15 @@
         return promise;
     };
 
-    function parseRoot (data) {
-        return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
-    }
-
-    Crawler.prototype.god = function(downloadCallback, errorFun){
-        var self = this;
-
-        function err(){
-            console.error('KABOOM!', arguments);
-        }
-
-        download.getRoot()
-        .then(parseRoot)
-        .then(download.getSection)
-        .then(this.getDeskedLink())
-        .then(download.getArticlesRoot)
-        .then(parseArticlesXML)
-        .then(this.saveArticlesList())
-        .then(download.getArticles)
-        .then(this.mapArticles.bind(this))
-        .then(function(data){
-
-
+    function filterArticles(data){
             data.articles = data.articles.filter(function(element){
                 return !!element;
             });
 
             console.log('CRAWLER succedded', data.articles);
 
-            if(downloadCallback) downloadCallback(data);
-
-        }, err);
-    };
-
-    Crawler.prototype.saveArticlesList = function() {
-        var self = this;
-        return function (articles){
-            self.articles = articles;
-            //todo anything in list of articles
-            // that is not visible in article itself?
-            return articles;
-
-        };
-    };
-
-    Crawler.prototype.mapArticles = function(allArticles){
-        console.log('end', allArticles);
-        console.log('end', this.articles);
-
-        for (var i = allArticles.length - 1; i >= 0; i--) {
-            var docu = allArticles[i];
-            if(!docu){
-                //ommit broken articles
-                this.articles[i] = false;
-                continue;
-            }
-            var item = this.articles[i];
-
-            if(docu.documentURI == item.url){
-                console.log('urls are the same', docu.documentURI, i);
-            }else{
-                console.error('urls are different!!!', docu.documentURI, item.url, i);
-            }
-
-            item.bodytext = docu.querySelector('[name="bodytext"] div').innerHTML;
-            item.lastModified = docu.lastModified;
-            item.docu = docu;
-        }
-
-        return this;
-    };
-
+            return data;
+    }
 
     function parseArticle(entry){
         var articleImage, elId, elImg, articleUrl, title;
@@ -136,11 +73,70 @@
 
         }
 
-    Crawler.prototype.getDeskedLink = function() {
-        var self = this;
-        return function (data) {
 
-            var identity = data.querySelector('identityLabel[uniqueName="'+self.sectionName+'"]');
+    function parseRoot (data) {
+        return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
+    }
+
+    Crawler.prototype.god = function(downloadCallback, errorFun){
+        var self = this;
+
+        function err(){
+            console.error('KABOOM!', arguments);
+            errorFun.apply(null, arguments);
+        }
+
+        download.getRoot()
+        .then(parseRoot)
+        .then(download.getSection)
+        .then(this.getDeskedLink.bind3(this))
+        .then(download.getArticlesRoot)
+        .then(parseArticlesXML)
+        .then(this.saveArticlesList.bind(this))
+        .then(download.getArticles)
+        .then(this.mapArticles.bind(this))
+        .then(filterArticles)
+        .then(downloadCallback, err);
+    };
+
+    Crawler.prototype.saveArticlesList = function(articles) {
+            this.articles = articles;
+            //todo anything in list of articles
+            // that is not visible in article itself?
+            return articles;
+    };
+
+    Crawler.prototype.mapArticles = function(allArticles){
+        console.log('end', allArticles);
+        console.log('end', this.articles);
+
+        for (var i = allArticles.length - 1; i >= 0; i--) {
+            var docu = allArticles[i];
+            if(!docu){
+                //ommit broken articles
+                this.articles[i] = false;
+                continue;
+            }
+            var item = this.articles[i];
+
+            if(docu.documentURI == item.url){
+                console.log('urls are the same', docu.documentURI, i);
+            }else{
+                console.error('urls are different!!!', docu.documentURI, item.url, i);
+            }
+
+            item.bodytext = docu.querySelector('[name="bodytext"] div').innerHTML;
+            item.lastModified = docu.lastModified;
+            item.docu = docu;
+        }
+
+        return this;
+    };
+
+
+    Crawler.prototype.getDeskedLink = function(data) {
+
+            var identity = data.querySelector('identityLabel[uniqueName="'+this.sectionName+'"]');
 
             var entry = identity.parentElement.parentElement;
             var desked = entry.querySelector('link[rel="http://www.snd.no/types/relation/desked"]');
@@ -150,7 +146,7 @@
             link = link.replace('{limit?}', 100);
 
             return link;
-        };
+
     };
 
 
