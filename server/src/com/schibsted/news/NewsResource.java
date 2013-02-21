@@ -1,14 +1,29 @@
 package com.schibsted.news;
 
+import com.googlecode.totallylazy.Uri;
+import com.googlecode.utterlyidle.Redirector;
+import com.googlecode.utterlyidle.Response;
 import com.googlecode.utterlyidle.annotations.*;
 import com.schibsted.shared.Files;
 
 public class NewsResource {
 
+    private Redirector redirector;
+
+    public NewsResource(Redirector redirector) {
+        this.redirector = redirector;
+    }
+
     @GET
     @Path("/")
     public String index() {
         return Files.loadTextFileContent("com/schibsted/client/index.html");
+    }
+
+    @GET
+    @Path("/admin")
+    public Response adminIndex() {
+        return redirector.seeOther(Uri.uri("admin/index.html"));
     }
 
     @GET
