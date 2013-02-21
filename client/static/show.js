@@ -7,8 +7,13 @@
         console.log("Start!");
     }
 
+    Show.prototype.thenShowArticles = function(articles){
+        console.log('Show:thenShowArticles', arguments);
+        Show.prototype.showArticles('then', articles);
+    };
+
     Show.prototype.showArticles = function(name, articles){
-        console.log('downloaded:articles', arguments);
+        console.log('Show:showArticles', arguments);
         var entry, img, h2, div, text;
         var articlesList = articles;
 

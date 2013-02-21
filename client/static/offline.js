@@ -1,4 +1,4 @@
-/*global console:true */
+/*global console:true RSVP:true */
 
 (function (window, undefined) {
     "use strict";
@@ -118,6 +118,17 @@
             });
         });
 
+    };
+
+    Offline.prototype.getArticlesPromise = function(){
+        var promise = new RSVP.Promise();
+        this.getArticles(function(data){
+            if(data.length)
+                promise.resolve(data);
+            else
+                promise.reject('empty db');
+        });
+        return promise;
     };
 
     window.Offline = Offline;

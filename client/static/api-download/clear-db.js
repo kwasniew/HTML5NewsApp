@@ -1,3 +1,3 @@
 /*global PubSub:true */
 
-PubSub.publish('clear:db');
+//PubSub.publish('clear:db');
