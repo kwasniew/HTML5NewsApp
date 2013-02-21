@@ -1,5 +1,6 @@
 <project name="HTML5NewsAppClient" default="build">
     <property name="build" value="${basedir}/build"/>
+    <property name="build.number" value="dev.build"/>
     <property name="build.dependencies.dir" value="${basedir}/lib/build"/>
     <property name="artifacts" value="${build}/artifacts"/>
     <property name="reports" value="${artifacts}/reports"/>
@@ -15,6 +16,10 @@
             <update dependencies="${build}/dependencies/build.dependencies"
                     directory="${build.dependencies.dir}"/>
         </parallel>
+    </target>
+
+    <target name="clean" description="cleanup all">
+        <delete dir="${artifacts}"/>
     </target>
 
     <target name="validate">
@@ -37,10 +42,12 @@
         <property name="phantomlinux" value="${build.dependencies.dir}/phantomjs-linux-x86_64"/>
     </target>
 
-     <target name="copy">
-        <copy todir="${basedir}/../server/src/com/schibsted/client" overwrite="true">
-            <fileset dir="${basedir}" excludes="node_modules/**,build/**,lib/**"/>
-        </copy>
+    <target name="package" depends="build" description="creates tarball with all files">
+        <tar destfile="${artifacts}/html5-client-${build.number}.tar">
+            <tarfileset dir="${basedir}" excludes="build/**,lib/**,build.xml"/>
+        </tar>
+        <gzip destfile="${artifacts}/html5-client-${build.number}.tar.gz"
+              src="${artifacts}/html5-client-${build.number}.tar"/>
     </target>
 
     <target name="testjs" depends="testjs32, testjs64">
@@ -58,7 +65,7 @@
         </jstest>
     </target>
 
-    <target name="build" depends="update, validate, testjs, copy"/>
+    <target name="build" depends="clean, update, validate, testjs"/>
 
 </project>
 
