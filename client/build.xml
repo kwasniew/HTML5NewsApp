@@ -25,7 +25,7 @@
     <target name="validate">
         <apply executable="java" failonerror="true" parallel="true">
             <fileset dir="${basedir}/FileAPI" includes="**/*.js"/>
-            <fileset dir="${basedir}/static" includes="**/*.js" excludes="lib/*.js"/>
+            <fileset dir="${basedir}/static" includes="**/*.js" excludes="bootstrap/**,lib/*.js"/>
             <arg line="-jar"/>
             <arg path="lib/js.jar"/>
             <arg path="lib/jshint.js"/>
