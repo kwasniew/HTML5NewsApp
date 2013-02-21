@@ -48,6 +48,16 @@
         };
     }
 
+    function assertContentLength(name, contentLength) {
+        return function() {
+            return fileAPI().readFile({
+                name:name
+            }).then(function (fileContent) {
+                        equal(fileContent.length, contentLength, 'File read success');
+                    });
+        };
+    }
+
     function error(msg) {
         return function(e) {
             ok(false, msg + ": " + e);
@@ -86,6 +96,30 @@
                 then(start, start);
     });
 
+
+//    asyncTest("Should save image", 1, function () {
+//        var xhr = new XMLHttpRequest();
+//        xhr.open('GET', 'image.png', true);
+//        xhr.responseType = 'blob';
+//
+//        xhr.onload = function(e) {
+//            if (this.status == 200) {
+//                var fileName = randomFileName();
+//                var responseSize = this.response.size;
+//                write({name:fileName, content: this.response, type: 'image/png'})().
+//                        then(assertContentLength(fileName, responseSize), error('write failed')).
+//                        then(start, start);
+//            }
+//        };
+//
+//        xhr.send();
+//
+//    });
+
+
+    // TODO : save image, save video, quota exceeded, file not found, security error, invalid modification,
+    // invalid state, unknown error, errors when requesting file, errors when creating a writer, error when reading
+    // invalid content type
 </script>
 </body>
 </html>
