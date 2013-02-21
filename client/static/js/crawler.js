@@ -6,10 +6,12 @@
     var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
     var imageUrl = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
 
+    var download;
 
     function Crawler(){
         this.sectionName = 'sport_bt';
         //this.download = Download;
+        download = window.schibsted.download;
     }
 
     Crawler.prototype.getArticles = function() {

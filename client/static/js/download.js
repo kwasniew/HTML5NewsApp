@@ -63,12 +63,22 @@
 
     }
 
-    window.download = {
+
+
+    var download = {
         makeRequest: makeRequest,
         getArticlesRoot: makeRequest,
         getArticles: getArticles,
         getRoot: getRoot,
         getSection: makeRequest
     };
+
+    if(window.schibsted){
+        window.schibsted.download = download;
+    }else{
+        window.schibsted = {
+            download:download
+        };
+    }
 
 })( window );
