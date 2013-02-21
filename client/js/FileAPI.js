@@ -65,9 +65,14 @@ schibsted.FileAPI.prototype.usingFilesystem = function (onInitFs) {
     }
 };
 
-schibsted.FileAPI.prototype.read = function (config, fnName) {
+schibsted.FileAPI.prototype.readFile = function (config, readFunction) {
     var self = this;
     var deferred = Q.defer();
+
+    function error(e) {
+        var msg = self.errorHandler(e);
+        deferred.reject(new Error(msg));
+    }
 
     self.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {}, function (fileEntry) {
@@ -82,72 +87,20 @@ schibsted.FileAPI.prototype.read = function (config, fnName) {
                     deferred.reject(e);
                 };
 
-                reader.readAsText(file);
-            }, self.errorHandler);
-        }, self.errorHandler);
+                readFunction.call(reader, file);
+            }, error);
+        }, error);
     });
 
     return deferred.promise;
 };
 
 schibsted.FileAPI.prototype.readFileText = function (config) {
-    var self = this;
-    var deferred = Q.defer();
-
-    function error(e) {
-        var msg = self.errorHandler(e);
-        deferred.reject(new Error(msg));
-    }
-
-    self.usingFilesystem(function (fs) {
-        fs.root.getFile(config.name, {}, function (fileEntry) {
-            fileEntry.file(function (file) {
-                var reader = new FileReader();
-
-                reader.onloadend = function (e) {
-                    deferred.resolve(this.result, e);
-                };
-
-                reader.onerror = function (e) {
-                    deferred.reject(e);
-                };
-
-                reader.readAsText(file);
-            }, error);
-        }, error);
-    });
-
-    return deferred.promise;
+    return this.readFile(config, new FileReader().readAsText);
 };
 
 schibsted.FileAPI.prototype.readFileDataURL = function (config) {
-    var self = this;
-    var deferred = Q.defer();
-
-    function error(e) {
-        var msg = self.errorHandler(e);
-        deferred.reject(new Error(msg));
-    }
-
-    self.usingFilesystem(function (fs) {
-        fs.root.getFile(config.name, {}, function (fileEntry) {
-            fileEntry.file(function (file) {
-                var reader = new FileReader();
-
-                reader.onloadend = function (e) {
-                    deferred.resolve(this.result, e);
-                };
-
-                reader.onerror = function (e) {
-                    deferred.reject(e);
-                };
-
-                reader.readAsDataURL(file);
-            }, error);
-        }, error);
-    });
-
-    return deferred.promise;
+    return this.readFile(config, new FileReader().readAsDataURL);
 };
 
 
