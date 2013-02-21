@@ -1,4 +1,4 @@
-/*global console:true Download:true PubSub:true Offline:true Crawler:true RSVP:true */
+/*global console:true Download:true PubSub:true Offline:true Crawler:true Q:true */
 
 (function(window, undefined){
     "use strict";
@@ -7,32 +7,40 @@
         console.log("Start!");
 
         this.offline = new Offline();
+        this.offline.clearDB();
         //this.download = new Download();
         this.crawler = new Crawler();
     }
 
     Model.prototype.getArticles = function() {
-        var promise = new RSVP.Promise();
+        var deferred = Q.defer();
         var self = this;
 
         this.offline.getArticlesPromise().then(function(articles){
 
-            promise.resolve(articles);
+            deferred.resolve(articles);
 
         }, function(){
-
+            console.log('empty dB');
             self.crawler.getArticles().then(function(articles){
 
+                console.log('crewler downloaded articles', articles);
+                deferred.resolve(articles);
+
                 self.offline.addArticles(articles);
-                promise.resolve(articles);
 
             }, function (err) {
 
-                promise.reject(new Error( "no articles" ) );
+                deferred.reject(new Error( "no articles" ) );
             });
+            console.log('empty dB');
+        }).fail(function () {
+            console.error('error model', arguments);
+
+            deferred.reject(new Error( "crawler error" ) );
         });
 
-        return promise;
+        return deferred.promise;
     };
 
 

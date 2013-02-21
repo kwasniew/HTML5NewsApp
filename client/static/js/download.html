@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Offline Page Scripts</title>
-     <link rel="stylesheet" type="text/css" href="static/style.css"/>
+     <link rel="stylesheet" type="text/css" href="/static/style.css"/>
 </head>
 <body>
 <a href="/index.html">Main client page</a>
@@ -18,13 +18,14 @@
 
 <!-- without init from basket -->
 
-<script type="text/javascript" src="/static/lib/rsvp.js"></script>
+<!-- <script type="text/javascript" src="/static/lib/rsvp.js"></script> -->
+<script type="text/javascript" src="//raw.github.com/kriskowal/q/master/q.js"></script>
 <script type="text/javascript" src="/static/lib/zepto.js"></script>
 <script type="text/javascript" src="/static/lib/pubsub.js"></script>
-<script type="text/javascript" src="/static/offline.js"></script>
-<script type="text/javascript" src="/static/api-download/download.js"></script>
-<script type="text/javascript" src="/static/api-download/crawler.js"></script>
-<script type="text/javascript" src="/static/api-download/model.js"></script>
+<script type="text/javascript" src="offline.js"></script>
+<script type="text/javascript" src="download.js"></script>
+<script type="text/javascript" src="crawler.js"></script>
+<script type="text/javascript" src="model.js"></script>
 <script type="text/javascript" src="/static/show.js"></script>
 <script type="text/javascript" src="/static/api-download/app.js"></script>
 
@@ -33,6 +34,6 @@
     app = new App();
 
 </script>
-<script type="text/javascript" src="static/api-download/clear-db.js"></script>
+<script type="text/javascript" src="/static/api-download/clear-db.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/*global console:true RSVP:true */
+/*global console:true Q:true */
 
 (function (window, undefined) {
     "use strict";
@@ -111,6 +111,7 @@
 
                 successCallback(result);
 
+
             }, function(){
                 //console.log('not selected?', arguments);
                 successCallback([]);
@@ -120,14 +121,14 @@
     };
 
     Offline.prototype.getArticlesPromise = function(){
-        var promise = new RSVP.Promise();
+        var deferred = Q.defer();
         this.getArticles(function(data){
             if(data.length)
-                promise.resolve(data);
+                deferred.resolve(data);
             else
-                promise.reject(new Error( "empty db" ));
+                deferred.reject('empty db');
         });
-        return promise;
+        return deferred.promise;
     };
 
     window.Offline = Offline;

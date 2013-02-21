@@ -12,6 +12,12 @@
         Show.prototype.showArticles('then', articles);
     };
 
+    Show.prototype.thenShowError = function(articles){
+        var h1 = document.createElement('h1');
+        h1.innerText = "no articles, check internet connection";
+        document.body.appendChild(h1);
+    };
+
     Show.prototype.showArticles = function(name, articles){
         console.log('Show:showArticles', arguments);
         var entry, img, h2, div, text;

@@ -25,7 +25,7 @@
     <target name="validate">
         <apply executable="java" failonerror="true" parallel="true">
             <fileset dir="${basedir}/FileAPI" includes="**/*.js"/>
-            <fileset dir="${basedir}/static" includes="**/*.js" excludes="lib/*.js"/>
+            <fileset dir="${basedir}/static" includes="**/*.js" excludes="bootstrap/**,lib/*.js"/>
             <arg line="-jar"/>
             <arg path="lib/js.jar"/>
             <arg path="lib/jshint.js"/>
@@ -43,8 +43,11 @@
     </target>
 
     <target name="package" depends="build" description="creates tarball with all files">
+        <copy todir="${artifacts}/html5-client-${build.number}" overwrite="true">
+            <fileset dir="${basedir}" excludes="build/**,lib/**,build.xml"/>
+        </copy>
         <tar destfile="${artifacts}/html5-client-${build.number}.tar">
-            <tarfileset dir="${basedir}" excludes="build/**,lib/**,build.xml"/>
+            <tarfileset dir="${artifacts}/html5-client-${build.number}"/>
         </tar>
         <gzip destfile="${artifacts}/html5-client-${build.number}.tar.gz"
               src="${artifacts}/html5-client-${build.number}.tar"/>
