@@ -111,7 +111,6 @@
 
                 successCallback(result);
 
-
             }, function(){
                 //console.log('not selected?', arguments);
                 successCallback([]);
@@ -126,7 +125,7 @@
             if(data.length)
                 promise.resolve(data);
             else
-                promise.reject('empty db');
+                promise.reject(new Error( "empty db" ));
         });
         return promise;
     };

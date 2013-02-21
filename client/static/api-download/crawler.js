@@ -21,7 +21,7 @@
             deferred.resolve(data.articles);
         }, function (err) {
             console.log('god failed');
-            deferred.reject(err);
+            deferred.reject(new Error(err));
         });
 
         return deferred.promise;
