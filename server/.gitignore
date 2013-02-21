@@ -23,4 +23,5 @@ lib/optional
 git.commit
 build.number
 
-
+# client
+src/com/schibsted/client/

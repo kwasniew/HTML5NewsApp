@@ -19,6 +19,8 @@
     <property name="test.jar.path" value="${artifacts}/${release.name}.test.jar"/>
     <property name="build.dependencies.dir" value="lib/build"/>
     <property name="runtime.dependencies.dir" value="lib/runtime"/>
+    <property name="client.dir" value="${src}/com/schibsted/client"/>
+    <property name="client.src.dir" value="${basedir}/../client"/>
     <property name="main.class" value="com.schibsted.Main"/>
     <property name="stopAppPattern" value="com.schibsted.Main"/>
     <property name="build.properties" value="build/environments/build.properties"/>
@@ -41,6 +43,12 @@
         <path path="${test.jar.path}"/>
     </path>
 
+    <target name="updateClient" description="updates client code">
+        <copy todir="${client.dir}" overwrite="true">
+            <fileset dir="${client.src.dir}" excludes="build/**,lib/**"/>
+        </copy>
+    </target>
+
     <target name="update" description="updates library dependencies">
         <parallel>
             <update dependencies="${build}/dependencies/build.dependencies"
@@ -52,6 +60,7 @@
 
     <target name="clean" description="cleanup all">
         <delete dir="${artifacts}"/>
+        <delete dir="${client.dir}"/>
     </target>
 
     <target name="compile">
@@ -103,6 +112,7 @@
     <target name="build" description="build this app (update, clean, compile, test and generate artifacts)">
         <parallel>
             <antcall target="update"/>
+            <antcall target="updateClient"/>
             <antcall target="clean"/>
         </parallel>
         <parallel>
