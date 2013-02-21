@@ -7,6 +7,7 @@
         console.log("Start!");
 
         this.offline = new Offline();
+        this.offline.clearDB();
         //this.download = new Download();
         this.crawler = new Crawler();
     }
