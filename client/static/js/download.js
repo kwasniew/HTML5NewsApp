@@ -7,14 +7,15 @@
     var rootUrl = betahostUrl+'/news/';
 
 
-    function makeRequest(url){
+    function makeRequest(config){
+        if(typeof config === 'String'){
+            config = { url: config };
+        }
         //var promise = new RSVP.Promise();
         var deferred = Q.defer();
 
-        console.log('makeRequest to url: ', url);
-
-        $.ajax({
-            url: url,
+        var def = {
+            url: config,
             dataType: "xml",
             headers: {
                 'accept':"application/atom+xml"
@@ -27,7 +28,9 @@
                 console.error('makeRequest root error');
                 deferred.reject(new Error( arguments ) );
             }
-        });
+        };
+
+        $.ajax($.extend(def, config));
 
         return deferred.promise;
     }
@@ -63,8 +66,6 @@
 
     }
 
-
-
     var download = {
         makeRequest: makeRequest,
         getArticlesRoot: makeRequest,
@@ -73,12 +74,8 @@
         getSection: makeRequest
     };
 
-    if(window.schibsted){
-        window.schibsted.download = download;
-    }else{
-        window.schibsted = {
-            download:download
-        };
-    }
+
+    window.schibsted = window.schibsted || {};
+    window.schibsted.download = download;
 
 })( window );
