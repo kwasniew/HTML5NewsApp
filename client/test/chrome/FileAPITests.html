@@ -75,9 +75,16 @@
         }
     }
 
-    function error(msg) {
+    function fail(msg) {
         return function (e) {
             ok(false, msg + ": " + e);
+            start();
+        }
+    }
+
+    function expect(msg) {
+        return function(e) {
+            equal(e.message, msg, 'Expected error message is correct');
             start();
         }
     }
@@ -85,47 +92,53 @@
     asyncTest("Should write file content", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
-                then(readText(fileName), error('write failed')).
-                then(assertTextContent("a"), error('read failed'));
+                then(readText(fileName), fail('write failed')).
+                then(assertTextContent("a"), fail('read failed'));
     });
 
 
     asyncTest("Should overwrite file content", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b", overwrite:true}), error('first write failed')).
-                then(readText(fileName, "b"), error('second write failed')).
-                then(assertTextContent("b"), error('read failed'));
+                then(write({name:fileName, content:"b", overwrite:true}), fail('first write failed')).
+                then(readText(fileName, "b"), fail('second write failed')).
+                then(assertTextContent("b"), fail('read failed'));
     });
 
     asyncTest("Should overwrite file content by default", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b"}), error('first write failed')).
-                then(readText(fileName), error('second write failed')).
-                then(assertTextContent("b"), error('read failed'));
+                then(write({name:fileName, content:"b"}), fail('first write failed')).
+                then(readText(fileName), fail('second write failed')).
+                then(assertTextContent("b"), fail('read failed'));
     });
 
     asyncTest("Should append file content", 1, function () {
         var fileName = randomFileName();
         write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b", overwrite:false}), error('first write failed')).
-                then(readText(fileName), error('second write failed')).
-                then(assertTextContent("ab"), error('read failed'));
+                then(write({name:fileName, content:"b", overwrite:false}), fail('first write failed')).
+                then(readText(fileName), fail('second write failed')).
+                then(assertTextContent("ab"), fail('read failed'));
     });
 
 
     asyncTest("Should save image", 1, function () {
         var fileName = randomFileName();
         download({url:'image.png', dataType:'blob'}).
-                then(write({name:fileName, type:'image/png'}), error('download failed')).
-                then(readDataURI(fileName), error('write failed')).
-                then(assertDatURLContentContains("base64"), error('read failed'));
+                then(write({name:fileName, type:'image/png'}), fail('download failed')).
+                then(readDataURI(fileName), fail('write failed')).
+                then(assertDatURLContentContains("base64"), fail('read failed'));
     });
 
 
-    // TODO : save image, save video, quota exceeded, file not found, security error, invalid modification,
-    // invalid state, unknown error, errors when requesting file, errors when creating a writer, error when reading
+    asyncTest('Should report error when reading nonexistant file', 1, function() {
+        var fileName = randomFileName();
+        readText(fileName)().then(fail("unexpected file exists"), expect("NOT_FOUND_ERR"));
+    });
+
+
+    // TODO : save image, save video, quota exceeded, file not found, security fail, invalid modification,
+    // invalid state, unknown fail, errors when requesting file, errors when creating a writer, fail when reading
     // invalid content type
 </script>
 </body>

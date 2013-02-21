@@ -94,6 +94,11 @@ schibsted.FileAPI.prototype.readFileText = function (config) {
     var self = this;
     var deferred = Q.defer();
 
+    function error(e) {
+        var msg = self.errorHandler(e);
+        deferred.reject(new Error(msg));
+    }
+
     self.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {}, function (fileEntry) {
             fileEntry.file(function (file) {
@@ -108,8 +113,8 @@ schibsted.FileAPI.prototype.readFileText = function (config) {
                 };
 
                 reader.readAsText(file);
-            }, self.errorHandler);
-        }, self.errorHandler);
+            }, error);
+        }, error);
     });
 
     return deferred.promise;
@@ -118,6 +123,11 @@ schibsted.FileAPI.prototype.readFileText = function (config) {
 schibsted.FileAPI.prototype.readFileDataURL = function (config) {
     var self = this;
     var deferred = Q.defer();
+
+    function error(e) {
+        var msg = self.errorHandler(e);
+        deferred.reject(new Error(msg));
+    }
 
     self.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {}, function (fileEntry) {
@@ -133,8 +143,8 @@ schibsted.FileAPI.prototype.readFileDataURL = function (config) {
                 };
 
                 reader.readAsDataURL(file);
-            }, self.errorHandler);
-        }, self.errorHandler);
+            }, error);
+        }, error);
     });
 
     return deferred.promise;
