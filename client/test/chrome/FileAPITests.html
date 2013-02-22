@@ -13,12 +13,21 @@
 <div id="qunit"></div>
 <div id="qunit-fixture1">
 </div>
-You should see an image here <img id="image" src="" />
+You should see an image here ldlad <img id="image" src="" />
+<script>
+if(!window.PERSISTENT){
+
+
+document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +':'+location.port+ '/../../js/lib/cordova.ios.js"></' + 'script>');
+
+}
+
+</script>
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
-<script src="https://raw.github.com/kriskowal/q/master/q.min.js"></script>
+<script src="../../js/lib/q.js"></script>
+
 <script src="../../js/FileAPI.js"></script>
-<script src="../../js/lib/zepto.js"></script>
-<script src="../../js/download.js"></script>
+
 <script>
 
     function randomFileName() {
@@ -26,7 +35,7 @@ You should see an image here <img id="image" src="" />
     }
 
     function fileAPI() {
-        return new schibsted.FileAPI({persistence:window.PERSISTENT, quota:5 * 1024 * 1024});
+        return new schibsted.FileAPI({persistence:schibsted.FileAPI.PERSISTENT, quota: 5 * 1024 * 1024 });
     }
 
     function download(config) {
@@ -88,37 +97,59 @@ You should see an image here <img id="image" src="" />
         }
     }
 
-    asyncTest("Should write file content", 1, function () {
-        var fileName = randomFileName();
-        write({name:fileName, content:"a"})().
-                then(readText(fileName), fail('write failed')).
-                then(assertTextContent("a"), fail('read failed'));
-    });
+var run = false;
+
+    function runTests(){
+        if(run) return;
+        else run = true;
+
+        asyncTest("Should write file content", 1, function () {
+            var fileName = randomFileName();
+            write({name:fileName, content:"a"})().
+                    then(readText(fileName), fail('write failed')).
+                    then(assertTextContent("a"), fail('read failed'));
+        });
 
 
-    asyncTest("Should overwrite file content", 1, function () {
-        var fileName = randomFileName();
-        write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b", overwrite:true}), fail('first write failed')).
-                then(readText(fileName, "b"), fail('second write failed')).
-                then(assertTextContent("b"), fail('read failed'));
-    });
+        asyncTest("Should overwrite file content", 1, function () {
+            var fileName = randomFileName();
+            write({name:fileName, content:"a"})().
+                    then(write({name:fileName, content:"b", overwrite:true}), fail('first write failed')).
+                    then(readText(fileName, "b"), fail('second write failed')).
+                    then(assertTextContent("b"), fail('read failed'));
+        });
 
-    asyncTest("Should overwrite file content by default", 1, function () {
-        var fileName = randomFileName();
-        write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b"}), fail('first write failed')).
-                then(readText(fileName), fail('second write failed')).
-                then(assertTextContent("b"), fail('read failed'));
-    });
+        asyncTest("Should overwrite file content by default", 1, function () {
+            var fileName = randomFileName();
+            write({name:fileName, content:"a"})().
+                    then(write({name:fileName, content:"b"}), fail('first write failed')).
+                    then(readText(fileName), fail('second write failed')).
+                    then(assertTextContent("b"), fail('read failed'));
+        });
 
-    asyncTest("Should append file content", 1, function () {
-        var fileName = randomFileName();
-        write({name:fileName, content:"a"})().
-                then(write({name:fileName, content:"b", overwrite:false}), fail('first write failed')).
-                then(readText(fileName), fail('second write failed')).
-                then(assertTextContent("ab"), fail('read failed'));
-    });
+        asyncTest("Should append file content", 1, function () {
+            var fileName = randomFileName();
+            write({name:fileName, content:"a"})().
+                    then(write({name:fileName, content:"b", overwrite:false}), fail('first write failed')).
+                    then(readText(fileName), fail('second write failed')).
+                    then(assertTextContent("ab"), fail('read failed'));
+        });
+
+
+        asyncTest("Should save image", 1, function () {
+            var fileName = randomFileName();
+                    write({name:fileName, content: base64Image()})().
+                    then(readText(fileName), fail('write failed')).
+                    then(assertImageDisplayed(), fail('read failed'));
+        });
+
+
+        asyncTest('Should report error when reading nonexistant file', 1, function() {
+            var fileName = randomFileName();
+            readText(fileName)().then(fail("unexpected file exists"), expect("NOT_FOUND_ERR"));
+        });
+    }
+
 
 
     function base64Image() {
@@ -157,23 +188,23 @@ You should see an image here <img id="image" src="" />
                 "cPAFzCGXVnYlxHr4U4Mbsl0ogY8gsDhmp8Hs0239g1P+idB1G/8fl/57AvwEJ5dQr4MH9qwAAAABJRU5ErkJggg==";
     }
 
-    asyncTest("Should save image", 1, function () {
-        var fileName = randomFileName();
-                write({name:fileName, content: base64Image()})().
-                then(readText(fileName), fail('write failed')).
-                then(assertImageDisplayed(), fail('read failed'));
-    });
-
-
-    asyncTest('Should report error when reading nonexistant file', 1, function() {
-        var fileName = randomFileName();
-        readText(fileName)().then(fail("unexpected file exists"), expect("NOT_FOUND_ERR"));
-    });
 
 
     // TODO : save image, save video, quota exceeded, security fail, invalid modification,
     // invalid state, unknown fail, errors when requesting file, errors when creating a writer, fail when reading
     // invalid content type
+    //
+    //
+    //
+
+
+
+if(window.cordova)
+document.addEventListener("deviceready", runTests, false);
+else
+document.addEventListener("DOMContentLoaded", runTests, false);
 </script>
+
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </body>
 </html>

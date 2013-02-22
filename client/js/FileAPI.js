@@ -1,18 +1,24 @@
-/*global window: false */
+/*global window: false cordova:true LocalFileSystem:true */
 
 window.schibsted = window.schibsted || {};
 
 window.schibsted.FileAPI = function FileAPI(config) {
     "use strict";
 
-    if (!(this instanceof FileAPI)) {
-        return new FileAPI();
+    if(window.cordova){
+        window.FileReader = cordova.require('cordova/plugin/FileReader');
+        window.TEMPORARY = LocalFileSystem.TEMPORARY;
+        window.PERSISTENT = LocalFileSystem.PERSISTENT;
     }
 
-    // possible values: window.PERSISTENT, window.TEMPORARY
-    this.type = config && (config.persistence || window.TEMPORARY);
+    if (!(this instanceof FileAPI)) {
+        return new FileAPI(config);
+    }
+
+    // possible values: window.PERSISTENT || LocalFileSystem.PERSISTENT, window.TEMPORARY
+    this.persistence = config && (config.persistence || window.TEMPORARY);
     // 5MB by default
-    this.quota = config && (config.quota || 5 * 1024 * 1024);
+    this.quota = config && (typeof config.quota !== "undefined" ? config.quota : 5 * 1024 * 1024);
 
     window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
 
@@ -21,6 +27,8 @@ window.schibsted.FileAPI = function FileAPI(config) {
     }
 };
 
+schibsted.FileAPI.prototype.TEMPORARY = '0';
+schibsted.FileAPI.prototype.PERSISTENT = '1';
 
 schibsted.FileAPI.prototype.errorHandler = function (e) {
     var msg = '';
@@ -55,13 +63,13 @@ schibsted.FileAPI.prototype.usingFilesystem = function (onInitFs) {
     var self = this;
 
     if (window.webkitStorageInfo) {
-        window.webkitStorageInfo.requestQuota(window.PERSISTENT, self.quota, function (grantedBytes) {
-            window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, self.errorHandler);
+        window.webkitStorageInfo.requestQuota(self.persistence, self.quota, function (grantedBytes) {
+            window.requestFileSystem(self.persistence, grantedBytes, onInitFs, self.errorHandler);
         }, function (e) {
             console.log('Error', e);
         });
     } else {
-        window.requestFileSystem(window.PERSISTENT, self.quota, onInitFs, self.errorHandler);
+            window.requestFileSystem(self.persistence, self.quota, onInitFs, self.errorHandler);
     }
 };
 
@@ -77,6 +85,7 @@ schibsted.FileAPI.prototype.readFile = function (config, readFunction) {
     self.usingFilesystem(function (fs) {
         fs.root.getFile(config.name, {}, function (fileEntry) {
             fileEntry.file(function (file) {
+
                 var reader = new FileReader();
 
                 reader.onloadend = function (e) {
@@ -107,7 +116,10 @@ schibsted.FileAPI.prototype.readFileDataURL = function (config) {
 schibsted.FileAPI.prototype.writeFile = function (config) {
     console.log('writing file using config ' + JSON.stringify(config));
 
+
     var self = this;
+
+
     var deferred = Q.defer();
     var overwrite = (typeof config.overwrite === 'undefined') ? true : config.overwrite;
 
@@ -117,6 +129,7 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
     }
 
     this.usingFilesystem(function (fs) {
+
         fs.root.getFile(config.name, {
             create:true,
             exclusive:false
@@ -125,6 +138,7 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
             fileEntry.createWriter(function (fileWriter) {
 
                 fileWriter.onwriteend = function (e) {
+
                     deferred.resolve(e);
                 };
 
@@ -136,16 +150,16 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
                     fileWriter.seek(fileWriter.length);
                 }
 
-
-                if(window.Blob) {
+                if(window.cordova) {
+                    // phonegap can only use UTF-8 string
+                    fileWriter.write(config.content);
+                } else {
                     // chrome
                     var blob = new Blob([config.content], {
                         type:'text/plain'   // lowest common denominator because of phonegap
                     });
+
                     fileWriter.write(blob);
-                } else {
-                    // phonegap can only use UTF-8 string
-                    fileWriter.write(config.content);
                 }
 
             }, error);
