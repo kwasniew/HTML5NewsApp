@@ -19,7 +19,7 @@ window.schibsted.FileAPI = function FileAPI(config) {
     if (!window.requestFileSystem) {
         throw new Error("File API is not supported");
     }
-}
+};
 
 
 schibsted.FileAPI.prototype.errorHandler = function (e) {
