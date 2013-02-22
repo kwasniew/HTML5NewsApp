@@ -110,11 +110,12 @@
     </target>
 
     <target name="build" description="build this app (update, clean, compile, test and generate artifacts)">
-        <antcall target="updateClient"/>
+
         <parallel>
             <antcall target="update"/>
             <antcall target="clean"/>
         </parallel>
+        <antcall target="updateClient"/>
         <parallel>
             <antcall target="generate-git-commit-file"/>
             <antcall target="generate-build-number-file"/>
