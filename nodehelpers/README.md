@@ -1,13 +1,6 @@
 client
 ======
 
-# localhost
-
-Use http-proxy npm module to start local server
-```
-$ http-proxy
-```
-
 # API proxy
 
 ```
