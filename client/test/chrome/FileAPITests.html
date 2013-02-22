@@ -11,9 +11,9 @@
     To overcome this you can run the tests with the http protocol.
 </div>
 <div id="qunit"></div>
-<div id="qunit-fixture">
-
+<div id="qunit-fixture1">
 </div>
+You should see an image here <img id="image" src="" />
 <script src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
 <script src="https://raw.github.com/kriskowal/q/master/q.min.js"></script>
 <script src="../../js/FileAPI.js"></script>
@@ -38,7 +38,6 @@
             return fileAPI().writeFile({
                 name:config.name,
                 content: config.content || (xhr && xhr.response),
-                type:'text/plain',
                 overwrite:config.overwrite
             });
         }
@@ -67,10 +66,10 @@
         }
     }
 
-    function assertDatURLContentContains(text) {
+    function assertImageDisplayed() {
         return function (fileContent) {
-            ok(fileContent.indexOf(text) != -1, 'File read success');
-            console.log(fileContent);
+            document.getElementById("image").setAttribute("src", fileContent);
+            ok(fileContent.indexOf("base64") != -1, 'File read success');
             start();
         }
     }
@@ -122,12 +121,47 @@
     });
 
 
+    function base64Image() {
+        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAJQElEQVRogdWZfZBXVRnHP+fe329fYB" +
+                "dc3mGXtyWE5VVeikipQE1RMUPoDXCqQYbMEAdCykitdDDIGWtSbMqmMkenlOovy5TGaCKQFShexAWGl10KUBfbXWD3d8/TH/ft3" +
+                "HPvb3cFa+qZOXPu797z8v0+z3Oe85zzU4DwnogCZTynRIzqPZoymOkSRgtBK1ABaJUFPhAJp5KYiFwamdxF9VKKCHQCuEEoJSZo" +
+                "QIXgg3KRRN4lAQO0WVDZBFL2DYCKJJ8vgUj3CUSAnfQzNhmDRAgcioMXbX3T3YblAvd3D7wTF8cFx6ytZ2W+D9/59R3LbsfN5Tn" +
+                "R1JRhzWjCbhPo2gKhlh2TgEnItoppBV8cpfjg9GmsuetObr5hLr/c/Bs+9epOX9NaQFTwDDj4ltC6WxGr8yhkgy9WGySUUvTv14" +
+                "9xYy5nQt1Ypl0xidlXXcmwmmpUsOBFhIc2PsKDGx7h3Lm2AKwuUkvnEIt+DUGZYB3XeI7fK+UwqnYkq+5YzvVXz2b40BoAtm5/l" +
+                "TNvvsXHPjqLHuXlwbAKCRbq0ePHmTv/kxx4/WAA2CtOphORVFFKcFzBzQv5UqG0XCivEHr2EiqqhF59hcsGiOozSFTfITLxw1fL" +
+                "2Xf+JVrrqKz7ziOiBteKGlwrk+bMlfaOjsR3rbUsW7laqBog9O4nVFYJPXv785T2EErKhFzex6FUGmNQnOLaVxkL1AXXL8pxg98" +
+                "5Vn1pOb0qK1CBCymlePFPf4FcDtwcfzt4iOONJxPflVJsq9+FcnLB+GYx15vhphmSXsTRIjR9OxlZlDVZ3ejRiEjCPTq0gJsn3L" +
+                "jaCx2pNucLBXBcy49NjxZ/YatgoWd4u0UgK7qYPm9ryi9lZWX+dMYmVABwg+FF6Ch4qTaRRZW1GMOdOipGdLM2uiQBRXKTcuxFb" +
+                "GjfNUhAFGFC8USh3FwAShBJt1FGfyQkYW12JpEMK1gErF3VikQqsYGFJQeBWyRcSHwLKAOd3SZSRGAlH7QDTgDe0T5oe48xrJAr" +
+                "Ct6O8VkL2gRAlnuEw0u0CJNtgnGEKJVQjuu3UTqYXycJWFYwLGBpnZiI6iqVCKKKKZPrxtCnqiqarEdZWapNpAQJNC8OiPatFIE" +
+                "Paowd3tBBehGHle1GqWKQIO0ez264P3oO36dcKHNch5TmI+USWCBmkXShELiZHifcKllU6Gahpxvu8cedu2k9d97/ITBr6kQqe5" +
+                "QnXSh01VD7ukiabv4OFSwJC4SmNcHbVjD3B3ujSUeYFRsfZ++RY4F/a177xWNMGl1rGdxKAo3fvhuZuAzPSLmQOXfUJx4oScJvp" +
+                "Kx3tnuohH+rzEgVATX9O9MChnItE8SphLW+QklG3XjAaFJjYNs9VGShePBkm+SYSZDmYxFwmGtAlEGneAeAEdVDmDl9KqVl5Wz7" +
+                "+34//NkRJnQB8Z9zrptu8y4OLsXEiEJWDlJEVn7hNh7+2mpyQfz3tOb8hQvpPOfCheCoCKX5HMMG9k+7kL/vdjpfV5LMRu2zQ3R" +
+                "O9WXU8KFsuPcrEXiAJffcz75DR4PmftuDxxo5cuJkkMt7LJxzJT3L0/kSIigRY95wNyZZOiGYi4Ari4E1ESLMmDIJ1wAPcPzkPx" +
+                "lZPSjS7J43DrPo6+vxvA5AMWZ4DRtX3I4WwXWs7L2zg71ZTHIRYJOArfrMmwPBUU7KDR5a+UU2/uRpmlta2XXwEPUHDqGBkpISF" +
+                "t94Deu/vJSX/lpPXe1wJowakeibd11ENA6CtuYS+8ol4lMsmTPyEfv6Q0SjRHPk2LGAXzzIrOlXoBzFS9t2opRi1tRJTB4zmrlX" +
+                "zaBv7168vL2ez39jPa88+Wiq79ja4TQcPsxXly/jge8+iohOWsJUZDHviL4oJbg5IV8SHyErLvOPj1UDRfWrlnx1rRw9fkK6K7/" +
+                "dslUqPnCtOJNmyaZnN6e+e56WPftflxk3LRA1ZJSoQSNE9a8R+gzyj5kVVUKPSv+ImS/18Skn4V9OkobtNjqutabQ3s7iO++mta" +
+                "0tym1CrZrPLW1trN7wfeavWEtbayt4BR7c9CQnT5+J2miteeznTzPzlk+z/bXdJA71WifnT62FWJK5nXn7YB9c3BzK9fP/iePHs" +
+                "X7dWq656kPkcr4Xaq3Z+8Zhnvv9Szzx7GZOv9WcNLIII6sH89OHH2BY9WCWrlnHi69s9UF7XlAXkKBOvI9KQM6EnPwV5v4ZOb8T" +
+                "EojfVVRWUjNkCBpF05k3aWk7b+Qz4fAxAUTjAOUleVpbW2NgXlyL7gK8dcViZdcYR8gsEuZthEEmdcmlEulDfCsd3sSZ7uIDlEz" +
+                "QHnj+XpKlfci6lTAvWMMrP1F+qouKusfbhsQpsUnAvF40o4mO11QMLEPTpsYT+0NSOiEgAWPTFZJKVeZJStkEzH4GgJBASEJ7iD" +
+                "YsIl78XST5nCHZl7thxxCpVhnfBXHcgIQQH/8s97H6OI6iz2W9OXPmNGjtx34dk0ldMXaifbBzIVO/YprcS04S+WcB0QXE8wteg" +
+                "e99+z769qr0I0lG6VGSZ/SIoYjXid/b96JFtA/d/X8ABSo5yKiRtXx24a28f8oU9h84QHt7O+PHjKajo4PJ4+vYuWs3V4yvozSf" +
+                "p7n5bRyEG6+dw+sHDzJy2FCOHj3K0iWLmD5lMg7Q1NiYBK1N7ReXIhYIDWH7a2yFhbfM47FNT/Czp57iM7d+ArwC18+Zza82/5p" +
+                "+VVUor0BDQwML5t0AusBHZs7gbPPbuMDk8XUM7NcH7RX44Y9+zI4dOzLCpeHGF00gJBGZMvbPmupq5s+7ievmzObE8WPkXcWgAf" +
+                "2pGTSQs83NTJkwnpZ3zuI6CheYMW0KW7f+GXQBtOYfTSdpa21lzcq7GHv5+6yo0/WVeijd/I9MgkvW8KpDaGpq5Lnnn48W7cfnz" +
+                "aOhoYGJ48bS2HiCeXOvo76+nhde+B0Lbr6J06dOBeskOCfrAs888wwKWHX3Sg7s3Wslb92Td/EvZTiwH+O3vLyFe9feQ0tLC394" +
+                "eQs11UP4weObgraK4TU1uAh79uxm6edu475vfgu0h/YKnD51isqePVmyeBGiNfv27e1ysRaT9E7c7Z7WvU30Lhw2S4yEzD5zXKR" +
+                "cPAFzCGXVnYlxHr4U4Mbsl0ogY8gsDhmp8Hs0239g1P+idB1G/8fl/57AvwEJ5dQr4MH9qwAAAABJRU5ErkJggg==";
+    }
+
     asyncTest("Should save image", 1, function () {
         var fileName = randomFileName();
-        download({url:'image.png', dataType:'blob'}).
-                then(write({name:fileName, type:'image/png'}), fail('download failed')).
-                then(readDataURI(fileName), fail('write failed')).
-                then(assertDatURLContentContains("base64"), fail('read failed'));
+                write({name:fileName, content: base64Image()})().
+                then(readText(fileName), fail('write failed')).
+                then(assertImageDisplayed(), fail('read failed'));
     });
 
 
@@ -137,7 +171,7 @@
     });
 
 
-    // TODO : save image, save video, quota exceeded, file not found, security fail, invalid modification,
+    // TODO : save image, save video, quota exceeded, security fail, invalid modification,
     // invalid state, unknown fail, errors when requesting file, errors when creating a writer, fail when reading
     // invalid content type
 </script>

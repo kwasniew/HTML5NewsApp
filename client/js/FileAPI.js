@@ -132,14 +132,21 @@ schibsted.FileAPI.prototype.writeFile = function (config) {
                     deferred.reject(e);
                 };
 
-                var blob = new Blob([config.content], {
-                    type:config.type
-                });
-
                 if (!overwrite) {
                     fileWriter.seek(fileWriter.length);
                 }
-                fileWriter.write(blob);
+
+
+                if(window.Blob) {
+                    // chrome
+                    var blob = new Blob([config.content], {
+                        type:'text/plain'   // lowest common denominator because of phonegap
+                    });
+                    fileWriter.write(blob);
+                } else {
+                    // phonegap can only use UTF-8 string
+                    fileWriter.write(config.content);
+                }
 
             }, error);
 
