@@ -3,23 +3,23 @@
 (function(window, undefined){
     "use strict";
 
-    function Show(){
+    function View(){
         console.log("Start!");
     }
 
-    Show.prototype.thenShowArticles = function(articles){
-        console.log('Show:thenShowArticles', arguments);
-        Show.prototype.showArticles('then', articles);
+    View.prototype.thenViewArticles = function(articles){
+        console.log('View:thenViewArticles', arguments);
+        View.prototype.viewArticles('then', articles);
     };
 
-    Show.prototype.thenShowError = function(articles){
+    View.prototype.thenViewError = function(articles){
         var h1 = document.createElement('h1');
         h1.innerText = "no articles, check internet connection";
         document.body.appendChild(h1);
     };
 
-    Show.prototype.showArticles = function(name, articles){
-        console.log('Show:showArticles', arguments);
+    View.prototype.viewArticles = function(name, articles){
+        console.log('View:viewArticles', arguments);
         var entry, img, h2, div, text;
         var articlesList = articles;
 
@@ -48,6 +48,6 @@
 
     };
 
-    window.Show = Show;
+    window.View = View;
 
 })(window);

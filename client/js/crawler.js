@@ -14,20 +14,7 @@
         download = window.schibsted.download;
     }
 
-    Crawler.prototype.getArticles = function() {
-        //var promise = new RSVP.Promise();
-        var deferred = Q.defer();
 
-        this.god(function(data){
-            console.log('god ok', data);
-            deferred.resolve(data.articles);
-        }, function (err) {
-            console.log('god failed');
-            deferred.reject(new Error(err));
-        });
-
-        return deferred.promise;
-    };
 
     function filterArticles(data){
             data.articles = data.articles.filter(function(element){
@@ -36,7 +23,7 @@
 
             console.log('CRAWLER succedded', data.articles);
 
-            return data;
+            return data.articles;
     }
 
     function parseArticle(entry){
@@ -83,28 +70,19 @@
         return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
     }
 
-    Crawler.prototype.god = function(downloadCallback, errorFun){
+    Crawler.prototype.getArticles = function() {
         var self = this;
 
-        function err(){
-            console.error('KABOOM!', arguments);
-            errorFun.apply(null, arguments);
-        }
-
-        var root = download.getRoot()
-        .then(parseRoot);
-
-        var section = root.then(download.getSection, err)
-        .then(this.getDeskedLink.bind(this), err);
-
-        var articles = section.then(download.getArticlesRoot)
-        .then(parseArticlesXML, err);
-
-        var list = articles.then(this.saveArticlesList.bind(this))
+        return download.getRoot()
+        .then(parseRoot)
+        .then(download.getSection)
+        .then(this.getDeskedLink.bind(this))
+        .then(download.getArticlesRoot)
+        .then(parseArticlesXML)
+        .then(this.saveArticlesList.bind(this))
         .then(download.getArticles)
         .then(this.mapArticles.bind(this))
-        .then(filterArticles)
-        .then(downloadCallback, err);
+        .then(filterArticles);
     };
 
     Crawler.prototype.saveArticlesList = function(articles) {
