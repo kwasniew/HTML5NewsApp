@@ -14,7 +14,7 @@
 
                 schibsted.download.makeRequest({
                     url: imageEncoder,
-                    type: 'POST',
+                    type: 'GET',
                     data: { source: encodeURI(article.img) },
                     dataType: "text",
                     headers: {}
