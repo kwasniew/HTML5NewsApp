@@ -41,7 +41,7 @@
 
         title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
 
-        return {url: articleUrl, img: articleImage, title: title};
+        return {url: articleUrl, img: articleImage, title: title, base: ''};
     }
 
     function parseArticlesXML(articles){

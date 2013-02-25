@@ -30,7 +30,7 @@
 
             img = new Image();
             img.onload = entry.img;
-            img.src = entry.img;
+            img.src = entry.base ? entry.base : entry.img;
             div = document.createElement('div');
             h2 = document.createElement('h2');
             h2.innerHTML = entry.title;

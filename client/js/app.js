@@ -1,4 +1,5 @@
-/*global console:true Downloader:true PubSub:true View:true Articles:true */
+/*global console:true Downloader:true PubSub:true View:true Articles:true $:true
+schibsted:true */
 
 (function(window, undefined){
     "use strict";
@@ -8,17 +9,20 @@
 
         this.articles = new Articles();
         this.view = new View();
-
-        try{
         this.articles.getArticles()
         .then(
             this.view.thenViewArticles,
             this.view.thenViewError
         )
         .done();
-    }catch(e){
-        console.error(e);
-    }
+
+        function notifyImageDownloader(){
+            schibsted.images.startOffline();
+        }
+
+        $('#saveForOffline').on('click', notifyImageDownloader);
+        $('#saveForOffline').on('tap', notifyImageDownloader);
+        $('body').swipeDown(notifyImageDownloader);
 
     }
 

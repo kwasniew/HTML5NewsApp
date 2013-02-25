@@ -7,7 +7,7 @@
         console.log("Start!");
 
         this.offlineStorage = new OfflineStorage();
-        this.offlineStorage.clearDB();
+        //this.offlineStorage.clearDB();
         //this.download = new Download();
         this.crawler = new Crawler();
     }
@@ -26,7 +26,6 @@
             self.crawler.getArticles().then(function(articles){
 
                 console.log('crewler downloaded articles', articles);
-                deferred.resolve(articles);
 
                 self.offlineStorage.addArticles(articles);
 

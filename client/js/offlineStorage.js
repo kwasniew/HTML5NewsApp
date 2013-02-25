@@ -29,7 +29,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles3', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles4', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -40,8 +40,7 @@
 
         function migration1(t){
             console.log('migrate to 1', db);
-            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, date TIMESTAMP, title TEXT, bodytext TEXT, img TEXT)');
-            t.executeSql('CREATE TABLE IF NOT EXISTS ArticleImages(id INTEGER PRIMARYKEY KEY ASC, base BLOB, alt TEXT, artid INTEGER)');
+            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, date TIMESTAMP, title TEXT, bodytext TEXT, img TEXT, base BLOB)');
 
         }
 
@@ -67,13 +66,30 @@
         //TODO this should be done after success of changeVersion....
         // console.log('before adding', db);
 
-        var limitImages = 500;
-
         db.transaction(function (tx) {
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
-            tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img) VALUES (?, ?, ?, ?, ?)',
-                [article.url, article.lastModified, article.title, article.bodytext, article.img],
+            tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img, base) VALUES (?, ?, ?, ?, ?, ?)',
+                [article.url, article.lastModified, article.title, article.bodytext, article.img, article.base],
+                function(tx, resultSet){
+                    console.log('saved article', arguments);
+                },function(){
+                     console.log("error: cant add article", arguments);
+                });
+        });
+
+    };
+
+    OfflineStorage.prototype.updateArticleBase = function(article){
+        var db = this.db;
+        //TODO this should be done after success of changeVersion....
+        // console.log('before adding', db);
+        //
+
+
+        db.transaction(function (tx) {
+            tx.executeSql('UPDATE Articles SET base = ? WHERE url = ?',
+                [article.base, article.url],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
                 },function(){
