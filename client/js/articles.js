@@ -1,22 +1,22 @@
-/*global console:true Download:true PubSub:true Offline:true Crawler:true Q:true */
+/*global console:true Download:true PubSub:true OfflineStorage:true Crawler:true Q:true */
 
 (function(window, undefined){
     "use strict";
 
-    function Model(){
+    function Articles(){
         console.log("Start!");
 
-        this.offline = new Offline();
-        this.offline.clearDB();
+        this.offlineStorage = new OfflineStorage();
+        this.offlineStorage.clearDB();
         //this.download = new Download();
         this.crawler = new Crawler();
     }
 
-    Model.prototype.getArticles = function() {
+    Articles.prototype.getArticles = function() {
         var deferred = Q.defer();
         var self = this;
 
-        this.offline.getArticlesPromise().then(function(articles){
+        this.offlineStorage.getArticlesPromise().then(function(articles){
 
             deferred.resolve(articles);
 
@@ -27,7 +27,7 @@
                 console.log('crewler downloaded articles', articles);
                 deferred.resolve(articles);
 
-                self.offline.addArticles(articles);
+                self.offlineStorage.addArticles(articles);
 
             }, function (err) {
 
@@ -45,6 +45,6 @@
 
 
 
-    window.Model = Model;
+    window.Articles = Articles;
 
 })( window );

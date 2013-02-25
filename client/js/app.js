@@ -1,4 +1,4 @@
-/*global console:true Downloader:true PubSub:true Offline:true View:true Model:true */
+/*global console:true Downloader:true PubSub:true View:true Articles:true */
 
 (function(window, undefined){
     "use strict";
@@ -6,11 +6,11 @@
     function App(){
         console.log("Start!");
 
-        this.model = new Model();
+        this.articles = new Articles();
         this.view = new View();
 
         try{
-        this.model.getArticles()
+        this.articles.getArticles()
         .then(
             this.view.thenViewArticles,
             this.view.thenViewError

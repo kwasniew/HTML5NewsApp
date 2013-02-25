@@ -43,7 +43,7 @@
         }],[{
             url: 'zepto.js', expire: 0.0001
         }],[{
-            url: 'offline.js', expire: 0.0001
+            url: 'offlineStorage.js', expire: 0.0001
         },{
             url: 'downloader.js', expire: 0.0001
         }],[{

@@ -3,7 +3,7 @@
 (function (window, undefined) {
     "use strict";
 
-    function Offline(){
+    function OfflineStorage(){
         var self = this;
         this.db = undefined;
 
@@ -23,7 +23,7 @@
 
     /* websql ft: b=e?window.openDatabase('fthtml5app','','FT HTML5 App Content',41943040) */
     // 41943040 == 40 * 1024 * 1024   ~ 40MB
-    Offline.prototype.start = function(successCallback, errorCallback){
+    OfflineStorage.prototype.start = function(successCallback, errorCallback){
 
         var db;
 
@@ -57,12 +57,12 @@
 
     };
 
-    Offline.prototype.addArticles = function(articles){
+    OfflineStorage.prototype.addArticles = function(articles){
         var self = this;
         articles.map(self.addArticle.bind(self));
     };
 
-    Offline.prototype.addArticle = function(article){
+    OfflineStorage.prototype.addArticle = function(article){
         var db = this.db;
         //TODO this should be done after success of changeVersion....
         // console.log('before adding', db);
@@ -83,7 +83,7 @@
 
     };
 
-    Offline.prototype.clearDB = function() {
+    OfflineStorage.prototype.clearDB = function() {
         var db = this.db;
         db.transaction(function (tx) {
             console.log('delete data', db, tx);
@@ -102,7 +102,7 @@
         return output;
     }
 
-    Offline.prototype.getArticles = function(successCallback){
+    OfflineStorage.prototype.getArticles = function(successCallback){
         var db = this.db;
         db.readTransaction(function(tx){
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
@@ -120,7 +120,7 @@
 
     };
 
-    Offline.prototype.getArticlesPromise = function(){
+    OfflineStorage.prototype.getArticlesPromise = function(){
         var deferred = Q.defer();
         this.getArticles(function(data){
             if(data.length)
@@ -131,7 +131,7 @@
         return deferred.promise;
     };
 
-    window.Offline = Offline;
+    window.OfflineStorage = OfflineStorage;
 
 }(this));
 
