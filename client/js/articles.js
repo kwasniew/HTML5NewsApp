@@ -20,7 +20,8 @@
 
             deferred.resolve(articles);
 
-        }, function(){
+        })
+        .fail(function(){
             console.log('empty dB');
             self.crawler.getArticles().then(function(articles){
 
@@ -29,10 +30,11 @@
 
                 self.offlineStorage.addArticles(articles);
 
-            }, function (err) {
-
+            })
+            .fail(function (err) {
                 deferred.reject(new Error( "no articles" ) );
             });
+
             console.log('empty dB');
         }).fail(function () {
             console.error('error model', arguments);
