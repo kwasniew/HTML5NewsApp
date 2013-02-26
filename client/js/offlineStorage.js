@@ -3,6 +3,8 @@
 (function (window, undefined) {
     "use strict";
 
+    var noCompression = true;
+
     function OfflineStorage(){
         var self = this;
         this.db = undefined;
@@ -13,6 +15,7 @@
         },function(){
             console.log("offline error");
         });
+
 
         //this.clearDB();
     }
@@ -29,7 +32,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles4', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles5', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -40,7 +43,7 @@
 
         function migration1(t){
             console.log('migrate to 1', db);
-            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, date TIMESTAMP, title TEXT, bodytext TEXT, img TEXT, base BLOB)');
+            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, date TIMESTAMP, title TEXT, bodytext TEXT, img TEXT, compressedbase BLOB)');
 
         }
 
@@ -56,6 +59,41 @@
 
     };
 
+    function compress(s) {
+        if(noCompression) return s;
+        var i, l, out='';
+        if (s.length % 2 !== 0) s += ' ';
+        for (i = 0, l = s.length; i < l; i+=2) {
+            out += String.fromCharCode((s.charCodeAt(i)*256) + s.charCodeAt(i+1));
+        }
+        // Add a snowman prefix to mark the resulting string as encoded (more on this later)
+        return String.fromCharCode(9731)+out;
+    }
+
+    function decompress(s) {
+        if(noCompression) return s;
+        var i, l, n, m, out = '';
+
+        // If not prefixed with a snowman, just return the (already uncompressed) string
+        if (s.charCodeAt(0) !== 9731) return s;
+
+        for (i = 1, l = s.length; i < l; i++) {
+            n = s.charCodeAt(i);
+            m = Math.floor(n/256);
+            out += String.fromCharCode(m, n%256);
+        }
+        return out;
+    }
+
+    function toArray(data){
+        var output = [];
+        // HACK Convert row object to an array to make our lives easier
+        for (var i = 0, l = data.length; i < l; i = i + 1) {
+            output.push(data.item(i));
+        }
+        return output;
+    }
+
     OfflineStorage.prototype.addArticles = function(articles){
         var self = this;
         articles.map(self.addArticle.bind(self));
@@ -69,8 +107,8 @@
         db.transaction(function (tx) {
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
-            tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img, base) VALUES (?, ?, ?, ?, ?, ?)',
-                [article.url, article.lastModified, article.title, article.bodytext, article.img, article.base],
+            tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img, compressedbase) VALUES (?, ?, ?, ?, ?, ?)',
+                [article.url, article.lastModified, article.title, article.bodytext, article.img, compress(article.base)],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
                 },function(){
@@ -88,8 +126,8 @@
 
 
         db.transaction(function (tx) {
-            tx.executeSql('UPDATE Articles SET base = ? WHERE url = ?',
-                [article.base, article.url],
+            tx.executeSql('UPDATE Articles SET compressedbase = ? WHERE url = ?',
+                [compress(article.base), article.url],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
                 },function(){
@@ -104,19 +142,11 @@
         db.transaction(function (tx) {
             console.log('delete data', db, tx);
             tx.executeSql('DELETE FROM Articles');
-            tx.executeSql('DELETE FROM ArticleImages');
         });
 
     };
 
-    function toArray(data){
-        var output = [];
-        // HACK Convert row object to an array to make our lives easier
-        for (var i = 0, l = data.length; i < l; i = i + 1) {
-            output.push(data.item(i));
-        }
-        return output;
-    }
+
 
     OfflineStorage.prototype.getArticles = function(successCallback){
         var db = this.db;
@@ -124,6 +154,10 @@
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
             tx.executeSql('SELECT * FROM Articles LIMIT 80', [], function (tx, results) {
                 var result = toArray(results.rows);
+
+                result.forEach(function(article){
+                    article.base = decompress(article.compressedbase);
+                });
 
                 successCallback(result);
 

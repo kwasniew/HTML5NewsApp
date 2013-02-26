@@ -20,9 +20,19 @@ schibsted:true */
             schibsted.images.startOffline();
         }
 
+        var self = this;
+        function notifyClear(){
+            self.articles.clearOffline();
+        }
+
+
+
         $('#saveForOffline').on('click', notifyImageDownloader);
         $('#saveForOffline').on('tap', notifyImageDownloader);
         $('body').swipeDown(notifyImageDownloader);
+
+        $('#clearOffline').on('click', notifyClear);
+        $('#clearOffline').on('tap', notifyClear);
 
     }
 

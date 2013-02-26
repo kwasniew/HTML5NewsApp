@@ -7,8 +7,7 @@
         console.log("Start!");
 
         this.offlineStorage = new OfflineStorage();
-        //this.offlineStorage.clearDB();
-        //this.download = new Download();
+
         this.crawler = new Crawler();
     }
 
@@ -29,6 +28,8 @@
 
                 self.offlineStorage.addArticles(articles);
 
+                deferred.resolve(articles);
+
             })
             .fail(function (err) {
                 deferred.reject(new Error( "no articles" ) );
@@ -42,6 +43,10 @@
         });
 
         return deferred.promise;
+    };
+
+    Articles.prototype.clearOffline = function(){
+        this.offlineStorage.clearDB();
     };
 
 
