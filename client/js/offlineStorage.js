@@ -32,7 +32,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles5', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles6', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -43,7 +43,8 @@
 
         function migration1(t){
             console.log('migrate to 1', db);
-            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, date TIMESTAMP, title TEXT, bodytext TEXT, img TEXT, compressedbase BLOB)');
+
+            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, published TIMESTAMP, updated TIMESTAMP, title TEXT, deskedMode TEXT, bodytext TEXT, img TEXT, compressedbase BLOB)');
 
         }
 
@@ -109,8 +110,20 @@
         db.transaction(function (tx) {
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
-            tx.executeSql('INSERT INTO Articles (url, date, title, bodytext, img, compressedbase) VALUES (?, ?, ?, ?, ?, ?)',
-                [article.url, article.lastModified, article.title, article.bodytext, article.img, compress(article.base)],
+            var query = ['INSERT INTO Articles',
+            '(url, published, updated, title, bodytext, img, compressedbase, deskedMode)',
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?)'];
+            tx.executeSql(query.join(' '),
+                [
+                    article.url,
+                    article.published,
+                    article.updated,
+                    article.title,
+                    article.bodytext,
+                    article.img,
+                    compress(article.base),
+                    article.deskedMode
+                ],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
                 },function(){

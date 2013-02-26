@@ -34,7 +34,6 @@
 
         function getByName( from, target, srcName, targetName){
             if(!targetName) targetName = srcName;
-            srcName = srcName.replace(':', '\\:');
             target[targetName] = from.querySelector(srcName) ? from.querySelector(srcName).textContent : '';
         }
         var result = {};
@@ -49,7 +48,7 @@
         get('title');
         get('published');
         get('updated');
-        get('snd:deskedMode', 'deskedMode');
+        get('deskedMode', 'deskedMode');
 
         return result;
     }
@@ -88,49 +87,47 @@
     Crawler.prototype.getArticles = function() {
         var self = this;
 
-        return this.getRoot()
+        var list = this.getRoot()
         .then(download.getSection)
         .then(this.getDeskedLink.bind(this))
         .then(download.getArticlesRoot)
-        .then(parseArticlesXML)
-        .then(this.saveArticlesList.bind(this))
-        .then(download.getArticles)
-        .then(this.mapArticles.bind(this))
+        .then(parseArticlesXML);
+
+        //promise.then(this.saveArticlesList.bind(this))
+        var array = list.then(download.getArticles);
+
+        return Q.all([list, array])
+        .spread(this.mapArticles.bind(this))
         .then(filterArticles);
     };
 
-    Crawler.prototype.saveArticlesList = function(articles) {
-            this.articles = articles;
-            //todo anything in list of articles
-            // that is not visible in article itself?
-            return articles;
-    };
+    Crawler.prototype.mapArticles = function(list, array){
+        console.log('end', list, array);
 
-    Crawler.prototype.mapArticles = function(allArticles){
-        console.log('end', allArticles);
-        console.log('end', this.articles);
+        var dictionary = {};
 
-        for (var i = allArticles.length - 1; i >= 0; i--) {
-            var docu = allArticles[i];
-            if(!docu){
-                //ommit broken articles
-                this.articles[i] = false;
-                continue;
+        array.filter(function(a){ return a; })
+        .forEach(function(doc){
+            dictionary[doc.documentURI] = {
+                url: doc.documentURI,
+                bodytext: doc.querySelector('[name="bodytext"] div').innerHTML,
+                doc: doc
+            };
+        });
+
+        list = list.filter(function(item){
+            return dictionary[item.url];
+        }).map(function(item){
+            var val = dictionary[item.url];
+            for(var key in val){
+                if(val.hasOwnProperty(key)){
+                    item[key] = val[key];
+                }
             }
-            var item = this.articles[i];
+            return item;
+        });
 
-            if(docu.documentURI == item.url){
-                console.log('urls are the same', docu.documentURI, i);
-            }else{
-                console.error('urls are different!!!', docu.documentURI, item.url, i);
-            }
-
-            item.bodytext = docu.querySelector('[name="bodytext"] div').innerHTML;
-            item.lastModified = docu.lastModified;
-            item.docu = docu;
-        }
-
-        return this;
+        return {articles: list};
     };
 
 
