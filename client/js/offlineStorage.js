@@ -103,6 +103,8 @@
         var db = this.db;
         //TODO this should be done after success of changeVersion....
         // console.log('before adding', db);
+        //
+        if(!article.base) article.base = '';
 
         db.transaction(function (tx) {
             // console.log('insert into articles', db, tx);

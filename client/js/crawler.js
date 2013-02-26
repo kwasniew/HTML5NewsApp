@@ -30,21 +30,28 @@
     }
 
     function parseArticle(entry){
-        var articleImage, elId, elImg, articleUrl, title;
+        var articleImage, elId, elImg, title;
 
-        elId = entry.querySelector('id');
-        //articleUrl = self.betahostUrlLong+articleUrl;
-        articleUrl = elId ? elId.textContent : false;
+        function getByName( from, target, srcName, targetName){
+            if(!targetName) targetName = srcName;
+            srcName = srcName.replace(':', '\\:');
+            target[targetName] = from.querySelector(srcName) ? from.querySelector(srcName).textContent : '';
+        }
+        var result = {};
+        var get = getByName.bind(null, entry, result);
 
         elImg = entry.querySelector('link[type^="image"]');
-        articleImage = imageUrl;
-        articleImage = elImg ? elImg.getAttribute('href') : articleImage;
-
+        articleImage = (elImg && elImg.getAttribute('href')) ? elImg.getAttribute('href') : imageUrl;
         articleImage = articleImage.replace('{snd:mode}/{snd:cropversion}', 'ALTERNATES/w380c34');
+        result.img = articleImage;
 
-        title = entry.querySelector('title') ? entry.querySelector('title').textContent : 'Empty title';
+        get('id', 'url');
+        get('title');
+        get('published');
+        get('updated');
+        get('snd:deskedMode', 'deskedMode');
 
-        return {url: articleUrl, img: articleImage, title: title, base: ''};
+        return result;
     }
 
     function parseArticlesXML(articles){
