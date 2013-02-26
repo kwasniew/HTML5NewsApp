@@ -15,31 +15,21 @@
         var deferred = Q.defer();
         var self = this;
 
-        this.offlineStorage.getArticlesPromise().then(function(articles){
+        this.offlineStorage.getArticlesPromise()
+        .done(function(articles){
 
             deferred.resolve(articles);
 
-        })
-        .fail(function(){
-            console.log('empty dB');
-            self.crawler.getArticles().then(function(articles){
+        }, function(){
 
-                console.log('crewler downloaded articles', articles);
-
-                self.offlineStorage.addArticles(articles);
-
-                deferred.resolve(articles);
-
-            })
-            .fail(function (err) {
+            var artPromise = self.crawler.getArticles();
+            artPromise.then(self.offlineStorage.addArticles.bind(self.offlineStorage));
+            artPromise.then(deferred.resolve);
+            artPromise.fail(function (err) {
                 deferred.reject(new Error( "no articles" ) );
             });
+            artPromise.done();
 
-            console.log('empty dB');
-        }).fail(function () {
-            console.error('error model', arguments);
-
-            deferred.reject(new Error( "crawler error" ) );
         });
 
         return deferred.promise;
