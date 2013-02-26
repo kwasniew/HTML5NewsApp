@@ -6,6 +6,9 @@
     var articleUrl = "/news/publication/common/searchContents/instance?id=24517&contentType=article";
     var imageUrl = 'http://ap.mnocdn.no/incoming/article7122344.ece/ALTERNATES/w580cFree/sovedekk-xshEl7UtjK.jpg?updated=150220131021';
 
+    var betahostUrl = 'http://apitestbeta3.medianorge.no';
+    var rootUrl = betahostUrl+'/news/';
+
     var download;
 
     function Crawler(){
@@ -70,11 +73,15 @@
         return data.baseURI + data.querySelector('link[rel="sections-common"]').getAttribute('href');
     }
 
+    Crawler.prototype.getRoot = function(){
+        return download.getRoot(rootUrl)
+        .then(parseRoot);
+    };
+
     Crawler.prototype.getArticles = function() {
         var self = this;
 
-        return download.getRoot()
-        .then(parseRoot)
+        return this.getRoot()
         .then(download.getSection)
         .then(this.getDeskedLink.bind(this))
         .then(download.getArticlesRoot)

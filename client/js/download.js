@@ -3,10 +3,6 @@
 (function (window, undefined) {
     "use strict";
 
-    var betahostUrl = 'http://apitestbeta3.medianorge.no';
-    var rootUrl = betahostUrl+'/news/';
-
-
     function makeRequest(config){
         if(typeof config === 'String'){
             config = { url: config };
@@ -35,7 +31,7 @@
         return deferred.promise;
     }
 
-    function getRoot() {
+    function getRoot(rootUrl) {
         return makeRequest(rootUrl);
     }
 
