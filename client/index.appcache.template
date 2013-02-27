@@ -1,0 +1,31 @@
+CACHE MANIFEST
+
+# Build Version: VERSION_PLACEHOLDER
+# Last Updated: DATE_PLACEHOLDER
+
+CACHE:
+css/bootstrap.css
+css/bootstrap-responsive.css
+css/style.css
+
+img/glyphicons-halflings-white.png
+img/glyphicons-halflings.png
+
+js/lib/q.js
+js/lib/zepto.js
+js/lib/pubsub.js
+js/lib/es5-shim.js
+js/offlineStorage.js
+js/download.js
+js/crawler.js
+js/articles.js
+js/view.js
+js/app.js
+
+js/images.js
+
+# Always go to the server by default unless CACHE specified
+NETWORK:
+*
+
+FALLBACK:
