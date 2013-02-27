@@ -1,0 +1,13 @@
+CACHE MANIFEST
+
+# Build Version: VERSION_PLACEHOLDER
+# Last Updated: DATE_PLACEHOLDER
+
+CACHE:
+main.js
+
+# Always go to the server by default unless CACHE specified
+NETWORK:
+*
+
+FALLBACK:

@@ -36,7 +36,7 @@ public class Main extends RestApplication {
         }catch(Exception e){
             //eat
         }
-        return bindingsModule(bindings(in(url).path(urlPath)));
+        return bindingsModule(bindings(in(url).path(urlPath).set("ico", "image/x-icon")));
     }
 
     public static void main(String[] args) throws Exception {

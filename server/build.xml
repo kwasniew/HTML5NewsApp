@@ -43,6 +43,31 @@
         <path path="${test.jar.path}"/>
     </path>
 
+    <target name="updateCacheManifest" description="updates cache manifest file">
+        <delete>
+            <fileset dir="${src}" includes="**/*.appcache"/>
+        </delete>
+
+        <copy todir="${src}" includeemptydirs="false">
+            <fileset dir="${src}"/>
+            <mapper type="glob" from="*.appcache.template" to="*.appcache"/>
+        </copy>
+
+        <replace dir="${src}" value="${build.number}">
+            <include name="**/*.appcache"/>
+            <replacetoken>VERSION_PLACEHOLDER</replacetoken>
+        </replace>
+
+        <tstamp>
+            <format property="touch.time" pattern="dd/MM/yyyy HH:mm:ss"/>
+        </tstamp>
+
+        <replace dir="${src}" value="${touch.time}">
+            <include name="**/*.appcache"/>
+            <replacetoken>DATE_PLACEHOLDER</replacetoken>
+        </replace>
+    </target>
+
     <target name="updateClient" description="updates client code">
         <copy todir="${client.dir}" overwrite="true">
             <fileset dir="${client.src.dir}" excludes="build/**,lib/**"/>

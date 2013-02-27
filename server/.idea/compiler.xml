@@ -15,6 +15,8 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
       <entry name="?*.js" />
+      <entry name="?*.appcache" />
+      <entry name="?*.ico" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>

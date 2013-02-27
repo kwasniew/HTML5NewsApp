@@ -1,11 +1,12 @@
-<html>
+<html manifest="index.appcache">
     <head>
         <title>HTML5 Table App - Admin Panel</title>
+        <link rel="icon" type="image/png" href="icon.png">
     </head>
     <body>
         <h4>Menu</h4>
         <ul>
-            <li><a href="/latest">Latest News</a></li>
+            <li><a href="/latest">Latest News5</a></li>
             <li><a href="/index.html">Client Root</a></li>
             <li><a href="/status/git">What git version am I?</a></li>
             <li><a href="/status/build">What build number am I?</a></li>
@@ -14,5 +15,18 @@
             <h2 style="color: red">If you see this, then Javascript inclusion doesn't work</h2>
         </div>
         <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript">
+            var cache = window.applicationCache;
+
+            // When a new manifest is successfully downloaded, swap the new cache and reload page.
+            cache.addEventListener('updateready', function(e) {
+                if (cache.status == cache.UPDATEREADY) {
+                    cache.swapCache();
+                    if (confirm('A new version of this site is available. Load it?')) {
+                        window.location.reload();
+                    }
+                }
+            }, false);
+        </script>
     </body>
 </html>
