@@ -125,6 +125,8 @@
     Crawler.prototype.joinArticles = function(dictionary, list){
         console.log('join', dictionary, list);
 
+        var order = 0;
+
         list = list.filter(function(item){
             return !!dictionary[item.url];
         }).map(function(item){
@@ -134,6 +136,7 @@
                     item[key] = val[key];
                 }
             }
+            item.ord = order++;
             return item;
         });
 
