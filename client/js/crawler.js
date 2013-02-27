@@ -94,15 +94,18 @@
         .then(parseArticlesXML);
 
         //promise.then(this.saveArticlesList.bind(this))
-        var array = list.then(download.getArticles);
+        var articlesDict = list.then(download.getArticles)
+        .then(this.mapArticles.bind(this));
 
-        return Q.all([list, array])
-        .spread(this.mapArticles.bind(this))
+        var all = Q.all([articlesDict, list])
+        .spread(this.joinArticles.bind(this))
         .then(filterArticles);
+
+        return all;
     };
 
-    Crawler.prototype.mapArticles = function(list, array){
-        console.log('end', list, array);
+    Crawler.prototype.mapArticles = function( array){
+        console.log('map',array);
 
         var dictionary = {};
 
@@ -115,8 +118,15 @@
             };
         });
 
+        return dictionary;
+
+    };
+
+    Crawler.prototype.joinArticles = function(dictionary, list){
+        console.log('join', dictionary, list);
+
         list = list.filter(function(item){
-            return dictionary[item.url];
+            return !!dictionary[item.url];
         }).map(function(item){
             var val = dictionary[item.url];
             for(var key in val){
