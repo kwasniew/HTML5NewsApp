@@ -43,7 +43,7 @@
         <path path="${test.jar.path}"/>
     </path>
 
-    <target name="updateCacheManifest" description="updates cache manifest file">
+    <target name="generate-cache-manifest" description="generates cache manifest file">
         <delete>
             <fileset dir="${src}" includes="**/*.appcache"/>
         </delete>
@@ -144,6 +144,7 @@
         <parallel>
             <antcall target="generate-git-commit-file"/>
             <antcall target="generate-build-number-file"/>
+            <antcall target="generate-cache-manifest"/>
         </parallel>
         <antcall target="compile"/>
         <parallel>
