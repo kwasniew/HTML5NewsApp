@@ -14,6 +14,7 @@
 
     View.prototype.thenViewError = function(articles){
         var h1 = document.createElement('h1');
+        h1.className = 'alert alert-error';
         h1.innerText = "no articles, check internet connection";
         document.body.appendChild(h1);
     };
