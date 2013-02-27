@@ -180,7 +180,7 @@
         var db = this.db;
         db.readTransaction(function(tx){
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
-            tx.executeSql('SELECT * FROM Articles LIMIT 80 ORDER by ord', [], function (tx, results) {
+            tx.executeSql('SELECT * FROM Articles ORDER BY ord LIMIT 80;', [], function (tx, results) {
                 var result = toArray(results.rows);
 
                 result.forEach(function(article){
@@ -191,7 +191,7 @@
 
 
             }, function(){
-                //console.log('not selected?', arguments);
+                console.log('OfflineStorage error getArticles', arguments);
                 successCallback([]);
             });
         });
@@ -201,10 +201,11 @@
     OfflineStorage.prototype.getArticlesPromise = function(){
         var deferred = Q.defer();
         this.getArticles(function(data){
-            if(data.length)
+            if(data.length){
                 deferred.resolve(data);
-            else
-                deferred.reject('empty db');
+             }else{
+                 deferred.reject('empty db');
+            }
         });
         return deferred.promise;
     };
