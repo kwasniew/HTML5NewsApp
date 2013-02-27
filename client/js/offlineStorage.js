@@ -32,7 +32,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles6', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles9', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -43,8 +43,20 @@
 
         function migration1(t){
             console.log('migrate to 1', db);
-
-            t.executeSql('CREATE TABLE IF NOT EXISTS Articles(url TEXT PRIMARY KEY, published TIMESTAMP, updated TIMESTAMP, title TEXT, deskedMode TEXT, bodytext TEXT, img TEXT, compressedbase BLOB)');
+            var create = [
+                'CREATE TABLE IF NOT EXISTS Articles',
+                '(url TEXT PRIMARY KEY,',
+                    'published TIMESTAMP,',
+                    'updated TIMESTAMP,',
+                    'title TEXT,',
+                    'deskedMode TEXT,',
+                    'bodytext TEXT,',
+                    'img TEXT,',
+                    'ord INT,',
+                    'compressedbase BLOB',
+                ')'
+            ];
+            t.executeSql(create.join(' '));
 
         }
 
@@ -111,8 +123,8 @@
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
             var query = ['INSERT INTO Articles',
-            '(url, published, updated, title, bodytext, img, compressedbase, deskedMode)',
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?)'];
+            '(url, published, updated, title, bodytext, img, compressedbase, deskedMode, ord)',
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'];
             tx.executeSql(query.join(' '),
                 [
                     article.url,
@@ -122,7 +134,8 @@
                     article.bodytext,
                     article.img,
                     compress(article.base),
-                    article.deskedMode
+                    article.deskedMode,
+                    article.ord
                 ],
                 function(tx, resultSet){
                     console.log('saved article', arguments);
@@ -167,7 +180,7 @@
         var db = this.db;
         db.readTransaction(function(tx){
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
-            tx.executeSql('SELECT * FROM Articles LIMIT 80', [], function (tx, results) {
+            tx.executeSql('SELECT * FROM Articles LIMIT 80 ORDER by ord', [], function (tx, results) {
                 var result = toArray(results.rows);
 
                 result.forEach(function(article){
