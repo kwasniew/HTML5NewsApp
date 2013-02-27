@@ -28,21 +28,28 @@
 
             entry = articlesList[i];
 
+            div = document.createElement('div');
+            //div.className = "media well";
+            div.className = "well";
+
             img = new Image();
             img.onload = entry.img;
             img.src = entry.base ? entry.base : entry.img;
-            div = document.createElement('div');
+            //img.className = 'media-object';
+
             h2 = document.createElement('h2');
             h2.innerHTML = entry.title;
-            div.appendChild(h2);
-            div.appendChild(img);
+            //h2.className = 'media-heading';
 
             text = document.createElement('div');
             text.innerHTML = entry.bodytext;
+            //text.className = 'media-body';
 
+            div.appendChild(h2);
+            div.appendChild(img);
             div.appendChild(text);
 
-            document.body.appendChild(div);
+            document.querySelector('.articleList').appendChild(div);
 
         }
 
