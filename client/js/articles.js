@@ -24,12 +24,7 @@
 
             var artPromise = self.crawler.getArticles();
             artPromise.then(self.offlineStorage.addArticles.bind(self.offlineStorage));
-            artPromise.then(deferred.resolve);
-            //artPromise.then(schibsted.images.startOffline);
-            artPromise.fail(function (err) {
-                deferred.reject(new Error( "no articles" ) );
-            });
-            artPromise.done();
+            artPromise.done(deferred.resolve, deferred.reject );
 
         });
 
