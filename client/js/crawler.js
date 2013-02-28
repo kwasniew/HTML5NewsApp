@@ -99,7 +99,10 @@
 
         var all = Q.all([articlesDict, list])
         .spread(this.joinArticles.bind(this))
-        .then(filterArticles);
+        .then(filterArticles)
+        .fail(function(){
+            console.error('crawler error', arguments);
+        });
 
         return all;
     };
@@ -111,9 +114,16 @@
 
         array.filter(function(a){ return a; })
         .forEach(function(doc){
+            var tag = doc.querySelector('[name="tag"] value') ?
+                doc.querySelector('[name="tag"] value').textContent:
+                '';
+
             dictionary[doc.documentURI] = {
                 url: doc.documentURI,
                 bodytext: doc.querySelector('[name="bodytext"] div').innerHTML,
+                byline: doc.querySelector('[name="byline"]').innerText,
+                tag: tag,
+                creatorName: doc.querySelector('creator name').textContent,
                 doc: doc
             };
         });

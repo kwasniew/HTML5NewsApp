@@ -1,0 +1,602 @@
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:metadata="http://xmlns.escenic.com/2010/atom-metadata" xmlns:snd="http://xmlns.snd.no/api">
+    <id>http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance?id=24464&amp;contentType=article</id>
+    <updated>2013-01-23T14:27:15.000Z</updated>
+    <app:edited>2013-01-23T14:27:15.000Z</app:edited>
+    <title type="text">Ole Martin Årst gir seg</title>
+    <published>2012-11-05T18:37:06.000Z</published>
+    <author>
+        <name>Ola Nordmann</name>
+        <uri>http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance/?id=1014&amp;contentType=person</uri>
+    </author>
+    <content type="application/vnd.vizrt.payload+xml">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/escenic/model/news" xmlns:vdf="http://www.vizrt.com/types">
+            <vdf:field name="runninghead">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="frontpagerunninghead"/>
+            <vdf:field name="frontpagetitle"/>
+            <vdf:field name="entranceword"/>
+            <vdf:field name="leadtext">
+                <vdf:value>Cupfinalen blir siste kamp for Ole Martin Årst (38).</vdf:value>
+            </vdf:field>
+            <vdf:field name="frontpageleadtext"/>
+            <vdf:field name="bodytext">
+                <vdf:value>
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+                        <p>TIL-spissen har bestemt seg for at nok er nok. Etter årets sesong er karrieren som toppspiller over.</p>
+                        <p>
+                            <strong>- Jeg har brukt litt tid på avgjørelsen, og bestemte meg for litt siden. Nå er tidspunktet det rette for å gå ut med det,</strong>sier Årst til iTromsø.</p>
+                        <p>Årsts siste kamp blir dermed cupfinalen for TIL mot Hødd 25. november, drøyt 16 år etter at han sist bidro med scoring og cupgull til Tromsø.</p>
+                        <p>– Ja, det er jo en grei regi å avslutte med det. Uten at det er avgjørende for beslutningen, så kjenner jeg at det føles veldig rett å avslutte nå.</p>
+                        <h2>La opprinnelig opp i 2009</h2>
+                        <p>Karrieren skjøt for alvor fart i 1995, og siden har han vært en spiss på toppnivå for TIL, Anderlecht, Gent, Standard Liege og Start.</p>
+                        <p>
+                            <em>
+                                <strong>– Vemodig nå?</strong>
+                            </em>
+                        </p>
+                        <p>– Ja, det er det selvfølgelig. Det er det ingen tvil om. Men samtidig har jeg fått tre fine bonusår etter at jeg la opp i 2009. Det var atskillig mer vemodig i 2009 da jeg hadde vært skadet i to år. Nå føler jeg at jeg avslutter på en helt annen måte. Selv om det har svingt litt i år, hadde jeg to fine sesonger i Start og en fin høst nå også.</p>
+                        <p>
+                            <em>
+                                <strong>– Perfekt avslutning å score i cupfinalen?</strong>
+                            </em>
+                        </p>
+                        <p>– Ja, det er klart det er ikke tvil om at det er drømmen og noe som jeg tenker mye på. Vi har noen viktige seriekamper nå, og vi skal ikke gi slipp på det halmstrået vi har med medalje. Men cupfinalen betyr ekstremt mye for meg. Det tror jeg alle skjønner.</p>
+                        <h2>Endelig denne gangen</h2>
+                        <p>
+                            <em>
+                                <strong>– Er det 100 prosent sikkert at du gir deg?</strong>
+                            </em>
+                        </p>
+                        <p>– Det er 100 prosent sikkert.</p>
+                        <p>Karrieren har også inneholdt 22 landskamper - og to mål - med flagget på brystet.</p>
+                        <p>I Belgia står han registrert med 82 toppseriemål, mens det har blitt 101 eliteseriemål i Norge.</p>
+                    </div>
+                </vdf:value>
+            </vdf:field>
+            <vdf:field name="tomsn"/>
+            <vdf:field name="linktext">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="link"/>
+            <vdf:field name="relatedteams_adrlegacy"/>
+            <vdf:field name="relatedleagues_adrlegacy"/>
+            <vdf:field name="relatedplayers_adrlegacy"/>
+            <vdf:field name="relatedsportstags_adrlegacy"/>
+            <vdf:field name="relatedsports_adrlegacy"/>
+            <vdf:field name="teaserrel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="topmediarel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="picturerel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="storyrel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="factboxrel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="pollrel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="restrel">
+                <vdf:list/>
+            </vdf:field>
+            <vdf:field name="theme">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="activatedebate"/>
+            <vdf:field name="commentteaser">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="bylineplacement">
+                <vdf:value>true</vdf:value>
+            </vdf:field>
+            <vdf:field name="bylineprefix">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="byline">
+                <vdf:value>Øyvind Sivertsen og Per Christian Johansen</vdf:value>
+            </vdf:field>
+            <vdf:field name="source">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="showbylinelink"/>
+            <vdf:field name="moretofollowfp"/>
+            <vdf:field name="moretofollowart"/>
+            <vdf:field name="showfptip"/>
+            <vdf:field name="showarttip"/>
+            <vdf:field name="showtvtheme"/>
+            <vdf:field name="tonewspilot"/>
+            <vdf:field name="allowdebate"/>
+            <vdf:field name="listtitle"/>
+            <vdf:field name="listleadtext"/>
+            <vdf:field name="relationrunninghead"/>
+            <vdf:field name="relationtitle"/>
+            <vdf:field name="relationleadtext"/>
+            <vdf:field name="showrelationarticle"/>
+            <vdf:field name="relationtitlesize"/>
+            <vdf:field name="relationlinktext">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="noindex"/>
+            <vdf:field name="noads"/>
+            <vdf:field name="hiddenarticle"/>
+            <vdf:field name="excludedformediahouse">
+                <vdf:list>
+                    <vdf:payload>
+                        <vdf:field name="excludedformediahouse">
+                            <vdf:value>sa</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                </vdf:list>
+            </vdf:field>
+            <vdf:field name="zoomlevel">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="iconurl">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="clustericonurl">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="clusteredmarkers"/>
+            <vdf:field name="maptypeid"/>
+            <vdf:field name="mappositions"/>
+            <vdf:field name="com.escenic.geocode">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="putinmediahouseinbox">
+                <vdf:list>
+                    <vdf:payload>
+                        <vdf:field name="putinmediahouseinbox">
+                            <vdf:value>bt</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="putinmediahouseinbox">
+                            <vdf:value>ap</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="putinmediahouseinbox">
+                            <vdf:value>hamar</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                </vdf:list>
+            </vdf:field>
+            <vdf:field name="mailnotificationsent">
+                <vdf:list>
+                    <vdf:payload>
+                        <vdf:field name="mailnotificationsent">
+                            <vdf:value>bt</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="mailnotificationsent">
+                            <vdf:value>ap</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="mailnotificationsent">
+                            <vdf:value>hamar</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                </vdf:list>
+            </vdf:field>
+            <vdf:field name="newmediahouses"/>
+            <vdf:field name="updatedfields">
+                <vdf:list>
+                    <vdf:payload>
+                        <vdf:field name="updatedfields">
+                            <vdf:value>status</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                </vdf:list>
+            </vdf:field>
+            <vdf:field name="customemailnotification"/>
+            <vdf:field name="customsubject">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="custommessage">
+                <vdf:value>
+                    <div xmlns="http://www.w3.org/1999/xhtml"/>
+                </vdf:value>
+            </vdf:field>
+            <vdf:field name="livearticle">
+                <vdf:value>false</vdf:value>
+            </vdf:field>
+            <vdf:field name="livearticlestate">
+                <vdf:value>false</vdf:value>
+            </vdf:field>
+            <vdf:field name="livearticlestatechanged">
+                <vdf:value>false</vdf:value>
+            </vdf:field>
+            <vdf:field name="sportdeskorig">
+                <vdf:field name="removefromalldeskedpositions">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinstayarea">
+                    <vdf:value>0</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarea">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaap">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareabt">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasa">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareafvn">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaadr">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareahamar">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarearb">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaitromso">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasmp">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+            </vdf:field>
+            <vdf:field name="sportdesk">
+                <vdf:field name="removefromalldeskedpositions">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinstayarea">
+                    <vdf:value>0</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarea">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaap">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareabt">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasa">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareafvn">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaadr">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareahamar">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarearb">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaitromso">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasmp">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+            </vdf:field>
+            <vdf:field name="footballdeskorig">
+                <vdf:field name="removefromalldeskedpositions">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinstayarea">
+                    <vdf:value>0</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarea">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaap">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareabt">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasa">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareafvn">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaadr">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareahamar">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarearb">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaitromso">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasmp">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+            </vdf:field>
+            <vdf:field name="footballdesk">
+                <vdf:field name="removefromalldeskedpositions">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinstayarea">
+                    <vdf:value>0</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarea">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaap">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareabt">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasa">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareafvn">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaadr">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareahamar">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowarearb">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareaitromso">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+                <vdf:field name="deskinflowareasmp">
+                    <vdf:value>false</vdf:value>
+                </vdf:field>
+            </vdf:field>
+            <vdf:field name="tags"/>
+            <vdf:field name="com.escenic.tags">
+                <vdf:list>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="sport:football:player:Walter_Adrian_Samuel_1978_03_23" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:sport_football_player_Walter_Adrian_Samuel_1978_03_23"/>
+                            <vdf:value>sport:football:player:Walter_Adrian_Samuel_1978_03_23</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="sport:football:player:Rodrigo_Ferrante_Taddei_1980_03_06" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:sport_football_player_Rodrigo_Ferrante_Taddei_1980_03_06"/>
+                            <vdf:value>sport:football:player:Rodrigo_Ferrante_Taddei_1980_03_06</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="Sport:Fotball:Lag:Tromsø" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:Troms%C3%B8"/>
+                            <vdf:value>Tromsø</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="Sport:Fotball:Sesong:2012:NM" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:NM"/>
+                            <vdf:value>NM</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="Sport:Fotball:Spiller:Ole Martin Årst" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:Ole_Martin_%C3%85rst"/>
+                            <vdf:value>Ole Martin Årst</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                    <vdf:payload>
+                        <vdf:field name="tag">
+                            <vdf:origin colonPath="Sport:Fotball:Sesong:2012:Eliteserien" href="http://mnodev1.snd.no/webservice/escenic/classification/tag/tag:vertikal.medianorge.no,2011:Eliteserien"/>
+                            <vdf:value>Eliteserien</vdf:value>
+                        </vdf:field>
+                        <vdf:field name="relevance">
+                            <vdf:value>1</vdf:value>
+                        </vdf:field>
+                    </vdf:payload>
+                </vdf:list>
+            </vdf:field>
+        </vdf:payload>
+    </content>
+    <app:edited>2013-01-23T14:27:15.000Z</app:edited>
+    <dcterms:created>2012-11-05T18:37:06.000Z</dcterms:created>
+    <dcterms:identifier>24464</dcterms:identifier>
+    <metadata:reference source="ece-auto-gen" sourceid="520a9104-f6b2-4f59-89ed-9f574f9e2361"/>
+    <metadata:creator>
+        <name>Ola Nordmann</name>
+    </metadata:creator>
+    <metadata:publication href="http://apitestbeta3.medianorge.no/news/publication/common/publication/vertikal/">
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/443" rel="http://www.vizrt.com/types/relation/home-section" title="Cup" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/443" rel="http://www.vizrt.com/types/relation/section" title="Cup" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/219" rel="http://www.vizrt.com/types/relation/section" title="Fotball ADR" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/213" rel="http://www.vizrt.com/types/relation/section" title="Fotball BT" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/217" rel="http://www.vizrt.com/types/relation/section" title="Fotball FVN" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/221" rel="http://www.vizrt.com/types/relation/section" title="Fotball HAMAR" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/276" rel="http://www.vizrt.com/types/relation/section" title="Fotball iTromsø" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/274" rel="http://www.vizrt.com/types/relation/section" title="Fotball Rbnett" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/215" rel="http://www.vizrt.com/types/relation/section" title="Fotball SA" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/278" rel="http://www.vizrt.com/types/relation/section" title="Fotball SMP" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/218" rel="http://www.vizrt.com/types/relation/section" title="Sport ADR" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/212" rel="http://www.vizrt.com/types/relation/section" title="Sport BT" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/216" rel="http://www.vizrt.com/types/relation/section" title="Sport FVN" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/220" rel="http://www.vizrt.com/types/relation/section" title="Sport HAMAR" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/275" rel="http://www.vizrt.com/types/relation/section" title="Sport iTromsø" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/273" rel="http://www.vizrt.com/types/relation/section" title="Sport Rbnett" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/214" rel="http://www.vizrt.com/types/relation/section" title="Sport SA" type="application/atom+xml; type=entry"/>
+        <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/277" rel="http://www.vizrt.com/types/relation/section" title="Sport SMP" type="application/atom+xml; type=entry"/>
+    </metadata:publication>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/section/443" rel="http://www.vizrt.com/types/relation/home-section" title="Cup" type="application/atom+xml; type=entry"/>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/publication/vertikal/" rel="http://www.vizrt.com/types/relation/publication" title="vertikal" type="application/atom+xml; type=entry"/>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance?id=24464&amp;contentType=article" rel="self"/>
+    <link href="http://mnodev1.snd.no/100Sport/snowboard/article24454.ece/{snd:mode}/{snd:cropversion}/snowboard_42.jpg" metadata:group="TEASERREL" metadata:synthetic-id="04ddb11c-3cc2-454d-9ee0-0a74b0b8dcb1" rel="TEASERREL" type="image/jpeg" xmlns:vdf="http://www.vizrt.com/types">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/content-summaries/picture">
+            <vdf:field name="title">
+                <vdf:value>snowboard_42.jpg</vdf:value>
+            </vdf:field>
+            <vdf:field name="captiontitle">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="caption">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="alttext">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="photographer">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="picturesize">
+                <vdf:value>280</vdf:value>
+            </vdf:field>
+            <vdf:field name="pictureformat">
+                <vdf:value>169</vdf:value>
+            </vdf:field>
+            <vdf:field name="useimageversion"/>
+        </vdf:payload>
+        <snd:id>24454</snd:id>
+        <snd:section homeSection="true" id="292" name="Snowboard" path="100Sport/snowboard" uniqueName="snowboard"/>
+    </link>
+    <link href="http://mnodev1.snd.no/sportInbox/article24538.ece/{snd:mode}/{snd:cropversion}/metal_MG_8904_174397a.jpeg" metadata:group="TEASERREL" metadata:synthetic-id="2168ee7d-8d0f-413b-8c02-47cba71e9e34" rel="TEASERREL" type="image/jpeg" xmlns:vdf="http://www.vizrt.com/types">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/content-summaries/picture">
+            <vdf:field name="title">
+                <vdf:value>metal_MG_8904_174397a.jpeg</vdf:value>
+            </vdf:field>
+            <vdf:field name="captiontitle">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="caption">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="alttext">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="photographer">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="picturesize">
+                <vdf:value>280</vdf:value>
+            </vdf:field>
+            <vdf:field name="pictureformat">
+                <vdf:value>169</vdf:value>
+            </vdf:field>
+            <vdf:field name="useimageversion"/>
+        </vdf:payload>
+        <snd:id>24538</snd:id>
+        <snd:section homeSection="true" id="464" name="Sport Inbox" path="sportInbox" uniqueName="sportInbox"/>
+    </link>
+    <link href="http://mnodev1.snd.no/incoming/article24465.ece/{snd:mode}/{snd:cropversion}/_rst_172331a.jpeg" metadata:group="TOPMEDIAREL" metadata:synthetic-id="edcbbdca-fd06-48ab-a96d-e65cbfb20074" rel="TOPMEDIAREL" type="image/jpeg" xmlns:vdf="http://www.vizrt.com/types">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/content-summaries/picture">
+            <vdf:field name="title">
+                <vdf:value>_rst_172331a.jpeg</vdf:value>
+            </vdf:field>
+            <vdf:field name="captiontitle">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="caption">
+                <vdf:value>GIR SEG: Ole Martin Årst legger opp.</vdf:value>
+            </vdf:field>
+            <vdf:field name="alttext">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="photographer">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="picturesize">
+                <vdf:value>280</vdf:value>
+            </vdf:field>
+            <vdf:field name="pictureformat">
+                <vdf:value>169</vdf:value>
+            </vdf:field>
+            <vdf:field name="useimageversion"/>
+        </vdf:payload>
+        <snd:id>24465</snd:id>
+        <snd:section homeSection="true" id="2" name="New Articles" path="ece_incoming" uniqueName="ece_incoming"/>
+    </link>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance?id=24432&amp;contentType=article" metadata:group="STORYREL" metadata:synthetic-id="07f07468-21a1-44cb-900d-ef5c9e4da217" rel="related" type="application/atom+xml; type=entry" xmlns:vdf="http://www.vizrt.com/types">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/content-summaries/news">
+            <vdf:field name="frontpagerunninghead">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="frontpagetitle">
+                <vdf:value>autodesk</vdf:value>
+            </vdf:field>
+            <vdf:field name="frontpageleadtext">
+                <vdf:value>asasasasasa</vdf:value>
+            </vdf:field>
+            <vdf:field name="showrelationarticle"/>
+            <vdf:field name="moretofollowfp"/>
+            <vdf:field name="showfptip"/>
+            <vdf:field name="showtvtheme"/>
+            <vdf:field name="runninghead">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="title">
+                <vdf:value>autodesk</vdf:value>
+            </vdf:field>
+            <vdf:field name="leadtext">
+                <vdf:value>asasasasasa</vdf:value>
+            </vdf:field>
+            <vdf:field name="teaserrel2"/>
+        </vdf:payload>
+    </link>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance?id=24462&amp;contentType=article" metadata:group="STORYREL" metadata:synthetic-id="428f4a19-ffb8-40e6-8473-1b7bff6f4b97" rel="related" type="application/atom+xml; type=entry" xmlns:vdf="http://www.vizrt.com/types">
+        <vdf:payload model="http://mnodev1.snd.no/webservice/publication/vertikal/content-summaries/news">
+            <vdf:field name="frontpagerunninghead">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="frontpagetitle">
+                <vdf:value>Tvilsomt om Tarik er med mot Metalist</vdf:value>
+            </vdf:field>
+            <vdf:field name="frontpageleadtext">
+                <vdf:value>RBK-spissen har trolig fått en strekk i låret.</vdf:value>
+            </vdf:field>
+            <vdf:field name="showrelationarticle"/>
+            <vdf:field name="moretofollowfp"/>
+            <vdf:field name="showfptip"/>
+            <vdf:field name="showtvtheme"/>
+            <vdf:field name="runninghead">
+                <vdf:value/>
+            </vdf:field>
+            <vdf:field name="title">
+                <vdf:value>Tvilsomt om Tarik er med mot Metalist</vdf:value>
+            </vdf:field>
+            <vdf:field name="leadtext">
+                <vdf:value>RBK-spissen har trolig fått en strekk i låret.</vdf:value>
+            </vdf:field>
+            <vdf:field name="teaserrel2"/>
+        </vdf:payload>
+    </link>
+    <link href="http://apitestbeta3.medianorge.no/news/publication/common/searchContents/instance?id=24464&amp;contentType=article/tagit?tag={colonName}" rel="tagging"/>
+    <snd:hidden>sa</snd:hidden>
+    <snd:section homeSection="true" id="443" name="Cup" path="100Sport/fotball/fotball_cup" uniqueName="fotball_cup"/>
+</entry>
