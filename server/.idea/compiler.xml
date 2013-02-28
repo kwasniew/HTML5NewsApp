@@ -17,6 +17,7 @@
       <entry name="?*.js" />
       <entry name="?*.appcache" />
       <entry name="?*.ico" />
+      <entry name="?*.css" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>
