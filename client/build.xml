@@ -75,7 +75,7 @@
 
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="lib/ant-contrib.jar"/>
 
-    <target name="concatenate">
+    <target name="concatenate-js">
         <echo message=";" file="semicolon.tmp"/>
 
         <copy todir="${artifacts}/js">
@@ -93,7 +93,18 @@
         <delete file="semicolon.tmp"/>
     </target>
 
-    <target name="minify" depends="concatenate">
+    <target name="concatenate-css">
+        <copy todir="${artifacts}/css">
+            <fileset dir="css"/>
+        </copy>
+
+        <concat destfile="${artifacts}/build.css" fixlastline="yes" eol="lf">
+            <header>/* Build Time: ${touch.time} */</header>
+            <filelist dir="${artifacts}/css" files="${css.files}"/>
+        </concat>
+    </target>
+
+    <target name="minify-js" depends="concatenate-js">
         <apply executable="java" failonerror="true">
             <fileset dir="${artifacts}" includes="build.js"/>
             <mapper type="glob" from="build.js" to="${artifacts}/build.min.js"/>
@@ -105,6 +116,27 @@
             <arg line="-o"/>
             <targetfile/>
         </apply>
+    </target>
+
+    <target name="minify-css" depends="concatenate-css">
+        <apply executable="java" failonerror="true">
+            <fileset dir="${artifacts}" includes="build.css"/>
+            <mapper type="glob" from="build.css" to="${artifacts}/build.min.css"/>
+
+            <arg line="-jar"/>
+            <arg path="lib/build/yuicompressor-2.4.7.jar"/>
+            <srcfile/>
+
+            <arg line="-o"/>
+            <targetfile/>
+        </apply>
+    </target>
+
+    <target name="minify">
+        <parallel>
+            <antcall target="minify-js"/>
+            <antcall target="minify-css"/>
+        </parallel>
     </target>
 
     <target name="build" depends="clean, update, validate, testjs, minify"/>
