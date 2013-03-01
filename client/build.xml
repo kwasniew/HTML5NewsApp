@@ -5,6 +5,8 @@
     <property name="artifacts" value="${build}/artifacts"/>
     <property name="reports" value="${artifacts}/reports"/>
 
+    <loadproperties srcfile="build.properties" />
+
     <condition property="64bits">
         <os arch="amd64"/>
     </condition>
@@ -76,16 +78,16 @@
     <target name="concatenate">
         <echo message=";" file="semicolon.tmp"/>
 
-        <copy todir="build/artifacts/js">
+        <copy todir="${artifacts}/js">
             <fileset dir="js"/>
             <filterchain>
                 <concatfilter prepend="semicolon.tmp"/>
             </filterchain>
         </copy>
 
-        <concat destfile="build/artifacts/build.js" fixlastline="yes" eol="lf">
+        <concat destfile="${artifacts}/build.js" fixlastline="yes" eol="lf">
             <header>/* Build Time: ${touch.time} */</header>
-            <filelist dir="build/artifacts/js" files="lib/q.js,lib/zepto.js,lib/pubsub.js,lib/es5-shim.js,offlineStorage.js,download.js,crawler.js,articles.js,view.js,app.js"/>
+            <filelist dir="${artifacts}/js" files="${js.sync.files}"/>
         </concat>
 
         <delete file="semicolon.tmp"/>
@@ -93,8 +95,8 @@
 
     <target name="minify" depends="concatenate">
         <apply executable="java" failonerror="true">
-            <fileset dir="build/artifacts" includes="build.js"/>
-            <mapper type="glob" from="build.js" to="build/artifacts/build.min.js"/>
+            <fileset dir="${artifacts}" includes="build.js"/>
+            <mapper type="glob" from="build.js" to="${artifacts}/build.min.js"/>
 
             <arg line="-jar"/>
             <arg path="lib/build/yuicompressor-2.4.7.jar"/>
