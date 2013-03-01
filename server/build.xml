@@ -70,7 +70,7 @@
 
     <target name="updateClient" description="updates client code">
         <copy todir="${client.dir}" overwrite="true">
-            <fileset dir="${client.src.dir}" excludes="build/**,lib/**,*.iml,build.xml,test/**"/>
+            <fileset dir="${client.src.dir}" excludes="build/artifacts/reports,build/artifacts/dependencies,lib/**,*.iml,build.xml,test/**"/>
         </copy>
     </target>
 

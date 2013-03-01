@@ -105,7 +105,7 @@
         </apply>
     </target>
 
-    <target name="build" depends="clean, update, validate, testjs"/>
+    <target name="build" depends="clean, update, validate, testjs, minify"/>
 
 </project>
 
