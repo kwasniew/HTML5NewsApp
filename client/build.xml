@@ -67,6 +67,30 @@
         </jstest>
     </target>
 
+    <tstamp>
+        <format property="touch.time" pattern="dd/MM/yyyy HH:mm:ss"/>
+    </tstamp>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="lib/ant-contrib.jar"/>
+
+    <target name="concatenate">
+        <delete>
+            <fileset dir="build/artifacts" includes="build.js"/>
+        </delete>
+        <echo file="build/artifacts/build.js" append="true">/* Build time: ${touch.time} */${line.separator}</echo>
+        <for param="file">
+            <path>
+                <fileset dir="js" includes="**/q.js,**/zepto.js,**/pubsub.js,**/es5-shim.js,**/offlineStorage.js,**/download.js,**/crawler.js,**/articles.js,**/view.js,**/app.js,**/images.js"/>
+            </path>
+            <sequential> <!-- run any task here -->
+                <loadresource property="content">
+                    <file file="@{file}"/>
+                </loadresource>
+                <echo file="build/artifacts/build.js" append="true">${line.separator};${content}${line.separator}</echo>
+            </sequential>
+        </for>
+    </target>
+
     <target name="build" depends="clean, update, validate, testjs"/>
 
 </project>
