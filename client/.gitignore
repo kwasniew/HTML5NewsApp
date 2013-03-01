@@ -16,3 +16,6 @@ lib/optional
 *.log
 *.log.*
 
+# Tmp Files #
+*.tmp
+

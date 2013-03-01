@@ -74,21 +74,35 @@
     <taskdef resource="net/sf/antcontrib/antlib.xml" classpath="lib/ant-contrib.jar"/>
 
     <target name="concatenate">
-        <delete>
+        <echo message=";" file="semicolon.tmp"/>
+
+        <copy todir="build/artifacts/js">
+            <fileset dir="js"/>
+            <filterchain>
+                <concatfilter prepend="semicolon.tmp"/>
+            </filterchain>
+        </copy>
+
+        <concat destfile="build/artifacts/build.js" fixlastline="yes" eol="lf">
+            <header>/* Build Time: ${touch.time} */</header>
+            <filelist dir="build/artifacts/js" files="lib/q.js,lib/zepto.js,lib/pubsub.js,lib/es5-shim.js,offlineStorage.js,download.js,crawler.js,articles.js,view.js,app.js"/>
+        </concat>
+
+        <delete file="semicolon.tmp"/>
+    </target>
+
+    <target name="minify" depends="concatenate">
+        <apply executable="java" failonerror="true">
             <fileset dir="build/artifacts" includes="build.js"/>
-        </delete>
-        <echo file="build/artifacts/build.js" append="true">/* Build time: ${touch.time} */${line.separator}</echo>
-        <for param="file">
-            <path>
-                <fileset dir="js" includes="**/q.js,**/zepto.js,**/pubsub.js,**/es5-shim.js,**/offlineStorage.js,**/download.js,**/crawler.js,**/articles.js,**/view.js,**/app.js,**/images.js"/>
-            </path>
-            <sequential> <!-- run any task here -->
-                <loadresource property="content">
-                    <file file="@{file}"/>
-                </loadresource>
-                <echo file="build/artifacts/build.js" append="true">${line.separator};${content}${line.separator}</echo>
-            </sequential>
-        </for>
+            <mapper type="glob" from="build.js" to="build/artifacts/build.min.js"/>
+
+            <arg line="-jar"/>
+            <arg path="lib/build/yuicompressor-2.4.7.jar"/>
+            <srcfile/>
+
+            <arg line="-o"/>
+            <targetfile/>
+        </apply>
     </target>
 
     <target name="build" depends="clean, update, validate, testjs"/>
