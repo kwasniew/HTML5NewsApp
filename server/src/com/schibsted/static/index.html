@@ -1,9 +1,11 @@
-<html manifest="index.appcache">
+<html>
     <head>
         <title>HTML5 Table App - Admin Panel</title>
         <link rel="icon" type="image/png" href="icon.png">
     </head>
+
     <body>
+        <iframe src="offline.html" style="position:absolute;top:-999em;visibility:hidden"></iframe>
         <h4>Menu</h4>
         <ul>
             <li><a href="/latest">Latest News</a></li>
@@ -14,7 +16,8 @@
         <div id="jsTest">
             <h2 style="color: red">If you see this, then Javascript inclusion doesn't work</h2>
         </div>
-        <script type="text/javascript" src="main.js"></script>
+
+
         <script type="text/javascript">
             var cache = window.applicationCache;
 
@@ -28,5 +31,7 @@
                 }
             }, false);
         </script>
+
+        <script type="text/javascript" src="main.js"></script>
     </body>
 </html>
