@@ -32,7 +32,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles9', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles13', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -51,9 +51,13 @@
                     'title TEXT,',
                     'deskedMode TEXT,',
                     'bodytext TEXT,',
+                    'byline TEXT,',
+                    'tag TEXT,',
+                    'creatorName TEXT,',
                     'img TEXT,',
                     'ord INT,',
-                    'compressedbase BLOB',
+                    'compressedbase BLOB,',
+                    'doc TEXT',
                 ')'
             ];
             t.executeSql(create.join(' '));
@@ -122,9 +126,33 @@
         db.transaction(function (tx) {
             // console.log('insert into articles', db, tx);
             // url: articleUrl, img: articleImage, title
+            var columns = [
+                'url,',
+                'published,',
+                'updated,',
+                'title,',
+                'bodytext,',
+                'byline,',
+                'tag,',
+                'creatorName,',
+                'img,',
+                'compressedbase,',
+                'deskedMode,',
+                'ord,',
+                'doc'
+            ];
+            var colCount = new Array(columns.length);
+
             var query = ['INSERT INTO Articles',
-            '(url, published, updated, title, bodytext, img, compressedbase, deskedMode, ord)',
-            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'];
+                '(',
+                    columns.join(' '),
+                ')',
+                'VALUES (',
+                    colCount.join('?, ') + '?',
+                ')'];
+
+            console.log(query.join(' '));
+
             tx.executeSql(query.join(' '),
                 [
                     article.url,
@@ -132,10 +160,14 @@
                     article.updated,
                     article.title,
                     article.bodytext,
+                    article.byline,
+                    article.tag,
+                    article.creatorName,
                     article.img,
                     compress(article.base),
                     article.deskedMode,
-                    article.ord
+                    article.ord,
+                    article.doc
                 ],
                 function(tx, resultSet){
                     console.log('saved article', arguments);

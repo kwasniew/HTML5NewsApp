@@ -21,7 +21,7 @@
 
     View.prototype.viewArticles = function(name, articles){
         console.log('View:viewArticles', arguments);
-        var entry, img, h2, div, text;
+        var entry, img, h2, div, text, footer, date;
         var articlesList = articles;
 
         var len = articlesList.length;
@@ -44,11 +44,18 @@
 
             text = document.createElement('div');
             text.innerHTML = entry.bodytext;
+
+            footer = document.createElement('footer');
+            date = entry.published.split('T')[0] ?
+                entry.published.split('T')[0] : entry.published;
+            footer.innerText = 'Published: ' + date;
+
             //text.className = 'media-body';
 
             div.appendChild(h2);
             div.appendChild(img);
             div.appendChild(text);
+            div.appendChild(footer);
 
             document.querySelector('.articleList').appendChild(div);
 
