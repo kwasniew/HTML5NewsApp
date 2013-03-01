@@ -5,6 +5,7 @@ import com.googlecode.utterlyidle.RestApplication;
 import com.googlecode.utterlyidle.ServerConfiguration;
 import com.googlecode.utterlyidle.httpserver.RestServer;
 import com.googlecode.utterlyidle.modules.Module;
+import com.googlecode.utterlyidle.modules.PerformanceModule;
 import com.schibsted.news.NewsModule;
 import com.schibsted.status.StatusModule;
 import java.net.URL;
@@ -22,6 +23,7 @@ public class Main extends RestApplication {
         super(basePath);
         add(new NewsModule());
         add(new StatusModule());
+        add(new PerformanceModule());
 
         add(staticFilesModule(Main.class, "client/", ""));
         add(staticFilesModule(Main.class, "static/", "admin"));
