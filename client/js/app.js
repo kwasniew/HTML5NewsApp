@@ -1,18 +1,18 @@
-/*global console:true Downloader:true PubSub:true View:true Articles:true $:true
+/*global console:true Downloader:true PubSub:true View:true Articles:true
 schibsted:true */
 
 (function(window, undefined){
     "use strict";
 
-    function App(){
+    function App(articles, view){
         console.log("Start!");
 
-        this.articles = new Articles();
-        this.view = new View();
+        this.articles = articles;
+        this.view = view;
         this.articles.getArticles()
         .then(
-            this.view.thenViewArticles,
-            this.view.thenViewError
+            this.view.showArticles,
+            this.view.showError
         )
         .done();
 
@@ -26,18 +26,13 @@ schibsted:true */
         }
 
 
-
-        $('#saveForOffline').on('click', notifyImageDownloader);
-        $('#saveForOffline').on('tap', notifyImageDownloader);
-        $('body').swipeDown(notifyImageDownloader);
-
-        $('#clearOffline').on('click', notifyClear);
-        $('#clearOffline').on('tap', notifyClear);
+        view.registerImageDownload(notifyImageDownloader);
+        view.registerClearDB(notifyClear);
 
     }
 
 
-
-    window.App = App;
+    window.schibsted = window.schibsted || {};
+    window.schibsted.App = App;
 
 })( window );

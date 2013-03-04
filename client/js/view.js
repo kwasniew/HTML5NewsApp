@@ -1,4 +1,4 @@
-/*global console:true */
+/*global console:true $:true */
 
 (function(window, undefined){
     "use strict";
@@ -7,12 +7,23 @@
         console.log("Start!");
     }
 
-    View.prototype.thenViewArticles = function(articles){
+    View.prototype.registerImageDownload = function(notifyImageDownloader) {
+        $('#saveForOffline').on('click', notifyImageDownloader);
+        $('#saveForOffline').on('tap', notifyImageDownloader);
+        $('body').swipeDown(notifyImageDownloader);
+    };
+
+    View.prototype.registerClearDB = function(notifyClear) {
+        $('#clearOffline').on('click', notifyClear);
+        $('#clearOffline').on('tap', notifyClear);
+    };
+
+    View.prototype.showArticles = function(articles){
         console.log('View:thenViewArticles', arguments);
         View.prototype.viewArticles('then', articles);
     };
 
-    View.prototype.thenViewError = function(articles){
+    View.prototype.showError = function(articles){
         var h1 = document.createElement('h1');
         h1.className = 'alert alert-error';
         h1.innerText = "no articles, check internet connection";
