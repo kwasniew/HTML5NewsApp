@@ -1,4 +1,4 @@
-/*global console:true $:true */
+/*global console:true $:true Swipe:true */
 
 (function(window, undefined){
     "use strict";
@@ -73,7 +73,7 @@
             div.appendChild(text);
             div.appendChild(footer);
 
-            (i < 1) && listEl.appendChild(div);
+            listEl.appendChild(div);
 
             var secondScreen = container.cloneNode(true);
             secondScreen.style.display = 'none';// = 'display:none;';
