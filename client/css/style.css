@@ -8,3 +8,27 @@ progress {
     margin: 100px auto;
     display: block;
 }
+
+.viewport {
+/*    width: 5000px;
+    overflow: hidden;*/
+}
+
+.page {
+/*    width: 500px;
+    float: left;
+    overflow: hidden;*/
+}
+
+
+/* https://raw.github.com/bradbirdsall/Swipe/master/style.css */
+#swipe {
+  padding-bottom:20px;
+  position:relative;
+  z-index:1;
+  -webkit-perspective: 1000;
+  -webkit-backface-visibility: hidden;
+
+  max-height: 50%;
+
+}

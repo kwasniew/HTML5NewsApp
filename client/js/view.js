@@ -36,13 +36,18 @@
         var articlesList = articles;
 
         var len = articlesList.length;
+        var listEl = document.querySelector('.articleList');
+
+        var container = document.querySelector('.container-fluid');
+        var viewport = document.querySelector('.viewport');
+
         for (var i = len - 1; i >= 0; i--) {
 
             entry = articlesList[i];
 
             div = document.createElement('div');
             //div.className = "media well";
-            div.className = "well";
+            //div.className = "well";
 
             img = new Image();
             img.onload = entry.img;
@@ -68,9 +73,29 @@
             div.appendChild(text);
             div.appendChild(footer);
 
-            document.querySelector('.articleList').appendChild(div);
+            (i < 1) && listEl.appendChild(div);
+
+            var secondScreen = container.cloneNode(true);
+            secondScreen.style.display = 'none';// = 'display:none;';
+
+            secondScreen.querySelector('.row-fluid').replaceChild(div.cloneNode(true), secondScreen.querySelector('.articleList'));
+
+            viewport.appendChild(secondScreen);
 
         }
+
+
+        window.mySwipe = new Swipe(document.getElementById('swipe'), {
+            startSlide: 0,
+            speed: 400,
+            auto: false,
+            callback: function(event, index, elem) {
+
+              // do something cool
+              //window.onresize();
+
+            }
+        });
 
     };
 
