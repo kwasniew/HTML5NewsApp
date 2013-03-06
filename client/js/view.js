@@ -30,6 +30,15 @@
         document.body.appendChild(h1);
     };
 
+
+    function clickOnArticle(e){
+        /*jshint validthis:true */
+
+        window.location.hash= '';
+
+        window.mySwipe.slide(parseInt(this.getAttribute('data-id'), 10), 1000);
+    }
+
     View.prototype.viewArticles = function(name, articles){
         console.log('View:viewArticles', arguments);
         var entry, img, h2, div, text, footer, date;
@@ -41,7 +50,7 @@
         var container = document.querySelector('.container-fluid');
         var viewport = document.querySelector('.viewport');
 
-        for (var i = len - 1; i >= 0; i--) {
+        for (var i =0; i < len; i++) {
 
             entry = articlesList[i];
 
@@ -70,16 +79,24 @@
 
             div.appendChild(h2);
             div.appendChild(img);
-            div.appendChild(text);
             div.appendChild(footer);
 
-            listEl.appendChild(div);
+            var frontArticle = div.cloneNode(true);
+            frontArticle.setAttribute('class', 'container-fluid');
+            frontArticle.setAttribute('data-id', i+1);
+            frontArticle.addEventListener('click', clickOnArticle, false);
+            listEl.appendChild(frontArticle);
+
+            //div = div.cloneNode(true);
+            div.appendChild(text);
+
+
 
             var secondScreen = container.cloneNode(true);
             secondScreen.style.display = 'none';// = 'display:none;';
 
-            secondScreen.querySelector('.row-fluid').replaceChild(div.cloneNode(true), secondScreen.querySelector('.articleList'));
-
+            secondScreen.querySelector('.row-fluid').replaceChild(div, secondScreen.querySelector('.articleList'));
+            //secondScreen.id = i+1;
             viewport.appendChild(secondScreen);
 
         }
@@ -91,10 +108,18 @@
             auto: false,
             callback: function(event, index, elem) {
 
+                //window.location.hash = index;
               // do something cool
               //window.onresize();
 
             }
+        });
+
+        $('#homepage').click(function(e){
+            e.preventDefault();
+
+            window.mySwipe.slide(0, 1000);
+            //window.location.hash = 'wrap';
         });
 
     };

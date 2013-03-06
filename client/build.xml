@@ -29,7 +29,7 @@
             <fileset dir="${basedir}/js" includes="**/*.js" excludes="bootstrap/**,lib/*.js"/>
             <arg line="-jar"/>
             <arg path="lib/js.jar"/>
-            <arg path="lib/jshint.js"/>
+            <arg path="lib/jshint-1.1.0.js"/>
             <arg path="curly=true,forin=true,latedef=true,noempty=true,browser=true,regexdash=true,trailing=true,sub=true"/>
             <srcfile/>
         </apply>

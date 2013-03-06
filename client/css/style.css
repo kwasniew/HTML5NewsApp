@@ -21,14 +21,29 @@ progress {
 }
 
 
+#wrap {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+}
+
+
 /* https://raw.github.com/bradbirdsall/Swipe/master/style.css */
 #swipe {
   padding-bottom:20px;
-  position:relative;
+  position:absolute;
   z-index:1;
   -webkit-perspective: 1000;
   -webkit-backface-visibility: hidden;
 
-  max-height: 50%;
+  max-height: 85%;
+  max-width: 100%;
+  overflow: hidden;
 
+}
+
+.page>.row-fluid {
+    overflow-y: auto;
+    -webkit-overflow-scrolling:touch;
+    height: 15%;
 }

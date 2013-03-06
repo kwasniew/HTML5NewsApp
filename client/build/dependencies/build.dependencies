@@ -4,3 +4,4 @@ http://repo.bodar.com.s3.amazonaws.com/org/phantomjs/1.7/phantomjs-linux-x86_64
 http://repo.bodar.com.s3.amazonaws.com/org/phantomjs/1.7/phantomjs-windows.exe
 http://repo.bodar.com.s3.amazonaws.com/org/phantomjs/1.7/phantomjs-osx
 mvn:com.yahoo.platform.yui:yuicompressor:jar:2.4.7
+mvn:com.philmander.jshint:ant-jshint:jar:0.3.4
