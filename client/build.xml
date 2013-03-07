@@ -24,15 +24,15 @@
         <delete dir="${artifacts}"/>
     </target>
 
+    <taskdef name="jshint" classname="com.philmander.jshint.JsHintAntTask"
+             classpath="${basedir}/lib/ant-jshint-0.3.4-deps.jar" />
+
     <target name="validate">
-        <apply executable="java" failonerror="true" parallel="true">
-            <fileset dir="${basedir}/js" includes="**/*.js" excludes="bootstrap/**,lib/*.js"/>
-            <arg line="-jar"/>
-            <arg path="lib/js.jar"/>
-            <arg path="lib/jshint.js"/>
-            <arg path="curly=true,forin=true,latedef=true,noempty=true,browser=true,regexdash=true,trailing=true,sub=true"/>
-            <srcfile/>
-        </apply>
+        <jshint dir="${basedir}/js" options="curly=false,forin=true,latedef=true,noempty=true,browser=true,regexdash=true,trailing=true,sub=true,devel=true">
+            <include name="**/*.js"/>
+            <exclude name="lib/*.js"/>
+            <exclude name="bootstrap/**"/>
+        </jshint>
     </target>
 
     <target name="testjs32" unless="64bits">
