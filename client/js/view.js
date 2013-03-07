@@ -82,7 +82,7 @@
             div.appendChild(footer);
 
             var frontArticle = div.cloneNode(true);
-            frontArticle.setAttribute('class', 'container-fluid');
+            frontArticle.setAttribute('class', 'container-fluid main-page-article');
             frontArticle.setAttribute('data-id', i+1);
             frontArticle.addEventListener('click', clickOnArticle, false);
             listEl.appendChild(frontArticle);
