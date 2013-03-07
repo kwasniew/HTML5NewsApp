@@ -1,5 +1,7 @@
+/*global OfflineStorage:true,schibsted:true */
 
 (function (window) {
+    "use strict";
 
     //var imageEncoder = 'http://localhost:8005/?url=';
     var imageEncoder = 'http://tuxtest4.medianorge.no:34407/encoding';
