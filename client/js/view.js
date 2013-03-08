@@ -1,10 +1,12 @@
-/*global console:true $:true Swipe:true */
+/*global console:true $:true Swipe:true SwipeView:true */
 
 (function(window, undefined){
     "use strict";
 
-    function View(){
+    function View(type){
         console.log("Start!");
+
+        this.type = type || 'standardRender';
     }
 
     View.prototype.registerImageDownload = function(notifyImageDownloader) {
@@ -20,7 +22,7 @@
 
     View.prototype.showArticles = function(articles){
         console.log('View:thenViewArticles', arguments);
-        View.prototype.viewArticles('then', articles);
+        this.viewArticles('then', articles);
     };
 
     View.prototype.showError = function(articles){
@@ -31,30 +33,34 @@
     };
 
 
-    function clickOnArticle(e){
+
+    var clickOnArticle = function(e){
         /*jshint validthis:true */
+        var page = parseInt(this.getAttribute('data-id'), 10);
+        if(window.mySwipe){
+            window.mySwipe.slide(page, 1000);
+        }
 
-        window.location.hash= '';
+        if(window.mySwipeView){
+            window.mySwipeView.goToPage(page);
+        }
 
-        window.mySwipe.slide(parseInt(this.getAttribute('data-id'), 10), 1000);
-    }
 
-    View.prototype.viewArticles = function(name, articles){
-        console.log('View:viewArticles', arguments);
-        var entry, img, h2, div, text, footer, date;
-        var articlesList = articles;
+    };
 
-        var len = articlesList.length;
-        var listEl = document.querySelector('.articleList');
+    View.prototype.prepareArticles = function(articles){
+        var len = articles.length;
+        var article, img, h2, entry, text, date, footer;
 
-        var container = document.querySelector('.container-fluid');
-        var viewport = document.querySelector('.viewport');
+        var pages = [];
+        var frontPage = document.createElement('div');
+        pages.push(frontPage);
 
         for (var i =0; i < len; i++) {
 
-            entry = articlesList[i];
+            entry = articles[i];
 
-            div = document.createElement('div');
+            article = document.createElement('div');
             //div.className = "media well";
             //div.className = "well";
 
@@ -77,30 +83,67 @@
 
             //text.className = 'media-body';
 
-            div.appendChild(h2);
-            div.appendChild(img);
-            div.appendChild(footer);
+            article.appendChild(h2);
+            article.appendChild(img);
+            article.appendChild(footer);
 
-            var frontArticle = div.cloneNode(true);
+            var frontArticle = article.cloneNode(true);
             frontArticle.setAttribute('class', 'container-fluid main-page-article');
             frontArticle.setAttribute('data-id', i+1);
             frontArticle.addEventListener('click', clickOnArticle, false);
-            listEl.appendChild(frontArticle);
 
-            //div = div.cloneNode(true);
-            div.appendChild(text);
+            frontPage.appendChild(frontArticle);
 
+            //article = article.cloneNode(true);
+            article.appendChild(text);
 
-
-            var secondScreen = container.cloneNode(true);
-            secondScreen.style.display = 'none';// = 'display:none;';
-
-            secondScreen.querySelector('.row-fluid').replaceChild(div, secondScreen.querySelector('.articleList'));
-            //secondScreen.id = i+1;
-            viewport.appendChild(secondScreen);
+            pages.push(article);
 
         }
 
+        return pages;
+    };
+
+    View.prototype.viewArticles = function(name, articles){
+        console.log('View:viewArticles', arguments);
+
+        var pages = this.prepareArticles(articles);
+
+        if(this[this.type]){
+            this[this.type](pages);
+        }
+
+    };
+
+    View.prototype.standardRender = function(pages){
+
+        var len = pages.length;
+        var listEl = document.querySelector('.articleList');
+
+        var fronArticles = pages[0];
+
+        listEl.appendChild(pages[0]);
+
+
+        var container = document.querySelector('.container-fluid');
+        var viewport = document.querySelector('.viewport');
+
+        for (var i = 1; i < len; i++) {
+
+            var secondScreen = container.cloneNode(true);
+            if(this.type === 'swipe'){
+                secondScreen.style.display = 'none';// = 'display:none;';
+            }
+
+
+            secondScreen.querySelector('.row-fluid').replaceChild(pages[i], secondScreen.querySelector('.articleList'));
+
+            viewport.appendChild(secondScreen);
+        }
+    };
+
+    View.prototype.swipe = function(pages){
+        this.standardRender(pages);
 
         window.mySwipe = new Swipe(document.getElementById('swipe'), {
             startSlide: 0,
@@ -121,7 +164,69 @@
             window.mySwipe.slide(0, 1000);
             //window.location.hash = 'wrap';
         });
+    };
 
+    View.prototype.swipeview = function(pages){
+        var swipe = document.getElementById('swipe');
+        swipe.parentNode.removeChild(swipe);
+
+        for (var i = 0; i < pages.length; i++) {
+            var contain = document.createElement('div');
+            contain.className = 'page-container';
+
+            var page = pages[i];
+            page.className = 'page-item';
+            contain.appendChild(page);
+
+            pages[i] = contain;
+        }
+
+        var mySwipeView = new SwipeView('#swipeview', {
+            numberOfPages: 3,
+            hastyPageFlip:true
+        });
+
+        mySwipeView.onFlip(function(){
+            console.log('flip');
+
+            var el,
+            upcoming,
+            i;
+
+            for (i=0; i<3; i++) {
+                upcoming = mySwipeView.masterPages[i].dataset.upcomingPageIndex;
+
+                if (upcoming !== mySwipeView.masterPages[i].dataset.pageIndex) {
+                    el = mySwipeView.masterPages[i];
+                    el.innerHTML = '';
+                    el.appendChild(pages[upcoming]);
+                }
+            }
+        });
+
+        mySwipeView.onMoveIn(function(){
+            console.log('onMoveIn', arguments, this);
+        });
+
+        mySwipeView.updatePageCount(pages.length);
+        mySwipeView.masterPages[0].dataset.pageIndex = pages.length-1;
+        mySwipeView.masterPages[0].dataset.upcomingPageIndex = mySwipeView.masterPages[0].dataset.pageIndex;
+
+        // Load initial data
+        for (i=0; i<3; i++) {
+            var pageIndex = i===0 ? pages.length-1 : i-1;
+
+            mySwipeView.masterPages[i].appendChild(pages[pageIndex]);
+        }
+
+        $('#homepage').click(function(e){
+            e.preventDefault();
+
+            window.mySwipeView.goToPage(0);
+            //window.location.hash = 'wrap';
+        });
+
+        window.mySwipeView = mySwipeView;
     };
 
     window.View = View;

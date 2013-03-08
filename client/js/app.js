@@ -11,8 +11,8 @@ schibsted:true */
         this.view = view;
         this.articles.getArticles()
         .then(
-            this.view.showArticles,
-            this.view.showError
+            view.showArticles.bind(view),
+            view.showError.bind(view)
         )
         .done();
 
