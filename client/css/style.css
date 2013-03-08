@@ -94,6 +94,7 @@ h2{
 
 .swipeview>div>div {
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .page-container {
