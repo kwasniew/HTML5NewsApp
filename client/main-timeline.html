@@ -6,16 +6,53 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main-timeline.css"/>
 </head>
 <body>
 
 <div id="wrap" class="wrap">
     <div class="navbar">
-      <div class="navbar-inner">
-        <a class="brand" id="homepage" href="#">A</a>
-      </div>
+        <div class="navbar-inner">
+            <a href="#menu" class="brand side-menu-link " title="Click for sub-menu">
+                <i class=" icon-align-justify"></i>
+            </a>
+            <a class="brand js-homepage" href="#">A</a>
+        </div>
     </div>
 
+    <aside class="span3 oc" id="side-menu" role="navigation">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <form class="navbar-search pull-left">
+                  <input type="text" class="search-query" placeholder="Search">
+                </form>
+            </div>
+        </div>
+      <ul class="nav nav-list">
+        <li class="nav-header js-homepage">nyhetsbildet na</li>
+
+        <li><a href="#">nyheter</a></li>
+        <li><a href="#">verden</a></li>
+        <li><a href="#">okonomi</a></li>
+        <li><a href="#">meninger</a></li>
+        <li><a href="#">kultur</a></li>
+        <li><a href="#">sport</a></li>
+
+        <li class="nav-header">dagens avis</li>
+        <li class="nav-header">Min meny</li>
+        <li><a href="#">tidslinje</a></li>
+
+        <li class="nav-header">Other versions</li>
+        <li class=""><a href="/">Home</a></li>
+        <li class=""><a id="homepage" href="/client.html">Mock</a></li>
+        <li class=""><a href="swipe.html">Swipe</a></li>
+
+      </ul>
+
+        <button class="btn btn-block btn-primary" id="saveForOffline">Save for Offline</button>
+
+        <button class="btn btn-block btn-danger" id="clearOffline">Clear Offline Data</button>
+    </aside>
 
     <div id="swipeview" class="swipeview">
     </div>

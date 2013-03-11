@@ -7,6 +7,8 @@
         console.log("Start!");
 
         this.type = type || 'standardRender';
+
+        this.menu();
     }
 
     View.prototype.registerImageDownload = function(notifyImageDownloader) {
@@ -182,13 +184,15 @@
             callback: function(event, index, elem) {
             }
         });
-
-        $('#homepage').click(function(e){
+        function homepage(e){
             e.preventDefault();
 
             window.mySwipe.slide(0, 1000);
             //window.location.hash = 'wrap';
-        });
+        }
+
+        $('#homepage').click(homepage);
+        $('.js-homepage').click(homepage);
     };
 
     View.prototype.swipeview = function(pages){
@@ -244,14 +248,34 @@
             mySwipeView.masterPages[i].appendChild(pages[pageIndex]);
         }
 
-        $('#homepage').click(function(e){
+        function homepage(e){
             e.preventDefault();
 
             window.mySwipeView.goToPage(0);
             //window.location.hash = 'wrap';
-        });
+        }
+
+        $('#homepage').click(homepage);
+        $('.js-homepage').click(homepage);
 
         window.mySwipeView = mySwipeView;
+    };
+
+    View.prototype.menu = function(){
+        $(document).ready(function() {
+
+          $('body').addClass('js');
+
+          var $menu = $('#side-menu'),
+            $menulink = $('.side-menu-link'),
+            $wrap = $('#wrap');
+
+          $menulink.click(function() {
+            $menulink.toggleClass('active');
+            $wrap.toggleClass('active');
+            return false;
+          });
+        });
     };
 
     window.View = View;

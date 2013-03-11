@@ -87,6 +87,7 @@ h2{
 .swipeview {
     width: 100%;
     height: 100%;
+    border-left: 1px solid #eee;
 }
 
 .swipeview>div {
@@ -100,7 +101,7 @@ h2{
 .page-container {
     max-width: 50em;
     margin: 0 auto 5em;
-    box-shadow: #000 0 0 5px;
+    box-shadow: #000 0 0 10px;
 }
 
 .page-item {
