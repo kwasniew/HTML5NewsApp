@@ -32,6 +32,17 @@
         document.body.appendChild(h1);
     };
 
+    View.prototype.viewArticles = function(name, articles){
+        console.log('View:viewArticles', arguments);
+
+        var pages = this.prepareFrontpageArticles(articles);
+
+        if(this[this.type]){
+            this[this.type](pages);
+        }
+
+    };
+
 
 
     var clickOnArticle = function(e){
@@ -48,7 +59,7 @@
 
     };
 
-    View.prototype.prepareArticles = function(articles){
+    View.prototype.prepareFrontpageArticles = function(articles){
         var len = articles.length;
         var article, img, h2, entry, text, date, footer;
 
@@ -104,18 +115,37 @@
         return pages;
     };
 
-    View.prototype.viewArticles = function(name, articles){
-        console.log('View:viewArticles', arguments);
 
-        var pages = this.prepareArticles(articles);
-
-        if(this[this.type]){
-            this[this.type](pages);
-        }
-
-    };
 
     View.prototype.standardRender = function(pages){
+
+        var len = pages.length;
+        var listEl = document.querySelector('.articleList');
+
+        var fronArticles = pages[0];
+
+        listEl.appendChild(pages[0]);
+
+
+        var container = document.querySelector('.container-fluid');
+        var viewport = document.querySelector('.viewport');
+
+        for (var i = 1; i < len; i++) {
+
+            var secondScreen = container.cloneNode(true);
+            if(this.type === 'swipe'){
+                secondScreen.style.display = 'none';// = 'display:none;';
+            }
+
+
+            secondScreen.querySelector('.row-fluid').replaceChild(pages[i], secondScreen.querySelector('.articleList'));
+
+            viewport.appendChild(secondScreen);
+        }
+    };
+
+
+    View.prototype.timelineRender = function(pages){
 
         var len = pages.length;
         var listEl = document.querySelector('.articleList');
@@ -150,11 +180,6 @@
             speed: 400,
             auto: false,
             callback: function(event, index, elem) {
-
-                //window.location.hash = index;
-              // do something cool
-              //window.onresize();
-
             }
         });
 
