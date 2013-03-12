@@ -16,10 +16,9 @@
     cursor: pointer;
 }
 
-
-  .js .oc {
+.js .oc {
     width: auto;
     position: absolute;
     top: 0;
     left: -16.5em;
-  }
+}

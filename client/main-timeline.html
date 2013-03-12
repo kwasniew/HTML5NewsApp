@@ -73,21 +73,45 @@
         </div>
     </div>
 </div>
+<script id="timeline-article-template" type="text/x-handlebars-template">
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" src={{base}} />
+        </a>
+        <div class="media-body">
+            <h1 class="media-heading">{{title}}</h1>
 
+            <div class="body">
+                {{{bodytext}}}
+            </div>
+            <footer>
+                {{date}}
+            </footer>
+        </div>
+    </div>
+</script>
+<script id="timeline-template" type="text/x-handlebars-template">
+    <div class="timeline-view">
+      {{#each articles}}
+        {{{this}}}
+      {{/each}}
+    </ul>
+</script>
 <script type="text/javascript" src="js/lib/q.js"></script>
 <script type="text/javascript" src="js/lib/swipeview.js"></script>
 <script type="text/javascript" src="js/lib/zepto.js"></script>
 <script type="text/javascript" src="js/lib/pubsub.js"></script>
 <script type="text/javascript" src="js/lib/es5-shim.js"></script>
+<script type="text/javascript" src="js/lib/handlebars.js"></script>
 <script type="text/javascript" src="js/offlineStorage.js"></script>
 <script type="text/javascript" src="js/download.js"></script>
 <script type="text/javascript" src="js/crawler.js"></script>
 <script type="text/javascript" src="js/articles.js"></script>
-<script type="text/javascript" src="js/view.js"></script>
+<script type="text/javascript" src="js/timeline-view.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" async src="js/images.js"></script>
 <script>
-    app = new schibsted.App(new Articles(), new View('swipeview'));
+    app = new schibsted.App(new Articles(), new TimelineView());
 </script>
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </body>

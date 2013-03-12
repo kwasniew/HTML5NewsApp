@@ -5,10 +5,14 @@
 
     function View(type){
         console.log("Start!");
+        var types = {
+            'default': 'standardRender',
+            'swipe': 'swipe',
+            'swipeview': 'swipeview'
+        };
 
-        this.type = type || 'standardRender';
-
-        this.menu();
+        type = type || 'default';
+        this.type = types[type];
     }
 
     View.prototype.registerImageDownload = function(notifyImageDownloader) {
@@ -259,23 +263,6 @@
         $('.js-homepage').click(homepage);
 
         window.mySwipeView = mySwipeView;
-    };
-
-    View.prototype.menu = function(){
-        $(document).ready(function() {
-
-          $('body').addClass('js');
-
-          var $menu = $('#side-menu'),
-            $menulink = $('.side-menu-link'),
-            $wrap = $('#wrap');
-
-          $menulink.click(function() {
-            $menulink.toggleClass('active');
-            $wrap.toggleClass('active');
-            return false;
-          });
-        });
     };
 
     window.View = View;
