@@ -35,7 +35,9 @@
         var h1 = document.createElement('h1');
         h1.className = 'alert alert-error';
         h1.innerText = "no articles, check internet connection";
-        document.body.appendChild(h1);
+
+        var before = document.getElementById('side-menu');
+        before.parentNode.insertBefore(h1, before);
     };
 
     TimelineView.prototype.viewArticles = function(name, articles){
@@ -86,7 +88,7 @@
         var timelineSource = $("#timeline-template").html();
         var templateTimeline = Handlebars.compile(timelineSource);
 
-        var timelineFront = templateTimeline({articles: pages});
+        var timelineFront = templateTimeline({articles: articles});
 
         pages.unshift(timelineFront);
 

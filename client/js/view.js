@@ -125,61 +125,35 @@
 
     View.prototype.standardRender = function(pages){
 
-        var len = pages.length;
+
         var listEl = document.querySelector('.articleList');
 
         var fronArticles = pages[0];
 
         listEl.appendChild(pages[0]);
 
-
-        var container = document.querySelector('.container-fluid');
-        var viewport = document.querySelector('.viewport');
-
-        for (var i = 1; i < len; i++) {
-
-            var secondScreen = container.cloneNode(true);
-            if(this.type === 'swipe'){
-                secondScreen.style.display = 'none';// = 'display:none;';
-            }
-
-
-            secondScreen.querySelector('.row-fluid').replaceChild(pages[i], secondScreen.querySelector('.articleList'));
-
-            viewport.appendChild(secondScreen);
-        }
-    };
-
-
-    View.prototype.timelineRender = function(pages){
-
-        var len = pages.length;
-        var listEl = document.querySelector('.articleList');
-
-        var fronArticles = pages[0];
-
-        listEl.appendChild(pages[0]);
-
-
-        var container = document.querySelector('.container-fluid');
-        var viewport = document.querySelector('.viewport');
-
-        for (var i = 1; i < len; i++) {
-
-            var secondScreen = container.cloneNode(true);
-            if(this.type === 'swipe'){
-                secondScreen.style.display = 'none';// = 'display:none;';
-            }
-
-
-            secondScreen.querySelector('.row-fluid').replaceChild(pages[i], secondScreen.querySelector('.articleList'));
-
-            viewport.appendChild(secondScreen);
-        }
     };
 
     View.prototype.swipe = function(pages){
         this.standardRender(pages);
+
+        var len = pages.length;
+
+        var container = document.querySelector('.container-fluid');
+        var viewport = document.querySelector('.viewport');
+
+        for (var i = 1; i < len; i++) {
+
+            var secondScreen = container.cloneNode(true);
+            if(this.type === 'swipe'){
+                secondScreen.style.display = 'none';// = 'display:none;';
+            }
+
+
+            secondScreen.querySelector('.row-fluid').replaceChild(pages[i], secondScreen.querySelector('.articleList'));
+
+            viewport.appendChild(secondScreen);
+        }
 
         window.mySwipe = new Swipe(document.getElementById('swipe'), {
             startSlide: 0,

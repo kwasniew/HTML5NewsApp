@@ -32,7 +32,7 @@
 
         console.log('offline start');
          try{
-                this.db = openDatabase('articles13', '', 'aftenposten database', (40 * 1024 * 1024) );
+                this.db = openDatabase('articles14', '', 'aftenposten database', (40 * 1024 * 1024) );
                 db = this.db;
          }catch(e){
              console.log('catched e', e);
@@ -52,6 +52,7 @@
                     'deskedMode TEXT,',
                     'bodytext TEXT,',
                     'byline TEXT,',
+                    'leadtext TEXT,',
                     'tag TEXT,',
                     'creatorName TEXT,',
                     'img TEXT,',
@@ -133,6 +134,7 @@
                 'title,',
                 'bodytext,',
                 'byline,',
+                'leadtext,',
                 'tag,',
                 'creatorName,',
                 'img,',
@@ -161,6 +163,7 @@
                     article.title,
                     article.bodytext,
                     article.byline,
+                    article.leadtext,
                     article.tag,
                     article.creatorName,
                     article.img,
@@ -212,7 +215,7 @@
         var db = this.db;
         db.readTransaction(function(tx){
             //SELECT city as cityname, currency as currency FROM places, currency where places.country = currency.country
-            tx.executeSql('SELECT * FROM Articles ORDER BY ord LIMIT 80;', [], function (tx, results) {
+            tx.executeSql('SELECT * FROM Articles ORDER BY ord LIMIT 100;', [], function (tx, results) {
                 var result = toArray(results.rows);
 
                 result.forEach(function(article){

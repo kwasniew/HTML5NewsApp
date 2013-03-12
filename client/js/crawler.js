@@ -12,7 +12,8 @@
     var download;
 
     function Crawler(){
-        this.sectionName = 'sport_bt';
+        this.sectionName = 'ece_frontpage';
+        this.typeName = 'auto';//desked
         //this.download = Download;
         download = window.schibsted.download;
     }
@@ -63,7 +64,8 @@
                 entry = entries[i];
                 article = parseArticle(entry);
                 //one article just return 404 for no reason, ommit it
-                if(article.url.indexOf('24486') > -1) {
+                if(article.url.indexOf('24486') > -1 ||
+                    article.url.indexOf('24543') > -1) {
                     //console.log('ommit this article', articleUrl.indexOf('24486'));
                     continue;
                 }
@@ -99,8 +101,9 @@
 
         var all = Q.all([articlesDict, list])
         .spread(this.joinArticles.bind(this))
-        .then(filterArticles)
-        .fail(function(){
+        .then(filterArticles);
+
+        all.fail(function(){
             console.error('crawler error', arguments);
         });
 
@@ -117,13 +120,25 @@
             var tag = doc.querySelector('[name="tag"] value') ?
                 doc.querySelector('[name="tag"] value').textContent:
                 '';
+            var creatorName = doc.querySelector('creator name');
+            creatorName = (creatorName && creatorName.innerText) ? creatorName.innerText : '';
+
+            var bodytext = doc.querySelector('[name="bodytext"] div');
+            bodytext = (bodytext && bodytext.innerHTML) ? bodytext.innerHTML : '';
+
+            var byline = doc.querySelector('[name="byline"] value');
+            byline = (byline && byline.innerHTML)? byline.innerHTML : '';
+
+            var leadtext = doc.querySelector('[name="leadtext"] value');
+            leadtext = (leadtext && leadtext.innerHTML) ? leadtext.innerHTML : '';
 
             dictionary[doc.documentURI] = {
                 url: doc.documentURI,
-                bodytext: doc.querySelector('[name="bodytext"] div').innerHTML,
-                byline: doc.querySelector('[name="byline"]').innerText,
+                bodytext: bodytext,
+                byline: byline,
+                leadtext: leadtext,
                 tag: tag,
-                creatorName: doc.querySelector('creator name').textContent,
+                creatorName: creatorName,
                 doc: doc
             };
         });
@@ -159,7 +174,7 @@
             var identity = data.querySelector('identityLabel[uniqueName="'+this.sectionName+'"]');
 
             var entry = identity.parentElement.parentElement;
-            var desked = entry.querySelector('link[rel="http://www.snd.no/types/relation/desked"]');
+            var desked = entry.querySelector('link[rel="http://www.snd.no/types/relation/'+this.typeName+'"]');
 
             var link = desked.getAttribute('href').replace('{areaLimit}&', '');
             link = link.replace('{offset?}', 0);

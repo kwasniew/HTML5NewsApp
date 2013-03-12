@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/swipes.css"/>
     <link rel="stylesheet" type="text/css" href="css/main-timeline.css"/>
 </head>
 <body>
@@ -75,10 +76,10 @@
 </div>
 <script id="timeline-article-template" type="text/x-handlebars-template">
     <div class="media">
-        <a class="pull-left" href="#">
-            <img class="media-object" src={{base}} />
+        <a class="" href="#">
+            <img class="media-object centered" src={{base}} />
         </a>
-        <div class="media-body">
+        <div class="media-body article-content">
             <h1 class="media-heading">{{title}}</h1>
 
             <div class="body">
@@ -93,7 +94,21 @@
 <script id="timeline-template" type="text/x-handlebars-template">
     <div class="timeline-view">
       {{#each articles}}
-        {{{this}}}
+        <div class="media">
+        <a class="pull-left" href="#">
+            <img class="media-object" width="100" height="100" src={{this.base}} />
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">{{title}}</h4>
+
+            <div class="byline">
+                {{{byline}}}
+            </div>
+            <footer>
+                {{date}}
+            </footer>
+        </div>
+    </div>
       {{/each}}
     </ul>
 </script>
