@@ -1,0 +1,11 @@
+body {
+            overflow: hidden;
+        }
+
+        .alf-layer {
+            overflow-x: hidden;
+        }
+
+        .event-frame {
+            display: none;
+        }
