@@ -10,267 +10,54 @@
 
     <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
     <link rel="stylesheet" href="highlight.js/styles/solarized_dark.css">
+    <link rel="stylesheet" href="guide.css">
+    <link rel="stylesheet" href="ap.css">
 
-    <style>
-
-body {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-pre {
-    background-color: #eee;
-    color: #333;
-    max-width: calc(50% - 1em);
-    float: left;
-    overflow: scroll;
-    max-height: 10em;
-    padding: 0.5em;
-}
-
-hr {
-    clear: both;
-    border-color: #333;
-    border-width: 3px;
-}
-
-dl {
-    clear: both;
-    border-top: #999 dotted 3px;
-    padding-top: 1em;
-}
-dt {
-    font-weight: bold;
-}
-
-aside {
-    border: 1px solid #666;
-    background-color: #fef;
-    padding: 0.5em;
-    max-width: 40%;
-    float: right;
-    border-radius: 1em;
-    margin-bottom: 1em;
-}
-
-.guide-wide {
-    max-width: calc(100% - 1em);
-    width: calc(100% - 1em);
-}
-
-.guide-tall {
-    max-height: 40em;
-}
-
-
-
-/* Aftenposten */
-.ap-important {
-    color: #69b254;
-}
-
-.ap-section {
-    background-color: #69b254;
-    position: static;
-    font-size: 16px;
-    font-weight: bold;
-    display: inline-block;
-    border-radius: 0;
-    padding: 3px;
-    left: 0;
-
-}
-
-.tmpl-widescreen-frontpage-dark-background .content-indent,
-.ap-content-indent {
-    background: transparent;
-}
-.ap-header {
-    width: 640px;
-    padding: 0 60px;
-    margin: 0 auto;
-    background: #171717;
-}
-
-.header-serif h1 {
-    margin: 0.5em 0;
-    font-size: 60px;
-}
-
-.ap-container {
-    padding: 60px 40px 20px;
-    max-width: 642px;
-    margin: 0 auto;
-    border: 1px solid #e9e9e9;
-    border-top: none;
-}
-
-/* ribbon style */
-/* RIBBON style */
-
-.ribbon {
-  position: relative;
-  left: -40px;
-  top: -20px;
-}
-.ribbon-front {
-    background: -webkit-linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
-    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
-    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
-    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
-    /* background-color: #69b254; */
-    height: 48px;
-    display: inline-block;
-    position: relative;
-    left:0;
-    z-index: 2;
-}
-
-.ribbon-edge-topleft,
-.ribbon-edge-bottomleft {
-    position: absolute;
-    z-index: 1;
-    border-style:solid;
-    height:0px;
-    width:0px;
-}
-
-.ribbon-edge-topleft {
-  top: 0;
-  left: -20px;
-  border-width: 0;
-  border-top: 20px solid transparent;
-  border-right: 20px solid black;
-}
-
-.ribbon-edge-bottomleft {
-  top: 20px;
-  left: -20px;
-  border-width: 0;
-  border-bottom: 48px solid transparent;
-  border-left: 48px solid black;
-}
-/* back */
-
-.ribbon-back-left {
-    position: absolute;
-    top: 28px;
-    left: -20px;
-    width: 20px;
-    height: 40px;
-    background-color: #69b254;
-  z-index: 0;
-}
-
-.share {
-    height: 48px;
-    width: 48px;
-    float: left;
-}
-.twitter-share{
-    background-image: url(http://www.aptn.ca/images/_icons/twitter-icon.png);
-}
-
-.facebook-share {
-    background-image: url(http://www.aptn.ca/images/_icons/facebook-icon.png);
-}
-
-/*
-* Footer
-*/
-.ap-footer {
-    padding: 20px;
-}
-
-
-/* iPad */
-@media (min-width: 1024px) and (max-width: 1517px) and (min-height: 748px) {
-    body {
-        background-color: #f3f3f3;
-        overflow-x: hidden;
-    }
-    .chrome {
-        overflow: visible;
-        overflow-x: hidden;
-    }
-}
-    </style>
     <link rel="apple-touch-icon-precomposed" href="gfx/appicon.png"/>
 </head>
 <body>
 
 <h1>Article Template</h1>
 
+<div id="article-template">
 <div data-map="article" class="alf-template alf-is-responsive tmpl-widescreen-frontpage-dark-background" data-score="100" data-name="Aftenposten Ipad Landscape" data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
-        <div class="alf-container landscape-slim-large-media-only alf-is-draggable-y" data-map="16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only"></div>
-
-            <!-- here should be big image -->
-
+    <div class="alf-container landscape-slim-large-media-only alf-is-draggable-y ap-main-image" data-map=" 4x3-large 4x3-medium 4x3-small 16x9-large 16x9-medium 16x9-small 2x3-large 2x3-medium 2x3-small 3x4-large 3x4-medium 3x4-small 16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only"></div>
+    <div class="ap-head">
         <div class="content-indent">
             <div class="ap-header">
-                <h2 class="alf-container alf-is-removable header-section ap-section" data-map="section">Sport</h2>
-                <div class="alf-container header-serif title alf-is-editable ap-important" data-map="title">Newest Article There IS</div>
-                <div class="alf-container excerpt light alf-is-editable alf-font-sans-serif" data-map="excerpt">Short Escerpt of article here it go</div>
-                <div class="alf-container alf-is-optional byline" data-map="byline">By byline</div>
+                <h2 class="alf-container alf-is-removable header-section ap-section" data-map="section"></h2>
+                <div class="alf-container header-serif title alf-is-editable ap-important ap-title" data-map="title"></div>
+                <div class="alf-container excerpt light alf-is-editable alf-font-sans-serif" data-map="excerpt"></div>
+                <div class="alf-container alf-is-optional byline" data-map="byline"></div>
             </div>
         </div>
-        <div class="ap-container">
-            <div class="ap-sharing ribbon">
-                <div class="ribbon-front">
-                    <div class="share facebook-share"></div>
-                    <div class="share twitter-share"></div>
-                </div>
-                <div class="ribbon-edge-topleft"></div>
-                <div class="ribbon-edge-bottomleft"></div>
-                <div class="ribbon-back-left"></div>
-            </div>
-
-            <div class="alf-region alf-region-flexible">
-                Here will be content of article.
-                <div class="alf-container-inline" data-map="4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only"></div>
-            </div>
-        </div>
-        <div class="ap-footer"></div>
-        <div class="alf-container-fullscreen" data-map="4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only"></div>
     </div>
+    <div class="ap-container">
+        <div class="ap-sharing ribbon">
+            <div class="ribbon-front">
+                <div class="share facebook-share"></div>
+                <div class="share twitter-share"></div>
+            </div>
+            <div class="ribbon-edge-topleft"></div>
+            <div class="ribbon-edge-bottomleft"></div>
+            <div class="ribbon-back-left"></div>
+        </div>
 
-<div>
+        <div class="alf-region alf-region-flexible">
+            <div class="alf-container-inline" data-map="4x3-large 4x3-medium 4x3-small 16x9-large 16x9-medium 16x9-small  2x3-large 2x3-medium 2x3-small 3x4-large 3x4-medium 3x4-small"></div>
+        </div>
+    </div>
+    <div class="ap-footer"></div>
+    <div class="alf-container-fullscreen" data-map="4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only 16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only"></div>
+</div>
+</div>
 
 <h2>
         Template for DrMobile (requires JavaScript for images and widgets)
     </h2>
 
-    <pre class="guide-wide guide-tall html">
+    <pre id='article-template-target' class="guide-wide guide-tall fill-template html">
 
-&lt;div data-map=&quot;article&quot; class=&quot;alf-template alf-is-responsive tmpl-widescreen-frontpage-dark-background&quot; data-score=&quot;100&quot; data-name=&quot;Aftenposten Ipad Landscape&quot; data-media=&quot;(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)&quot;&gt;
-        &lt;div class=&quot;alf-container landscape-slim-large-media-only alf-is-draggable-y&quot; data-map=&quot;16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only&quot;&gt;&lt;/div&gt;
-
-        &lt;div class=&quot;content-indent&quot;&gt;
-            &lt;div class=&quot;ap-header&quot;&gt;
-                &lt;h2 class=&quot;alf-container alf-is-removable header-section ap-section&quot; data-map=&quot;section&quot;&gt;&lt;/h2&gt;
-                &lt;div class=&quot;alf-container header-serif title alf-is-editable ap-important&quot; data-map=&quot;title&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;alf-container excerpt light alf-is-editable alf-font-sans-serif&quot; data-map=&quot;excerpt&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;alf-container alf-is-optional byline&quot; data-map=&quot;byline&quot;&gt;&lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ap-container&quot;&gt;
-            &lt;div class=&quot;ap-sharing ribbon&quot;&gt;
-                &lt;div class=&quot;ribbon-front&quot;&gt;
-                    &lt;div class=&quot;share facebook-share&quot;&gt;&lt;/div&gt;
-                    &lt;div class=&quot;share twitter-share&quot;&gt;&lt;/div&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;ribbon-edge-topleft&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;ribbon-edge-bottomleft&quot;&gt;&lt;/div&gt;
-                &lt;div class=&quot;ribbon-back-left&quot;&gt;&lt;/div&gt;
-            &lt;/div&gt;
-
-            &lt;div class=&quot;alf-region alf-region-flexible&quot;&gt;
-                &lt;div class=&quot;alf-container-inline&quot; data-map=&quot;4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only&quot;&gt;&lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ap-footer&quot;&gt;&lt;/div&gt;
-        &lt;div class=&quot;alf-container-fullscreen&quot; data-map=&quot;4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
 
     </pre>
 
@@ -380,17 +167,33 @@ aside {
 
 <hr>
 
+<h2>Header with image</h2>
+
+<iframe src="header.html" class="guide-ipad"></iframe>
 
 
+<hr>
 
-<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-
+    <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
     <script>
+        var elements = document.querySelectorAll('.fill-template');
+        for (var i = elements.length - 1; i >= 0; i--) {
+            var e = elements[i];
+            var id = e.id;
+            var source = id.replace('-target', '');
+            e.innerText = document.querySelector('#'+source).innerHTML;
+        }
         var elements = document.querySelectorAll('pre');
         for (var i = elements.length - 1; i >= 0; i--) {
             var e = elements[i];
             hljs.highlightBlock(e);
         }
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"><\/script>')</script>
+    <script src="fartscroll.js/fartscroll.js"></script>
+    <script>
+         $(document).fartscroll();
     </script>
 
 </body>

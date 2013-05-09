@@ -1,0 +1,175 @@
+
+/* Aftenposten */
+.ap-important {
+    color: #69b254;
+}
+
+.ap-section {
+    background-color: #69b254;
+    position: static;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+    border-radius: 0;
+    padding: 3px;
+    left: 0;
+
+}
+
+
+/*******
+** HEAD
+*******/
+
+.ap-head {
+    position: relative;
+    color: white;
+}
+
+.tmpl-widescreen-frontpage-dark-background .content-indent,
+.ap-content-indent {
+    background: transparent;
+    padding-bottom: 0;
+}
+
+
+.ap-header {
+    width: 640px;
+    padding: 0 60px;
+    margin: 0 auto;
+    background: #171717;
+}
+.ap-main-image {
+    margin: 0 auto;
+}
+.ap-main-image img{
+    display: block;
+    margin: 0 auto;
+}
+
+.ap-title h1 {
+    margin: 0.5em 0;
+    font-size: 50px;
+}
+.header-section span {
+    background: none;
+}
+
+.ap-container {
+    padding: 60px 40px 20px;
+    max-width: 642px;
+    margin: 0 auto;
+    border: 1px solid #e9e9e9;
+    border-top: none;
+}
+
+/* ribbon style */
+/* RIBBON style */
+
+.ribbon {
+  position: relative;
+  left: -40px;
+  top: -20px;
+}
+
+.ribbon-front {
+    background: -webkit-linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
+    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
+    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
+    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
+    background: -moz-linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
+    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
+    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
+    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
+    background: -o-linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
+    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
+    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
+    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
+    background: -ms-linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
+    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
+    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
+    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
+    background: linear-gradient(left, rgba(105, 178, 84, 1), rgba(105, 178, 84, 1) 48px,
+    rgba(105, 178, 84, 0.8) 48px, rgba(105, 178, 84, 0.8) 96px,
+    rgba(105, 178, 84, 0.4) 96px, rgba(105, 178, 84, 0.4) 144px,
+    rgba(105, 178, 84, 0.2) 144px, rgba(105, 178, 84, 0.2) 192px, white);
+    /* background-color: #69b254;
+    */
+    height: 48px;
+    display: inline-block;
+    position: relative;
+    left:0;
+    z-index: 2;
+}
+
+.ribbon-edge-topleft,
+.ribbon-edge-bottomleft {
+    position: absolute;
+    z-index: 1;
+    border-style:solid;
+    height:0;
+    width:0;
+}
+
+.ribbon-edge-topleft {
+  top: 0;
+  left: -20px;
+  border-width: 0;
+  border-top: 20px solid transparent;
+  border-right: 20px solid black;
+}
+
+.ribbon-edge-bottomleft {
+  top: 20px;
+  left: -20px;
+  border-width: 0;
+  border-bottom: 48px solid transparent;
+  border-left: 48px solid black;
+}
+/* back */
+
+.ribbon-back-left {
+    position: absolute;
+    top: 28px;
+    left: -20px;
+    width: 20px;
+    height: 40px;
+    background-color: #69b254;
+  z-index: 0;
+}
+
+/* Sharing Icons */
+/* fixme: urls to local images */
+
+.share {
+    height: 48px;
+    width: 48px;
+    float: left;
+}
+.twitter-share{
+    background-image: url(http://www.aptn.ca/images/_icons/twitter-icon.png);
+}
+
+.facebook-share {
+    background-image: url(http://www.aptn.ca/images/_icons/facebook-icon.png);
+}
+
+/*
+* Footer
+*/
+.ap-footer {
+    padding: 20px;
+}
+
+
+/* iPad */
+@media (min-width: 1024px) and (max-width: 1517px) and (min-height: 748px) {
+    body {
+        background-color: #f3f3f3;
+        overflow-x: hidden;
+    }
+    .chrome {
+        overflow: visible;
+        overflow-x: hidden;
+    }
+}
