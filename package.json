@@ -17,6 +17,12 @@
     "url": "https://github.com/schibstednorge/HTML5NewsApp/issues"
   },
   "devDependencies": {
-    "grunt": "*"
+    "grunt": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-less": "*"
   }
 }
