@@ -64,12 +64,20 @@ module.exports = function(grunt) {
       lib_test: {
         files: '<%= jshint.lib_test.src %>',
         tasks: ['jshint:lib_test', 'qunit']
+      },
+      lessfiles: {
+        files: ['styleguide/stylesheets/main.less'],
+        tasks: ['less']
+      },
+      htmlfiles: {
+        files: ['styleguide/index.html'],
+        tasks: ['htmlmin']
       }
     },
     less: {
       development: {
         options: {
-          paths: ["stylesheets"]
+          paths: ["/"]
         },
         files: {
           "styleguidedist/stylesheets/result.css": "styleguide/stylesheets/main.less"
@@ -77,7 +85,7 @@ module.exports = function(grunt) {
       },
       production: {
         options: {
-          paths: ["stylesheets"],
+          paths: ["/"],
           yuicompress: true
         },
         files: {

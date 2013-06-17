@@ -23,6 +23,7 @@
     "grunt-contrib-qunit": "*",
     "grunt-contrib-jshint": "*",
     "grunt-contrib-watch": "*",
-    "grunt-contrib-less": "*"
+    "grunt-contrib-less": "*",
+    "grunt-contrib-htmlmin": "~0.1.3"
   }
 }
