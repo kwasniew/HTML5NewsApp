@@ -4,6 +4,8 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Html5newsapp : " />
+
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/result.css">
     <title>
       Html5newsapp
@@ -11,45 +13,86 @@
   </head>
   <body>
     <div class="sg-wrap-all">
-      <h1>
-        Containers
-      </h1>
-      <pre>
-        <code>
-          &lt;div data-map="article" class="alf-template alf-is-responsive" data-score="200"
-          data-name="Aftenposten Ipad Landscape Default" data-media="(min-width: 1024px) and
-          (max-width: 1517px) and (min-height: 748px)">
-            &lt;div data-map="article" class="alf-template
-              alf-is-responsive" data-score="200" data-name="Aftenposten Ipad Landscape Default"
-              data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
-                &lt;div class="ap-container">
+      <section>
+      <h2>
+        Container
+      </h2>
 
-                    Article Content
-
-                &lt;/div>
-              &lt;/div>
-            &lt;/div>
-        </code>
+      <pre id='article-template-target' class="guide-wide guide-tall fill-template html">
       </pre>
-      <div data-map="article" class="alf-template alf-is-responsive" data-score="200"
-      data-name="Aftenposten Ipad Landscape Default" data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
+      <div id="article-template" class="sg-example">
         <div data-map="article" class="alf-template alf-is-responsive" data-score="200"
         data-name="Aftenposten Ipad Landscape Default" data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
-          <div class="ap-container">
+          <div data-map="article" class="alf-template alf-is-responsive" data-score="200"
+          data-name="Aftenposten Ipad Landscape Default" data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
+            <div class="ap-container">
 
-              Article Content
+                Article Content
 
+            </div>
           </div>
         </div>
       </div>
-      <h1>
-        Top image
-      </h1>
-      <pre>
-        <code>
-          &lt;div class="ap-main-image"> &lt;!-- image here/&gt; &lt;/div> &lt;div class="ap-image-caption">
-        </code>
+    </section>
+
+    <section>
+      <h2>
+        Image
+      </h2>
+      <pre id="image-template-target" class="guide-wide guide-tall fill-template html">
+
       </pre>
+
+      <div id="image-template" class="sg-example">
+        <!-- .ap-container is needed because of negative margin on .ap-image -->
+        <div class="ap-container">
+            <div class="alf-container landscape-slim-large-media-only alf-is-draggable-y ap-image"
+            data-map="4x3-large 4x3-medium 4x3-small 16x9-large 16x9-medium 16x9-small 2x3-large 2x3-medium 2x3-small 3x4-large 3x4-medium 3x4-small 16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only"
+            id="c16">
+              <div data-map="16x9-large">
+                <img width="980" height="551" data-src="http://www.aftenposten.no/incoming/article7232917.ece/ALTERNATES/w980c169/afp000536931-qIjbglhqMg.jpg"
+                data-src-2x="http://www.aftenposten.no/incoming/article7232917.ece/ALTERNATES/w980c169/afp000536931-qIjbglhqMg.jpg"
+                src="http://www.aftenposten.no/incoming/article7232917.ece/ALTERNATES/w980c169/afp000536931-qIjbglhqMg.jpg">
+              </div>
+            </div>
+            <div class="ap-image-caption">
+              <p>
+                Demonstranter og politi støtte sammen på Taksim-plassen på fred
+              </p>
+              <p>
+                FOTO: Thanassis Stavrakis
+              </p>
+            </div>
+            <h2 class="alf-container alf-is-removable header-section ap-section" data-map="section"
+            id="c18">
+              <span data-map="section">
+                Here exemplar data
+              </span>
+            </h2>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+            <p>article</p>
+
+          </div>
+      </div>
+
+
+
+
+    </section>
+
+
+
+
+    <section>
+
+      <h2>Article</h2>
+
       <div data-map="article" class="alf-template alf-is-responsive" data-score="200"
       data-name="Aftenposten Ipad Landscape Default" data-media="(min-width: 1024px) and (max-width: 1517px) and (min-height: 748px)">
         <div data-map="article" class="alf-template alf-is-responsive" data-score="200"
@@ -260,6 +303,26 @@
           <div class="alf-container-fullscreen" data-map="4x3-large-media-only 1x1-small-media-only 4x3-small-media-only 3x4-small-media-only 16x9-small-media-only 9x16-small-media-only portrait-slim-small-media-only landscape-slim-small-media-only portrait-generic-small-media-only landscape-generic-small-media-only 16x9-large-media-only 4x3-large-media-only landscape-slim-large-media-only landscape-generic-large-media-only">
           </div>
         </div>
+
+
+    </section>
+
+
+    <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+    <script>
+        var elements = document.querySelectorAll('.fill-template');
+        for (var i = elements.length - 1; i >= 0; i--) {
+            var e = elements[i];
+            var id = e.id;
+            var source = id.replace('-target', '');
+            e.innerText = document.querySelector('#'+source).innerHTML;
+        }
+        var elements = document.querySelectorAll('pre');
+        for (var i = elements.length - 1; i >= 0; i--) {
+            var e = elements[i];
+            hljs.highlightBlock(e);
+        }
+    </script>
   </body>
 
 </html>
