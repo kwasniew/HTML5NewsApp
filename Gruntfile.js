@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     watch: {
       lessfiles: {
-        files: ['styleguide/stylesheets/*.less'],
+        files: ['**/*.less'],
         tasks: ['less']
       },
       htmlfiles: {
