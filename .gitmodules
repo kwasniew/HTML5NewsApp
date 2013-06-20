@@ -1,0 +1,3 @@
+[submodule "git_modules/ap_pub_2_assets"]
+	path = git_modules/ap_pub_2_assets
+	url = git://sandbox.drmobile.aptoma.no/ap/ap_pub_2/assets
